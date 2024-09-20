@@ -30,7 +30,7 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public ViewResult MapMistakeRegistrationForm()
+    public ViewResult RegistrationForm()
     {
         return View("RegistrationForm");
     }

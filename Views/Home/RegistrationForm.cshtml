@@ -1,37 +1,56 @@
 @model Kartverk.Models.LoginData
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Registrer feil på kart";
 }
 
 <!DOCTYPE html>
 
 <html>
 <head>
-    <title>title</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/@@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@@[VERSION]/dist/L.Control.Locate.min.css"/>
+
 </head>
 <body>
+
 <div>
-    <h1>Registration Form</h1>
-    @* <form asp-action="RegistrationForm" method="post"> *@
-    @*     <div> *@
-    @*         <label asp-for="Name">Your name:</label> *@
-    @*         <input asp-for="Name" class="form-control"/> *@
-    @*     </div> *@
-    @*     <div> *@
-    @*         <label asp-for="Email">Your Email:</label> *@
-    @*         <input asp-for="Email"/> *@
-    @*     </div> *@
-    @*     <div> *@
-    @*         <label asp-for="Phone">Your phone:</label> *@
-    @*         <input asp-for="Phone"/> *@
-    @*     </div> *@
-    @*     <div> *@
-    @*         <label asp-for="Address">Your address:</label> *@
-    @*         <input asp-for="Address"/> *@
-    @*     </div> *@
-    @*     <button type="submit" class="btn btn-primary">Submit</button> *@
-    @* </form> *@
+    <div id="map"></div>
 </div>
+
+@section Scripts {
+<script lang="ts">
+    const layers = Object.freeze({
+        Land: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
+            layers: "kd_arealdekkeflate,kd_veger,kd_bygninger,kd_jernbane",
+            attribution: 'Kartverket'
+        }),
+        "Sjø": L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
+            layers: "kd_arealdekkeflate,kd_vannkontur,kd_vannflate,kd_elver,kd_ferger",
+            attribution: 'Kartverket'
+        }),
+    })
+
+    const map = L.map('map').setView([58.151, 8], 13);
+
+    map.pm.addControls({
+        position: 'topleft',
+        drawCircleMarker: false,
+        rotateMode: false,
+    });
+
+    // Vi trenger locate til å hente lokasjon av bruker
+    // L.control.locate().addTo(map);
+
+    layers.Land.addTo(map);
+
+    L.control.layers(layers).addTo(map);
+</script>
+}
 </body>
 </html>

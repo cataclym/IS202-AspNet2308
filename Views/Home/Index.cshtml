@@ -1,19 +1,11 @@
 ﻿@model Kartverk.Models.LoginData
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Forside";
 }
 
 <html>
 <head>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/@@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@@[VERSION]/dist/L.Control.Locate.min.css"/>
-    
     <style>
         label {
             display: block;
@@ -42,7 +34,6 @@
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
-    <div id="map"></div>
 </div>
 </body>
 </html>
