@@ -8,8 +8,24 @@
 
 <html>
 <body>
-<div>
+<div class="HomePage">
     <a asp-action="RegistrationForm">Meld feil</a>
+    <br><br>
 </div>
+
+    <h1>Min Profil</h1>
+    <br>
+
+    <h2>Min informasjon:</h2>
+    <!-- Display informasjon fra Overview -->
+    <p><strong>Name:</strong> @Model.UserName</p>
+    <p><strong>Password:</strong> @Model.Password</p>
+    <button type="submit" class="btn btn-primary">Endre</button>
+
+    <br><br><br>
+    <h2>Tidligere rapporter:</h2>
+    <p>Her er en oversikt over dine tidligere innmeldinger</p>
+    <!-- Legg til tidligere innmeldinger-->
+
 </body>
 </html>
