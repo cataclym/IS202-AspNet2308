@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Kartverk.Models.LoginData
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -15,14 +17,17 @@
 <body>
 <div class="text-center">
     <h1 class="display-4">Meld inn mangler eller feil</h1>
-    @* Her trenger vi valideringer og ellers for å logge inn med @LoginData
-    @* <form asp-controller="Home"> *@
-    @*     @Html.ValidationSummary() *@
-    @*     @Html.DisplayNameFor(x => x.NewMessage) *@
-    @*     @Html.ValidationMessageFor(x => x.NewMessage) *@
-    @*     @Html.TextBoxFor(x => x.NewMessage) *@
-    @* </form> *@
-    <a asp-action="LoginForm">Login</a>
+    <form asp-action="LoginForm" asp-controller="HomeController" method="post">
+        <div>
+            <label asp-for="UserName">Brukernavn</label>
+            <input asp-for="UserName"/>
+        </div>
+        <div>
+            <label asp-for="Password">Passord</label>
+            <input asp-for="Password"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
     <div id="map"></div>
 </div>
 

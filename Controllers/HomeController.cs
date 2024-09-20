@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Kartverk.mvc.Models;
+using Kartverk.Models;
 
-namespace Kartverk.mvc.Controllers;
+namespace Kartverk.Controllers;
 
 public class HomeController : Controller
 {
@@ -44,6 +44,6 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult LoginForm(LoginData loginData)
     {
-        return !ModelState.IsValid ? View() : View("Homepage", loginData);
+        return !ModelState.IsValid ? View("Index", loginData) : View("Homepage", loginData);
     }
 }

@@ -1,4 +1,4 @@
-namespace Kartverk.mvc.Models;
+namespace Kartverk.Models;
 
 public class HomeViewModel
 {
