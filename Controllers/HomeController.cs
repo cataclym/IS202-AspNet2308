@@ -29,6 +29,12 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
+    [HttpPost]
+    public ViewResult RegistrationForm(FeilMeldingsModel feilMeldingsModel)
+    {
+        return View("RegistrationForm", feilMeldingsModel);
+    }
+    
     [HttpGet]
     public ViewResult RegistrationForm()
     {
@@ -42,8 +48,8 @@ public class HomeController : Controller
     }
     
     [HttpPost]
-    public ViewResult LoginForm(LoginData loginData)
+    public ViewResult LoginForm(LoginDataModel loginDataModel)
     {
-        return !ModelState.IsValid ? View("Index", loginData) : View("Homepage", loginData);
+        return !ModelState.IsValid ? View("Index", loginDataModel) : View("Homepage", loginDataModel);
     }
 }

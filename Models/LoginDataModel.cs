@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Kartverk.Models;
 
 // Data tilhørende login form
-public class LoginData
+public class LoginDataModel
 {
     [Required]
     [PasswordPropertyText]

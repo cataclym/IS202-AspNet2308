@@ -1,4 +1,4 @@
-@model Kartverk.Models.LoginData
+@model Kartverk.Models.FeilMeldingsModel
 
 @{
     ViewData["Title"] = "Registrer feil på kart";
@@ -21,10 +21,18 @@
 
 <div>
     <div id="map"></div>
+
+    <form asp-action="RegistrationForm" method="post">
+        <div>
+            <label asp-for="Melding">Beskrivelse</label>
+            <textarea asp-for="Melding"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>     
 </div>
 
 @section Scripts {
-<script lang="ts">
+    <script lang="ts">
     const layers = Object.freeze({
         Land: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
             layers: "kd_arealdekkeflate,kd_veger,kd_bygninger,kd_jernbane",
@@ -50,6 +58,7 @@
     layers.Land.addTo(map);
 
     L.control.layers(layers).addTo(map);
+    
 </script>
 }
 </body>
