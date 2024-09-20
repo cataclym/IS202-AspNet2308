@@ -32,7 +32,7 @@ public class HomeController : Controller
     [HttpGet]
     public ViewResult MapMistakeRegistrationForm()
     {
-        return View();
+        return View("RegistrationForm");
     }
 
     [HttpGet]
@@ -42,7 +42,7 @@ public class HomeController : Controller
     }
     
     [HttpPost]
-    public IActionResult LoginForm(LoginData loginData)
+    public ViewResult LoginForm(LoginData loginData)
     {
         return !ModelState.IsValid ? View("Index", loginData) : View("Homepage", loginData);
     }
