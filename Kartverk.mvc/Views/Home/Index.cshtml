@@ -15,18 +15,19 @@
 <body>
 <div class="text-center">
     <h1 class="display-4">Meld inn mangler eller feil</h1>
-    Her trenger vi valideringer og ellers for å logge inn med @LoginData
-    <form asp-controller="Home">
-        @Html.ValidationSummary()
-        @Html.DisplayNameFor(x => x.NewMessage)
-        @Html.ValidationMessageFor(x => x.NewMessage)
-        @Html.TextBoxFor(x => x.NewMessage)
-    </form>
-    <a asp-action="Homepage">Login</a>
+    @* Her trenger vi valideringer og ellers for å logge inn med @LoginData
+    @* <form asp-controller="Home"> *@
+    @*     @Html.ValidationSummary() *@
+    @*     @Html.DisplayNameFor(x => x.NewMessage) *@
+    @*     @Html.ValidationMessageFor(x => x.NewMessage) *@
+    @*     @Html.TextBoxFor(x => x.NewMessage) *@
+    @* </form> *@
+    <a asp-action="LoginForm">Login</a>
     <div id="map"></div>
 </div>
 
 @section Scripts {
+
     <script lang="ts">
         const layers = Object.freeze({
             Land: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {

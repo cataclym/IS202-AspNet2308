@@ -30,16 +30,20 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public ViewResult MapMistakeRegistration()
+    public ViewResult MapMistakeRegistrationForm()
     {
         return View();
     }
 
-    [HttpPost]
-    public ViewResult Homepage(LoginData loginData)
+    [HttpGet]
+    public ViewResult LoginForm()
     {
-        return ModelState.IsValid
-            ? View("Homepage", loginData)
-            : View();
+        return View("Homepage");
+    }
+    
+    [HttpPost]
+    public IActionResult LoginForm(LoginData loginData)
+    {
+        return !ModelState.IsValid ? View() : View("Homepage", loginData);
     }
 }
