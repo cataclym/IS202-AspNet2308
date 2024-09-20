@@ -26,10 +26,25 @@
         </div>
         <div>
             <label asp-for="Password">Passord</label>
-            <input asp-for="Password"/>
+            <input asp-for="Password" type="password" id="Password" />
+                <input type="checkbox" id="togglePassword" />
+                <label for="togglePassword">Vis passord</label>
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
+         <button type="submit" class="btn btn-primary">Login</button>
+
     </form>
-</div>
+    </div>
+
+    <script>
+        document.getElementById('togglePassword').addEventListener('change', function () {
+            const passwordField = document.getElementById('Password');
+            if (this.checked) {
+                passwordField.type = 'text'; // Show password
+            } else {
+                passwordField.type = 'password'; // Hide password
+            }
+        });
+    </script>
+
 </body>
 </html>
