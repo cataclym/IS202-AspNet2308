@@ -1,39 +1,60 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+
 <html>
-    <head>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-              integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-              crossorigin=""/>
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-                integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-                crossorigin=""></script>        
-    </head>
-    <body>
-        <div class="text-center">
-            <h1 class="display-4">Meld inn mangler og feil</h1>
-            <div id="map"></div>
-        </div>
-    </body>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/@@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@@[VERSION]/dist/L.Control.Locate.min.css"/>
+</head>
+<body>
+<div class="text-center">
+    <h1 class="display-4">Meld inn mangler eller feil</h1>
+    @* Her trenger vi valideringer og ellers for å logge inn med @LoginData
+    @* <form asp-controller="Home"> *@
+    @*     @Html.ValidationSummary() *@
+    @*     @Html.DisplayNameFor(x => x.NewMessage) *@
+    @*     @Html.ValidationMessageFor(x => x.NewMessage) *@
+    @*     @Html.TextBoxFor(x => x.NewMessage) *@
+    @* </form> *@
+    <a asp-action="LoginForm">Login</a>
+    <div id="map"></div>
+</div>
+
+@section Scripts {
+
+    <script lang="ts">
+        const layers = Object.freeze({
+            Land: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
+                layers: "kd_arealdekkeflate,kd_veger,kd_bygninger,kd_jernbane",
+                attribution: 'Kartverket'
+            }),
+            "Sjø": L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
+                layers: "kd_arealdekkeflate,kd_vannkontur,kd_vannflate,kd_elver,kd_ferger",
+                attribution: 'Kartverket'
+            }),
+        })
+
+        const map = L.map('map').setView([58.151, 8], 13);
+
+        map.pm.addControls({
+            position: 'topleft',
+            drawCircleMarker: false,
+            rotateMode: false,
+        });
+        
+        // Vi trenger locate til å hente lokasjon av bruker
+        // L.control.locate().addTo(map);
+        
+        layers.Land.addTo(map);
+
+        L.control.layers(layers).addTo(map);
+    </script>
+}
+</body>
 </html>
-
-<script lang="ts">
-    const popup = L.popup();
-        function onMapClick(e) {
-        popup
-            .setLatLng(e.latlng)
-            .setContent("You clicked the map at " + e.latlng.toString())
-            .openOn(map);
-    }
-    
-    const map = L.map('map').setView([58.151, 8], 13);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-
-    map.on('click', onMapClick);
-
-
-</script>

@@ -28,4 +28,22 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+    [HttpGet]
+    public ViewResult MapMistakeRegistrationForm()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    public ViewResult LoginForm()
+    {
+        return View("Homepage");
+    }
+    
+    [HttpPost]
+    public IActionResult LoginForm(LoginData loginData)
+    {
+        return !ModelState.IsValid ? View() : View("Homepage", loginData);
+    }
 }
