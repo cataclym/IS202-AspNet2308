@@ -30,36 +30,5 @@
     </form>
     <div id="map"></div>
 </div>
-
-@section Scripts {
-
-    <script lang="ts">
-        const layers = Object.freeze({
-            Land: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
-                layers: "kd_arealdekkeflate,kd_veger,kd_bygninger,kd_jernbane",
-                attribution: 'Kartverket'
-            }),
-            "Sjø": L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
-                layers: "kd_arealdekkeflate,kd_vannkontur,kd_vannflate,kd_elver,kd_ferger",
-                attribution: 'Kartverket'
-            }),
-        })
-
-        const map = L.map('map').setView([58.151, 8], 13);
-
-        map.pm.addControls({
-            position: 'topleft',
-            drawCircleMarker: false,
-            rotateMode: false,
-        });
-        
-        // Vi trenger locate til å hente lokasjon av bruker
-        // L.control.locate().addTo(map);
-        
-        layers.Land.addTo(map);
-
-        L.control.layers(layers).addTo(map);
-    </script>
-}
 </body>
 </html>
