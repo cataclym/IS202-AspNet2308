@@ -8,33 +8,32 @@
 <head>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/@@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@@[VERSION]/dist/L.Control.Locate.min.css"/>
-    
-        
+          crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/@@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@@[VERSION]/dist/L.Control.Locate.min.css" />
 </head>
 <body>
-<div class="text-center">
-    <h1 class="display-4">Meld inn mangler eller feil</h1>
-    <form asp-action="LoginForm" method="post">
-        <div>
-            <label asp-for="UserName">Brukernavn</label>
-            <input asp-for="UserName"/>
-        </div>
-        <div>
-            <label asp-for="Password">Passord</label>
-            <input asp-for="Password" type="password" id="Password" class="password-input" />
-                <input type="checkbox" id="togglePassword" class="togglePassword"/>
-                <label for="togglePassword">Vis passord</label>
-        </div>
-         <button type="submit" class="btn btn-primary">Login</button>
+    <div class="text-center">
+        <h1 class="display-4">Meld inn mangler eller feil</h1>
+        <form asp-action="LoginForm" method="post">
+            <div>
+                <label asp-for="UserName">Brukernavn</label>
+                <input asp-for="UserName" />
+            </div>
+            <div>
+                <label asp-for="Password">Passord</label>
+                <div class="password-input-wrapper">
+                    <input asp-for="Password" type="password" id="Password" />
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="togglePassword" class="togglePassword" />
+                        <label for="togglePassword">Vis passord</label>
+                    </div>
+                </div>
+            </div>
 
-    </form>
-    </div>
-
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        </div>
     <script>
         document.getElementById('togglePassword').addEventListener('change', function () {
             const passwordField = document.getElementById('Password');
@@ -45,6 +44,5 @@
             }
         });
     </script>
-
 </body>
 </html>
