@@ -45,3 +45,42 @@ button {
     border: none;
     cursor: pointer;
 }
+
+/*CSS for HomePage*/
+.header1 {
+    text-align: center;
+}
+
+/* Flexbox container for password field and button */
+.password-container {
+    display: flex;
+    align-items: center; /* Vertikalt sentrert */
+}
+
+    /* Juster avstand mellom tekst, input-felt og knapp */
+    .password-container p {
+        margin-right: 10px; /* Avstand mellom "Password:" tekst og input-felt */
+        margin-bottom: 0; /* Nullstill bunnmarg for å sikre at den ikke påvirker justeringen */
+    }
+
+    .password-container input {
+        margin-right: 10px; /* Avstand mellom input-felt og knappen */
+        margin-top: -4px; /* Flytt input-feltet opp */
+    }
+
+    .password-container button {
+        margin-top: -4px; /* Flytt knappen litt opp */
+    }
+
+
+
+/*CSS for Index*/
+/*Sentrerer input og checkbox, men funker ikke dynamisk*/
+.password-input {
+    margin-right: -140px;
+}
+
+.togglePassword {
+   margin-right: -200px;
+}
+

@@ -8,24 +8,45 @@
 
 <html>
 <body>
-<div class="HomePage">
-    <a asp-action="RegistrationForm">Meld feil</a>
-    <br><br>
-</div>
+    <h1 class="header1">Min Profil</h1>
+    
+    <div>
+        <p>Finner du feil i kartet? Trykk her:</p>
+        <a asp-action="RegistrationForm">Meld feil</a>
+        <br><br><br>
+    </div>
 
-    <h1>Min Profil</h1>
-    <br>
+    <h2 class="header2">Min informasjon:</h2>
 
-    <h2>Min informasjon:</h2>
     <!-- Display informasjon fra Overview -->
     <p><strong>Name:</strong> @Model.UserName</p>
-    <p><strong>Password:</strong> @Model.Password</p>
-    <button type="submit" class="btn btn-primary">Endre</button>
+    
+    <div class="password-container">
+        <p><strong>Password:</strong></p>
+        <input type="password" id="passwordField" value="@Model.Password" readonly />
+        <button type="button" id="togglePasswordBtn">Vis passord</button>
+    </div>
 
     <br><br><br>
     <h2>Tidligere rapporter:</h2>
     <p>Her er en oversikt over dine tidligere innmeldinger</p>
     <!-- Legg til tidligere innmeldinger-->
+
+    <script>
+        // JavaScript to toggle password visibility
+        const passwordField = document.getElementById("passwordField");
+        const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+
+        togglePasswordBtn.addEventListener("click", function () {
+            if (passwordField.type === "password") {
+                passwordField.type = "text";  // Show password
+                togglePasswordBtn.textContent = "Skjul passord";  // Change button text
+            } else {
+                passwordField.type = "password";  // Hide password
+                togglePasswordBtn.textContent = "Vis passord";  // Reset button text
+            }
+        });
+    </script>
 
 </body>
 </html>
