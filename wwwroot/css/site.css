@@ -77,16 +77,17 @@ button {
 
 
 /*CSS for Index*/
-/*Sentrerer input og checkbox, men funker ikke dynamisk*/
-/* CSS for Index */
-/* Sentrerer input og checkbox, men funker ikke dynamisk */
-.container-passwordInput {
+.password-input-wrapper {
     display: flex;
-    flex-direction: column; /* Stack the label and input vertically */
-    align-items: center; /* Center elements horizontally */
-    margin-bottom: 20px; /* Add some space below this section */
+    flex-direction: column; /* Stack the input and checkbox vertically */
+    justify-content: center; /* Centers the entire wrapper (input + checkbox) */
+    align-items: center; /* Vertically aligns both input and checkbox */
+    width: 100%; /* Full width to allow centering */
 }
 
 .checkbox-wrapper {
-    display: flex; /* Align checkbox and label in a row */
+    margin-top: 10px; /* Add some space above the checkbox */
+    display: flex;
+    align-items: center; /* Vertically align the checkbox and label */
+    justify-content: center; /* Ensure checkbox and label are centered */
 }
