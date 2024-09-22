@@ -1,0 +1,56 @@
+﻿@model Kartverk.Models.UserData
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Sørger for at layouten brukes.
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+            h1 {
+                text-align: center;
+            }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 30%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>Registreringsskjema</h1>
+
+    <form asp-action="Overview" asp-controller="Home" method="post">
+
+        <br>
+        <div>
+            <label asp-for="Name">Navn:</label>
+            <input asp-for="Name" />
+        </div>
+        <br><br>
+
+        <div>
+            <label asp-for="Email">Epost:</label>
+            <input asp-for="Email" required placeholder="Skriv e-postadressen din" />
+        </div>
+        <br><br>
+
+        <div>
+            <label asp-for="Phone">Telefonnummer:</label>
+            <input asp-for="Phone" type="tel" pattern="[0-9]*" />
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Send inn</button>
+    </form>
+</body>
+</html>

@@ -1,6 +1,7 @@
-@model LoginDataModel
+@model Kartverk.Models.UserData
 
 @{
+    Layout = null;
 }
 
 <!DOCTYPE html>
@@ -12,10 +13,9 @@
 <body>
 <div>
     <h2>Thanks for registering!</h2>
-    @* <p>Name: @Model.Name</p> *@
-    @* <p>Email: @Model.Email</p> *@
-    @* <p>Phone: @Model.Phone</p> *@
-    @* <p>Address: @Model.Address</p> *@
+    <p>Name: @Model.Name</p>
+    <p>Email: @Model.Email</p>
+    <p>Phone: @Model.Phone</p>
 </div>
 </body>
 </html>

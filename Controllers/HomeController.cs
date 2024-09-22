@@ -34,13 +34,13 @@ public class HomeController : Controller
     public ActionResult Register(FeilMeldingsModel feilMeldingsModel)
     {
         if (feilMeldingsModel.StringKoordinaterLag == null) return RedirectToAction("RegistrationForm", feilMeldingsModel);
-        
+
         var koordinatorLag = JsonSerializer.Deserialize<KoordinatorLag>(feilMeldingsModel.StringKoordinaterLag, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
         feilMeldingsModel.KoordinaterLag = koordinatorLag;
         feilMeldingsModel.StringKoordinaterLag = null;
-        
-        return View("Register", feilMeldingsModel);   
+
+        return View("Register", feilMeldingsModel);
     }
 
     [HttpPost]
@@ -48,7 +48,7 @@ public class HomeController : Controller
     {
         return View("RegistrationForm", feilMeldingsModel);
     }
-    
+
     [HttpGet]
     public ViewResult RegistrationForm()
     {
@@ -56,7 +56,7 @@ public class HomeController : Controller
     }
 
 
-    
+
     [HttpGet]
     public ViewResult LoginForm()
     {
@@ -67,5 +67,34 @@ public class HomeController : Controller
     public ViewResult LoginForm(LoginDataModel loginDataModel)
     {
         return !ModelState.IsValid ? View("Index", loginDataModel) : View("Homepage", loginDataModel);
+    }
+
+
+    [HttpPost]
+    public ViewResult RegistrationPage(UserData userData)
+    {
+        // Hvis registreringen er vellykket, send dataene videre til profilen
+        return View("RegistrationPage", userData);
+    }
+
+    // GET: Viser registreringsskjemaet
+    [HttpGet]
+    public ViewResult RegistrationPage()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public ViewResult Overview(UserData userData)
+    {
+        // Hvis registreringen er vellykket, send dataene videre til profilen
+        return View("Overview", userData);
+    }
+
+    // GET: Viser registreringsskjemaet
+    [HttpGet]
+    public ViewResult Overview()
+    {
+        return View();
     }
 }
