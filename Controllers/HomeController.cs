@@ -1,6 +1,7 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using Kartverk.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Kartverk.Controllers;
 
@@ -30,7 +31,20 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public ViewResult RegistrationForm(FeilMeldingsModel feilMeldingsModel)
+    public ActionResult Register(FeilMeldingsModel feilMeldingsModel)
+    {
+        if (feilMeldingsModel.StringKoordinaterLag == null) return RedirectToAction("RegistrationForm", feilMeldingsModel);
+        
+        var koordinatorLag = JsonSerializer.Deserialize<KoordinatorLag>(feilMeldingsModel.StringKoordinaterLag, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        feilMeldingsModel.KoordinaterLag = koordinatorLag;
+        feilMeldingsModel.StringKoordinaterLag = null;
+        
+        return View("Register", feilMeldingsModel);   
+    }
+
+    [HttpPost]
+    public ViewResult RegistrationForm(FeilMeldingsModel? feilMeldingsModel)
     {
         return View("RegistrationForm", feilMeldingsModel);
     }
@@ -41,12 +55,14 @@ public class HomeController : Controller
         return View("RegistrationForm");
     }
 
+
+    
     [HttpGet]
     public ViewResult LoginForm()
     {
         return View("Homepage");
     }
-    
+
     [HttpPost]
     public ViewResult LoginForm(LoginDataModel loginDataModel)
     {

@@ -1,4 +1,4 @@
-@model Kartverk.Models.FeilMeldingsModel
+@model FeilMeldingsModel
 
 @{
     ViewData["Title"] = "Registrer feil på kart";
@@ -14,25 +14,25 @@
     <link
         rel="stylesheet"
         href="https://unpkg.com/@@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@@[VERSION]/dist/L.Control.Locate.min.css"/>
-
 </head>
 <body>
-
 <div>
     <div id="map"></div>
-
-    <form asp-action="RegistrationForm" method="post">
+    <form asp-action="Register" method="post" id="mapForm">
         <div>
             <label asp-for="Melding">Beskrivelse</label>
             <textarea asp-for="Melding"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-    </form>     
+        <div>
+            <input type="text" class="visually-hidden" id="Koordinater" asp-for="StringKoordinaterLag"></input>
+        </div>
+        <button type="submit" value="send" class="btn btn-primary" onclick="submitForm()">Send inn</button>
+    </form>
 </div>
 
 @section Scripts {
-    <script lang="ts">
+    <script>
+    // Lag som viser land eller sjø kart
     const layers = Object.freeze({
         Land: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
             layers: "kd_arealdekkeflate,kd_veger,kd_bygninger,kd_jernbane",
@@ -43,7 +43,7 @@
             attribution: 'Kartverket'
         }),
     })
-
+    
     const map = L.map('map').setView([58.151, 8], 13);
 
     map.pm.addControls({
@@ -59,7 +59,30 @@
 
     L.control.layers(layers).addTo(map);
     
+    // Leverer kartdata til home-kontrolleren
+    function submitForm() {
+        const mapData = {
+            points: [],
+            lines: []
+        };
+
+        const markers = L.PM.Utils.findLayers(map);
+
+        markers.forEach(marker => {
+            if (marker.options.pane === "markerPane") mapData.points.push(marker._latlng);
+            if (marker.options.pane === "overlayPane") mapData.points.push(marker_latlngs);
+        });
+          
+        const koordinater = document.getElementById("Koordinater");
+        
+        if (!koordinater) throw new Error("500 Internal error");
+        
+        // Gjør om mapData til string
+        koordinater.value = JSON.stringify(mapData);
+        document.getElementById("mapForm").submit();
+    }    
 </script>
 }
+
 </body>
 </html>

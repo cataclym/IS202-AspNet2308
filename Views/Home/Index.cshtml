@@ -1,4 +1,4 @@
-@model Kartverk.Models.LoginDataModel
+@model LoginDataModel
 
 @{
     ViewData["Title"] = "Forside";
@@ -6,11 +6,6 @@
 
 <html>
 <head>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin="" />
-    <link rel="stylesheet" href="https://unpkg.com/@@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@@[VERSION]/dist/L.Control.Locate.min.css" />
 </head>
 <body>
     <div class="text-center">
@@ -35,7 +30,7 @@
         </form>
     </div>
 
-    <script>
+<script>
         document.getElementById('togglePassword').addEventListener('change', function () {
             const passwordField = document.getElementById('Password');
             if (this.checked) {

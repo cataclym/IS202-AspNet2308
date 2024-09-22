@@ -1,0 +1,20 @@
+@model FeilMeldingsModel
+
+<!DOCTYPE html>
+
+<html>
+<body>
+<div>
+    <h1>Ønsket forbedring registrert</h1>
+    <div>
+        <h3>Melding:</h3>
+        <p>@Model.Melding</p>
+    </div>
+    <div>       
+        <h3>Koordinater</h3>
+        <p>Lines: @Model.KoordinaterLag?.lines</p>
+        <p>Points: @Model.KoordinaterLag?.points</p>
+    </div>
+</div>
+</body>
+</html>
