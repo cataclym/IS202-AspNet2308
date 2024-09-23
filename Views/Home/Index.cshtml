@@ -19,10 +19,12 @@
                 <label asp-for="Password">Passord</label>
                 <div class="password-input-wrapper">
                     <input asp-for="Password" type="password" id="Password" />
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="togglePassword" class="togglePassword" />
-                        <label for="togglePassword">Vis passord</label>
-                    </div>
+                    <form class="checkbox-wrapper">
+                        <div>
+                            <input type="checkbox" id="togglePassword" class="togglePassword"/>
+                            <label for="togglePassword">Vis passord</label>
+                        </div>
+                    </form>
                 </div>
             </div>
 
