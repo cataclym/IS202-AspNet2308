@@ -71,10 +71,10 @@ public class HomeController : Controller
 
 
     [HttpPost]
-    public ViewResult RegistrationPage(UserData userData)
+    public ViewResult RegistrationPage(LoginDataModel loginData)
     {
         // Hvis registreringen er vellykket, send dataene videre til profilen
-        return View("RegistrationPage", userData);
+        return View("RegistrationPage", loginData);
     }
 
     // GET: Viser registreringsskjemaet
@@ -85,10 +85,10 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public ViewResult Overview(UserData userData)
+    public ViewResult Overview(LoginDataModel loginData)
     {
         // Hvis registreringen er vellykket, send dataene videre til profilen
-        return View("Overview", userData);
+        return View("HomePage", loginData);
     }
 
     // GET: Viser registreringsskjemaet
