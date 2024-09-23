@@ -96,7 +96,13 @@ button {
 
 /*CSS for RegistrationPage*/
 .checkbox-wrapper-registration {
+    width: fit-content;
     display: flex;
-    align-items: center; /* Vertically align the checkbox and label */
-    justify-content: center; /* Ensure checkbox and label are centered */
+    gap: 1rem;
+    align-content: flex-start;
+    justify-content: flex-start; /* Ensure checkbox and label are centered */
+}
+
+.margin-bottom-2 {
+    margin-bottom: 2px !important;
 }
