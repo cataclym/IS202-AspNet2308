@@ -54,13 +54,13 @@ button {
 /* Flexbox container for password field and button */
 .password-container {
     display: flex;
-    align-items: center; /* Justerer elementene vertikalt på samme linje */
+    align-items: center; /* Justerer elementene vertikalt pï¿½ samme linje */
 }
 
     /* Juster avstand mellom teksten og input-feltet */
     .password-container p {
         margin-right: 10px; /* Avstand mellom "Password:" tekst og input-felt */
-        margin-bottom: 0; /* Nullstill bunnmarg for å sikre at den ikke påvirker justeringen */
+        margin-bottom: 0; /* Nullstill bunnmarg for ï¿½ sikre at den ikke pï¿½virker justeringen */
     }
 
     /* Juster avstand mellom input-feltet og knappen */
@@ -88,14 +88,21 @@ button {
 .checkbox-wrapper {
     margin-top: 10px; /* Add some space above the checkbox */
     display: flex;
+    align-content: space-around;
+    gap: 1rem;
     align-items: center; /* Vertically align the checkbox and label */
     justify-content: center; /* Ensure checkbox and label are centered */
 }
 
-
 /*CSS for RegistrationPage*/
 .checkbox-wrapper-registration {
+    width: fit-content;
     display: flex;
-    align-items: center; /* Vertically align the checkbox and label */
-    justify-content: center; /* Ensure checkbox and label are centered */
+    gap: 1rem;
+    align-content: flex-start;
+    justify-content: flex-start; /* Ensure checkbox and label are centered */
+}
+
+.margin-bottom-2 {
+    margin-bottom: 2px !important;
 }
