@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Kartverk.Models;
+namespace Kartverket.Models;
 
 // Data tilhørende login form
 public class LoginDataModel

@@ -1,8 +1,14 @@
 @model FeilMeldingsModel
 
+@{
+    ViewData["Title"] = "Registrert utbedring";
+}
+
 <!DOCTYPE html>
 
 <html>
+<head>
+</head>
 <body>
 <div>
     <h1>Ønsket forbedring registrert</h1>
@@ -10,11 +16,42 @@
         <h3>Melding:</h3>
         <p>@Model.Melding</p>
     </div>
-    <div>       
+    <div>
         <h3>Koordinater</h3>
-        <p>Lines: @Model.KoordinaterLag?.lines</p>
-        <p>Points: @Model.KoordinaterLag?.points</p>
+        <p>Lines: @Html.Raw(Json.Serialize(Model.KoordinaterLag?.lines))</p>
+        <p>Points: @Html.Raw(Json.Serialize(Model.KoordinaterLag?.points))</p>
     </div>
+    <div id="map"></div>
 </div>
+
+@section Scripts {
+    <script>
+    const map = L.map('map', { zoomControl: false }).setView([58.151, 8], 13);
+    
+    // Skru av alt som flytte på kartet 
+    map.dragging.disable();
+    map.touchZoom.disable();
+    map.doubleClickZoom.disable();
+    map.scrollWheelZoom.disable();
+    map.boxZoom.disable();
+    map.keyboard.disable();
+    if (map.tap) map.tap.disable();
+
+    L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
+        layers: "kd_arealdekkeflate,kd_veger,kd_bygninger,kd_jernbane",
+        attribution: 'Kartverketet'       
+    }).addTo(map);
+        
+    // Lager polygoner fra modelldata
+    const polygons = [];
+    for (const layer of @Html.Raw(Json.Serialize(Model.KoordinaterLag?.lines))) {
+        polygons.push(L.polygon(layer).addTo(map))
+    }
+
+    // Setter kartets fokus på første lat/long fra polygon
+    map.setView(polygons[0]._latlngs[0][0])
+</script>
+}
+
 </body>
 </html>

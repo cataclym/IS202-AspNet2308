@@ -1,19 +1,13 @@
 @model FeilMeldingsModel
 
 @{
-    ViewData["Title"] = "Registrer feil på kart";
+    ViewData["Title"] = "Registrer utbedring på kart";
 }
 
 <!DOCTYPE html>
 
 <html>
 <head>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/@@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"/>
 </head>
 <body>
 <div>
@@ -33,14 +27,15 @@
 @section Scripts {
     <script>
     // Lag som viser land eller sjø kart
+    // https://leafletjs.com/examples/wms/wms.html
     const layers = Object.freeze({
         Land: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
             layers: "kd_arealdekkeflate,kd_veger,kd_bygninger,kd_jernbane",
-            attribution: 'Kartverket'
+            attribution: 'Kartverketet'
         }),
         "Sjø": L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
             layers: "kd_arealdekkeflate,kd_vannkontur,kd_vannflate,kd_elver,kd_ferger",
-            attribution: 'Kartverket'
+            attribution: 'Kartverketet'
         }),
     })
     
@@ -70,9 +65,9 @@
 
         markers.forEach(marker => {
             if (marker.options.pane === "markerPane") mapData.points.push(marker._latlng);
-            if (marker.options.pane === "overlayPane") mapData.points.push(marker_latlngs);
+            if (marker.options.pane === "overlayPane") mapData.lines.push(marker._latlngs);
         });
-          
+                        
         const koordinater = document.getElementById("Koordinater");
         
         if (!koordinater) throw new Error("500 Internal error");

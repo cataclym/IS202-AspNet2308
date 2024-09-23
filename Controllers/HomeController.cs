@@ -1,9 +1,9 @@
 using System.Diagnostics;
 using System.Text.Json;
-using Kartverk.Models;
+using Kartverket.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kartverk.Controllers;
+namespace Kartverket.Controllers;
 
 public class HomeController : Controller
 {
@@ -35,9 +35,9 @@ public class HomeController : Controller
     {
         if (feilMeldingsModel.StringKoordinaterLag == null) return RedirectToAction("RegistrationForm", feilMeldingsModel);
 
-        var koordinatorLag = JsonSerializer.Deserialize<KoordinatorLag>(feilMeldingsModel.StringKoordinaterLag, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        var koordinaterLag = JsonSerializer.Deserialize<KoordinaterLag>(feilMeldingsModel.StringKoordinaterLag, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-        feilMeldingsModel.KoordinaterLag = koordinatorLag;
+        feilMeldingsModel.KoordinaterLag = koordinaterLag;
         feilMeldingsModel.StringKoordinaterLag = null;
 
         return View("Register", feilMeldingsModel);
@@ -49,7 +49,7 @@ public class HomeController : Controller
         return View("RegistrationForm", feilMeldingsModel);
     }
 
-    [HttpGet]
+    [HttpGet]   
     public ViewResult RegistrationForm()
     {
         return View("RegistrationForm");

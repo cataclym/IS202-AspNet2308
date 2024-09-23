@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kartverk.mvc.Controllers;
+namespace Kartverket.Controllers;
 
 public class BrukerController : Controller
 {
