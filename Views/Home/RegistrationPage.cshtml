@@ -37,20 +37,41 @@
             <label asp-for="Name">Navn:</label>
             <input asp-for="Name" />
         </div>
-        <br><br>
+        <br>
 
         <div>
             <label asp-for="Email">Epost:</label>
             <input asp-for="Email" required placeholder="Skriv e-postadressen din" />
         </div>
-        <br><br>
+        <br>
 
         <div>
             <label asp-for="Phone">Telefonnummer:</label>
             <input asp-for="Phone" type="tel" pattern="[0-9]*" />
         </div>
         <br>
+       
+        <div>
+        <label asp-for="Password">Passord:</label>    
+        <input asp-for="Password" type="password" id="Password" />
+            <div class="checkbox-wrapper-registration">
+                <input type="checkbox" id="togglePassword" class="togglePassword" />
+                <label for="togglePassword">Vis passord</label>
+            </div>
+            </div>
+            
         <button type="submit" class="btn btn-primary">Send inn</button>
     </form>
+
+    <script>
+        document.getElementById('togglePassword').addEventListener('change', function () {
+            const passwordField = document.getElementById('Password');
+            if (this.checked) {
+                passwordField.type = 'text'; // Show password
+            } else {
+                passwordField.type = 'password'; // Hide password
+            }
+        });
+    </script>
 </body>
 </html>
