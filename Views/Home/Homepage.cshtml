@@ -19,10 +19,14 @@
     <h2 class="header2">Min informasjon:</h2>
 
     <!-- Display informasjon fra Overview -->
-    <p><strong>Name:</strong> @Model.UserName</p>
-    
+    <p><strong>Navn:</strong> @Model.Name</p>
+    <p><strong>Epost:</strong> @Model.Email</p>
+    <p><strong>Telefonnummer:</strong> @Model.Phone</p>
+    <p><strong>Brukernavn:</strong> @Model.UserName</p>
+
+
     <div class="password-container">
-        <p><strong>Password:</strong></p>
+        <p><strong>Passord:</strong></p>
         <input type="password" id="passwordField" value="@Model.Password" readonly />
         <button type="button" id="togglePasswordBtn">Vis passord</button>
     </div>
