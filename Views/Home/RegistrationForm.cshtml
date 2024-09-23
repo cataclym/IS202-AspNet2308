@@ -31,11 +31,11 @@
     const layers = Object.freeze({
         Land: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
             layers: "kd_arealdekkeflate,kd_veger,kd_bygninger,kd_jernbane",
-            attribution: 'Kartverketet'
+            attribution: 'Kartverket'
         }),
         "Sjø": L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
             layers: "kd_arealdekkeflate,kd_vannkontur,kd_vannflate,kd_elver,kd_ferger",
-            attribution: 'Kartverketet'
+            attribution: 'Kartverket'
         }),
     })
     

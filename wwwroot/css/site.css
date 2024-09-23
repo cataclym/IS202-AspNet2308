@@ -91,3 +91,11 @@ button {
     align-items: center; /* Vertically align the checkbox and label */
     justify-content: center; /* Ensure checkbox and label are centered */
 }
+
+
+/*CSS for RegistrationPage*/
+.checkbox-wrapper-registration {
+    display: flex;
+    align-items: center; /* Vertically align the checkbox and label */
+    justify-content: center; /* Ensure checkbox and label are centered */
+}
