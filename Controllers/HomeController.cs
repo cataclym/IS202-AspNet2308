@@ -35,12 +35,14 @@ public class HomeController : Controller
     {
         var koordinaterLag = JsonSerializer.Deserialize<KoordinaterLag>(feilMeldingsModel.StringKoordinaterLag!, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
+        // Hvis det ikke finnes points eller lines så sendes brukeren tilbake med en feilmelding
         if (koordinaterLag?.points?.Count < 1 && koordinaterLag?.lines?.Count < 1)
         {
             feilMeldingsModel.FeilMelding = "Du må markere området på kartet";
             return View("RegistrationForm", feilMeldingsModel);
         }
 
+        // Viderefører koordinatene til Register view
         feilMeldingsModel.KoordinaterLag = koordinaterLag;
         feilMeldingsModel.StringKoordinaterLag = null;
 
