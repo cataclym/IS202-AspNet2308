@@ -2940,7 +2940,6 @@ textarea.form-control-lg {
   -moz-user-select: none;
   user-select: none;
   background-color: transparent;
-  border: 1px solid transparent;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   border-radius: 0.25rem;
@@ -2966,38 +2965,61 @@ textarea.form-control-lg {
 .btn-primary {
   color: #fff;
   background-color: #008540;
-  border-color: #008540;
+  border-color: transparent;
+  outline: none;
 }
+
+/* Remove border and box shadow for all button states */
+.btn-primary,
+.btn-primary:focus,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus-visible {
+  border: none !important;
+  box-shadow: none !important;
+}
+
 .btn-primary:hover {
   color: #fff;
   background-color: #006A33;
-  border-color: #006A33;
+  border-color: transparent;
+  outline: none;
 }
 .btn-check:focus + .btn-primary, .btn-primary:focus {
-  color: #008540;
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
-  box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
-}
-.btn-check:checked + .btn-primary, .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
   color: #fff;
-  background-color: #008540;
-  border-color: #008540;
+  background-color: #006A33;
+  border-color: transparent; /* Optional to match other states */
+  box-shadow: none;
+  outline: none;
+ 
 }
 .btn-check:checked + .btn-primary:focus, .btn-check:active + .btn-primary:focus, .btn-primary:active:focus, .btn-primary.active:focus, .show > .btn-primary.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+  box-shadow: none;
+  outline: none;
 }
 .btn-primary:disabled, .btn-primary.disabled {
-  color: #008540;
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  color: #fff;
+  background-color: #fff;
+  border-color: #fff;
 }
 
 .btn-secondary {
   color: #fff;
   background-color: #1a589f;
   border-color: #1a589f;
+  outline: none;
 }
+
+/* Remove border and box shadow for all button states */
+.btn-secondary,
+.btn-secondary:focus,
+.btn-secondary:hover,
+.btn-secondary:active,
+.btn-secondary:focus-visible {
+  border: none !important;
+  box-shadow: none !important;
+}
+
 .btn-secondary:hover {
   color: #fff;
   background-color: #154785;
@@ -3005,33 +3027,33 @@ textarea.form-control-lg {
 }
 .btn-check:focus + .btn-secondary, .btn-secondary:focus {
   color: #fff;
-  background-color: #5c636a;
-  border-color: #565e64;
+  background-color: #154785;
   box-shadow: 0 0 0 0.25rem rgba(130, 138, 145, 0.5);
 }
 .btn-check:checked + .btn-secondary, .btn-check:active + .btn-secondary, .btn-secondary:active, .btn-secondary.active, .show > .btn-secondary.dropdown-toggle {
   color: #fff;
-  background-color: #565e64;
-  border-color: #51585e;
+  background-color: #154785;
 }
 .btn-check:checked + .btn-secondary:focus, .btn-check:active + .btn-secondary:focus, .btn-secondary:active:focus, .btn-secondary.active:focus, .show > .btn-secondary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.25rem rgba(130, 138, 145, 0.5);
 }
 .btn-secondary:disabled, .btn-secondary.disabled {
   color: #fff;
-  background-color: #6c757d;
-  border-color: #6c757d;
+  background-color: #154785;
+  border-color: #154785;
 }
 
 .btn-success {
   color: #fff;
   background-color: #198754;
   border-color: #198754;
+  outline: none;
 }
 .btn-success:hover {
   color: #fff;
   background-color: #157347;
   border-color: #146c43;
+  outline: none;
 }
 .btn-check:focus + .btn-success, .btn-success:focus {
   color: #fff;
@@ -3041,8 +3063,8 @@ textarea.form-control-lg {
 }
 .btn-check:checked + .btn-success, .btn-check:active + .btn-success, .btn-success:active, .btn-success.active, .show > .btn-success.dropdown-toggle {
   color: #fff;
-  background-color: #146c43;
-  border-color: #13653f;
+  background-color: #000000;
+  border-color: #000000;
 }
 .btn-check:checked + .btn-success:focus, .btn-check:active + .btn-success:focus, .btn-success:active:focus, .btn-success.active:focus, .show > .btn-success.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.25rem rgba(60, 153, 110, 0.5);
@@ -3051,6 +3073,7 @@ textarea.form-control-lg {
   color: #fff;
   background-color: #198754;
   border-color: #198754;
+  outline: none;
 }
 
 .btn-info {
@@ -3255,7 +3278,7 @@ textarea.form-control-lg {
 
 .btn-outline-success {
   color: #198754;
-  border-color: #198754;
+  border-color: #fff;
 }
 .btn-outline-success:hover {
   color: #fff;
@@ -3274,7 +3297,7 @@ textarea.form-control-lg {
   box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.5);
 }
 .btn-outline-success:disabled, .btn-outline-success.disabled {
-  color: #198754;
+  color: #fff;
   background-color: transparent;
 }
 
