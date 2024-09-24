@@ -1,7 +1,7 @@
 @model FeilMeldingsModel
 
 @{
-    ViewData["Title"] = "Registrert utbedring";
+    ViewData["Title"] = "Registrert rapport";
 }
 
 <!DOCTYPE html>
@@ -11,24 +11,25 @@
 </head>
 <body>
 <div>
-    <h1>Ønsket forbedring registrert</h1>
+    <h1>Rapport registrert</h1>
     <div>
-        <h3>Melding:</h3>
+        <h3>Melding</h3>
         <p>@Model.Melding</p>
     </div>
+    <div id="map"></div>
     <div>
         <h3>Koordinater</h3>
         <p>Lines: @Html.Raw(Json.Serialize(Model.KoordinaterLag?.lines))</p>
         <p>Points: @Html.Raw(Json.Serialize(Model.KoordinaterLag?.points))</p>
     </div>
-    <div id="map"></div>
 </div>
 
 @section Scripts {
     <script>
-    const map = L.map('map', { zoomControl: false }).setView([58.151, 8], 13);
+    // Skru av zoom
+    const map = lagKart({ zoomControl: false });
     
-    // Skru av alt som flytte på kartet 
+    // Skru av alt som flytter på kartet 
     map.dragging.disable();
     map.touchZoom.disable();
     map.doubleClickZoom.disable();
@@ -37,10 +38,8 @@
     map.keyboard.disable();
     if (map.tap) map.tap.disable();
 
-    L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
-        layers: "kd_arealdekkeflate,kd_veger,kd_bygninger,kd_jernbane",
-        attribution: 'Kartverket'       
-    }).addTo(map);
+    // Hent kartlag fra layout, legg til i kart
+    kartLag.Land.addTo(map); 
         
     // Lager polygoner fra modelldata
     const polygons = [];
@@ -50,7 +49,7 @@
 
     // Setter kartets fokus på første lat/long fra polygon
     map.setView(polygons[0]._latlngs[0][0])
-</script>
+    </script>
 }
 
 </body>

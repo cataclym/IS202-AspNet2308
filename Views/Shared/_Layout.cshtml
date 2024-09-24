@@ -56,6 +56,36 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin=""></script>
 <script src="https://unpkg.com/@@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.js"></script>
+<script>
+    // Lag som viser land eller sjø kart
+    // https://leafletjs.com/examples/wms/wms.html
+    // Kartlag som kan hentes fra alle views
+    const kartLag = Object.freeze({
+        Land: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
+            layers: "kd_arealdekkeflate,kd_veger,kd_bygninger,kd_jernbane,kd_stedsnavn",
+            attribution: 'Kartverket'
+        }),
+        "Sjø": L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
+            layers: "kd_arealdekkeflate,kd_vannkontur,kd_vannflate,kd_elver,kd_ferger,kd_stedsnavn",
+            attribution: 'Kartverket'
+        }),
+    })
+    // Lager leaflet map, med kartverk sine kartlag
+    // options blir passert til L.map funksjonen
+    function lagKart(options = {}) {
+        // TODO: setview til å bruke brukerens lokasjon
+        const map = L.map('map', options).setView([58.151, 8], 13);
+
+        // Setter landkart som standardkart
+        kartLag.Land.addTo(map);
+
+        // Legger til sjøkart 
+        L.control.layers(kartLag).addTo(map);
+
+        return map;
+    }
+
+</script>
 @await RenderSectionAsync("Scripts", false)
 </body>
 </html>

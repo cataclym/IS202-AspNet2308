@@ -26,21 +26,10 @@
 
 @section Scripts {
     <script>
-    // Lag som viser land eller sjø kart
-    // https://leafletjs.com/examples/wms/wms.html
-    const layers = Object.freeze({
-        Land: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
-            layers: "kd_arealdekkeflate,kd_veger,kd_bygninger,kd_jernbane",
-            attribution: 'Kartverket'
-        }),
-        "Sjø": L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
-            layers: "kd_arealdekkeflate,kd_vannkontur,kd_vannflate,kd_elver,kd_ferger",
-            attribution: 'Kartverket'
-        }),
-    })
     
-    const map = L.map('map').setView([58.151, 8], 13);
-
+    const map = lagKart();
+    
+    // Skrur av forskjellige tegnekontroller
     map.pm.addControls({
         position: 'topleft',
         rotateMode: false,
@@ -50,13 +39,6 @@
         drawCircle: false,
         drawText: false
     });
-
-    // Vi trenger locate til å hente lokasjon av bruker
-    // L.control.locate().addTo(map);
-
-    layers.Land.addTo(map);
-
-    L.control.layers(layers).addTo(map);
     
     // Leverer kartdata til home-kontrolleren
     function submitForm() {
