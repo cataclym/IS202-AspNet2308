@@ -20,7 +20,7 @@
     <form asp-action="Register" method="post" id="mapForm">
         <div>
             <label asp-for="Melding">Beskrivelse</label>
-            <textarea asp-for="Melding"></textarea>
+            <textarea asp-for="Melding" required minlength="1"></textarea>
         </div>
         <div>
             <input type="text" class="visually-hidden" id="Koordinater" asp-for="StringKoordinaterLag"></input>
@@ -66,6 +66,7 @@
         // Gjør om mapData til string
         koordinater.value = JSON.stringify(mapData);
         document.getElementById("mapForm").submit();
+
     }    
 </script>
 }
