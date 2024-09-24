@@ -33,9 +33,13 @@ public class HomeController : Controller
     [HttpPost]
     public ActionResult Register(FeilMeldingsModel feilMeldingsModel)
     {
-        if (feilMeldingsModel.StringKoordinaterLag == null) return RedirectToAction("RegistrationForm", feilMeldingsModel);
+        var koordinaterLag = JsonSerializer.Deserialize<KoordinaterLag>(feilMeldingsModel.StringKoordinaterLag!, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-        var koordinaterLag = JsonSerializer.Deserialize<KoordinaterLag>(feilMeldingsModel.StringKoordinaterLag, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        if (koordinaterLag?.points?.Count < 1 && koordinaterLag?.lines?.Count < 1)
+        {
+            feilMeldingsModel.FeilMelding = "Du må markere området på kartet";
+            return View("RegistrationForm", feilMeldingsModel);
+        }
 
         feilMeldingsModel.KoordinaterLag = koordinaterLag;
         feilMeldingsModel.StringKoordinaterLag = null;

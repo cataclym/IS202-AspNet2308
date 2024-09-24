@@ -1,7 +1,7 @@
 @model FeilMeldingsModel
 
 @{
-    ViewData["Title"] = "Registrer utbedring på kart";
+    ViewData["Title"] = "Registrer ny rapport";
 }
 
 <!DOCTYPE html>
@@ -9,9 +9,14 @@
 <html>
 <head>
 </head>
-<body>
+<body>  
 <div>
     <div id="map"></div>
+    @if (Model != null && !String.IsNullOrWhiteSpace(Model.FeilMelding))
+    {
+        <p class="alert-danger">@Model.FeilMelding</p>
+    }
+    
     <form asp-action="Register" method="post" id="mapForm">
         <div>
             <label asp-for="Melding">Beskrivelse</label>
