@@ -5,7 +5,7 @@ namespace Kartverket.Models;
 
 public class FeilMeldingsModel
 {
-    [Required]
+    [Required(ErrorMessage = "Melding is required.")]
     [MinLength(5)]
     [MaxLength(1024)]
     [DisplayName("Beskrivelse av utbedring")]
