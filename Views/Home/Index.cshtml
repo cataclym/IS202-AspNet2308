@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="text-center">
-        <h1 class="display-4">Meld inn mangler eller feil</h1>
+        <h1 class="display-4">Meld inn feil eller mangler </h1>
         <form asp-action="LoginForm" method="post">
             <div>
                 <label asp-for="UserName">Brukernavn</label>
@@ -32,7 +32,7 @@
 
     <!-- Registration-form -->
     <br><br>
-    <p>Har du ikke en bruker:</p>    
+    <p>Har du ikke en bruker?</p>    
     <form asp-action="RegistrationPage" asp-controller="Home" method="post">        
         <button type="submit" class="btn btn-primary">Registrer deg</button>
     </form>
