@@ -14,14 +14,4 @@ public class FeilMeldingsModel
     public string? FeilMelding { get; set; }
 }
 
-public class KoordinaterLag
-{   
-        public List<List<List<LatLngs>>>? points { get; set; }
-        public List<object>? lines { get; set; }
-}
 
-public class LatLngs
-{
-    public double lat { get; set; }
-    public double lng { get; set; }
-}

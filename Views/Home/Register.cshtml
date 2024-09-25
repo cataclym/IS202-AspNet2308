@@ -17,7 +17,7 @@
         <h3>Melding</h3>
         <p>@Model.Melding</p>
     </div>
-    <div id="map"></div>
+    <div id="map" style="height: 400px;"></div> <!-- Sørg for å ha høyde på kartet -->
     <div>
         <h3>Koordinater</h3>
         <p>GeoJSON Data: @Html.Raw(Model.StringKoordinaterLag)</p>
@@ -40,13 +40,35 @@
 
     // Hent kartlag fra layout, legg til i kart
     kartLag.Land.addTo(map); 
-        
-    // Setter kartets fokus på første lat/long fra polygon
-    map.setView(polygons[0]._latlngs[0][0])
-    
-    
+
+    // Sjekk om GeoJSON-data er tilgjengelig
+    const geojsonDataString = '@Html.Raw(Model.StringKoordinaterLag ?? "null")';
+
+    // For feilsøking, logg geojsonDataString
+    console.log("GeoJSON Data String: ", geojsonDataString);
+
+    // Hvis GeoJSON-data eksisterer, konverter til objekt og legg til på kartet
+    if (geojsonDataString !== "null") {
+        try {
+            // Konverter JSON-strengen til et JavaScript-objekt
+            const geojsonObject = JSON.parse(geojsonDataString);
+
+            // For feilsøking, logg geojsonObject
+            console.log("GeoJSON Object: ", geojsonObject);
+
+            // Legg til GeoJSON-laget på kartet
+            const geoLayer = L.geoJSON(geojsonObject).addTo(map);
+
+            // Juster kartets visning til å passe GeoJSON-dataene
+            const bounds = geoLayer.getBounds();
+            map.fitBounds(bounds);
+        } catch (error) {
+            console.error("Feil ved parsing av GeoJSON-data:", error);
+        }
+    } else {
+        console.error("Ingen GeoJSON-data funnet");
+    }
     </script>
 }
-
 </body>
 </html>
