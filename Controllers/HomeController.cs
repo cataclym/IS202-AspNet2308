@@ -29,25 +29,46 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
-
+    
     [HttpPost]
-    public ActionResult Register(FeilMeldingsModel feilMeldingsModel)
+    public IActionResult Register(FeilMeldingsModel model)
     {
-        var koordinaterLag = JsonSerializer.Deserialize<KoordinaterLag>(feilMeldingsModel.StringKoordinaterLag!, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-        // Hvis det ikke finnes points eller lines så sendes brukeren tilbake med en feilmelding
-        if (koordinaterLag?.points?.Count < 1 && koordinaterLag?.lines?.Count < 1)
+        if (ModelState.IsValid)
         {
-            feilMeldingsModel.FeilMelding = "Du må markere området på kartet";
-            return View("RegistrationForm", feilMeldingsModel);
+            // Her lagrer vi GeoJSON-strukturen i databasen eller behandler den videre
+            string geojsonData = model.StringKoordinaterLag;
+
+            // Validering av GeoJSON (valgfritt, avhengig av behov)
+            if (!IsValidGeoJson(geojsonData))
+            {
+                model.FeilMelding = "GeoJSON data is not valid.";
+                return View(model);
+            }
+
+            // Lagrer til databasen (avhengig av hvordan du har satt opp lagring)
+            // dbContext.FeilMeldingsModels.Add(model);
+            // dbContext.SaveChanges();
+
+            return RedirectToAction("Success");
         }
 
-        // Viderefører koordinatene til Register view
-        feilMeldingsModel.KoordinaterLag = koordinaterLag;
-        feilMeldingsModel.StringKoordinaterLag = null;
-
-        return View("Register", feilMeldingsModel);
+        return View(model);
     }
+
+// Valideringsmetode for GeoJSON (valgfritt)
+    private bool IsValidGeoJson(string geojson)
+    {
+        try
+        {
+            var obj = JsonSerializer.Deserialize<JsonDocument>(geojson);
+            return obj?.RootElement.GetProperty("type").GetString() == "FeatureCollection";
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
 
     [HttpPost]
     public ViewResult RegistrationForm(FeilMeldingsModel? feilMeldingsModel)

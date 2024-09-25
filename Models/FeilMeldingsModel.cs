@@ -11,7 +11,6 @@ public class FeilMeldingsModel
     [DisplayName("Beskrivelse av utbedring")]
     public string? Melding { get; set; }
     public string? StringKoordinaterLag { get; set; }
-    public KoordinaterLag? KoordinaterLag { get; set; }
     public string? FeilMelding { get; set; }
 }
 

@@ -12,6 +12,7 @@
 <body>
 <div>
     <h1>Rapport registrert</h1>
+    <form asp-action="Register" asp-controller="Home" method="post" id="mapForm"> </form>
     <div>
         <h3>Melding</h3>
         <p>@Model.Melding</p>
@@ -19,8 +20,7 @@
     <div id="map"></div>
     <div>
         <h3>Koordinater</h3>
-        <p>Lines: @Html.Raw(Json.Serialize(Model.KoordinaterLag?.lines))</p>
-        <p>Points: @Html.Raw(Json.Serialize(Model.KoordinaterLag?.points))</p>
+        <p>GeoJSON Data: @Html.Raw(Model.StringKoordinaterLag)</p>
     </div>
 </div>
 
@@ -41,14 +41,10 @@
     // Hent kartlag fra layout, legg til i kart
     kartLag.Land.addTo(map); 
         
-    // Lager polygoner fra modelldata
-    const polygons = [];
-    for (const layer of @Html.Raw(Json.Serialize(Model.KoordinaterLag?.lines))) {
-        polygons.push(L.polygon(layer).addTo(map))
-    }
-
     // Setter kartets fokus på første lat/long fra polygon
     map.setView(polygons[0]._latlngs[0][0])
+    
+    
     </script>
 }
 

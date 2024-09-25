@@ -47,28 +47,33 @@
     
     // Leverer kartdata til home-kontrolleren
     function submitForm() {
-        const mapData = {
-            points: [],
-            lines: []
+        // Henter alle lag fra kartet
+        const layers = L.PM.Utils.findLayers(map);
+
+        // Oppretter et GeoJSON-objekt for kartdata
+        const geojson = {
+            type: "FeatureCollection",
+            features: []
         };
 
-        const markers = L.PM.Utils.findLayers(map);
-
-        markers.forEach(marker => {
-            if (marker.options.pane === "markerPane") mapData.points.push(marker._latlng);
-            if (marker.options.pane === "overlayPane") mapData.lines.push(marker._latlngs);
+        layers.forEach(layer => {
+            // Konverterer hvert lag til GeoJSON-format og legger det til 'features'
+            const geojsonFeature = layer.toGeoJSON();
+            geojson.features.push(geojsonFeature);
         });
-                        
-        const koordinater = document.getElementById("Koordinater");
-        
-        if (!koordinater) throw new Error("500 Internal error");
-        
-        // Gjør om mapData til string
-        koordinater.value = JSON.stringify(mapData);
-        document.getElementById("mapForm").submit();
 
-    }    
-</script>
+        // Finner input-feltet der GeoJSON skal lagres
+        const koordinater = document.getElementById("Koordinater");
+
+        if (!koordinater) throw new Error("500 Internal error");
+
+        // Lagrer GeoJSON-data som en streng i input-feltet
+        koordinater.value = JSON.stringify(geojson);
+
+        // Sender skjemaet
+        document.getElementById("mapForm").submit();
+    }
+    </script>
 }
 
 </body>
