@@ -11,17 +11,26 @@
 </head>
 <body>
 <div>
-    <h1>Rapport registrert</h1>
-    <form asp-action="Register" asp-controller="Home" method="post" id="mapForm"> </form>
-    <div>
-        <h3>Melding</h3>
-        <p>@Model.Melding</p>
-    </div>
-    <div id="map" style="height: 400px;"></div> <!-- Sørg for å ha høyde på kartet -->
-    <div>
-        <h3>Koordinater</h3>
-        <p>GeoJSON Data: @Html.Raw(Model.StringKoordinaterLag)</p>
-    </div>
+    @if (Model != null)
+    {
+        <h1>Rapport registrert</h1>
+        <form asp-action="Register" asp-controller="Home" method="post" id="mapForm"> </form>
+        <div>
+            <h3>Melding</h3>
+            <p>@Model.Melding</p>
+        </div>
+        <div id="map" style="height: 400px;"></div>
+        <!-- Sørg for å ha høyde på kartet -->
+        <div>
+            <h3>Koordinater</h3>
+            <p>GeoJSON Data: @Html.Raw(Model.StringKoordinaterLag)</p>
+        </div>
+    }
+    else
+    {
+        <p>Model er null, kunne ikke vise data.</p>
+
+    }
 </div>
 
 @section Scripts {

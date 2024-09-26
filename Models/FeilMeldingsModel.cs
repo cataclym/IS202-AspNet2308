@@ -1,16 +1,23 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Kartverket.Models;
 
+[Table("geo_data")]
 public class FeilMeldingsModel
 {
-    [Required(ErrorMessage = "Melding is required.")]
+    
+    [Key]
+    public int Id { get; set; } // Ingen MinLength på int
+
+    [Required]
     [MinLength(5)]
-    [MaxLength(1024)]
-    [DisplayName("Beskrivelse av utbedring")]
-    public string? Melding { get; set; }
-    public string? StringKoordinaterLag { get; set; }
+    public string Melding { get; set; } // MinLength fungerer kun på strenger, arrays, eller samlinger
+
+    [Required]
+    public string StringKoordinaterLag { get; set; } // Ingen valideringsattributt som ikke passer
+
     public string? FeilMelding { get; set; }
 }
 

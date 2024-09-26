@@ -2,18 +2,23 @@ using System.Diagnostics;
 using System.Text.Json;
 using Kartverket.Models;
 using Microsoft.AspNetCore.Mvc;
+using Kartverket.Data;
+using Kartverket.Models;
+using System.Threading.Tasks;
 
 namespace Kartverket.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly ApplicationDbContext _context;
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ApplicationDbContext context, ILogger<HomeController> logger)
     {
+        _context = context;
         _logger = logger;
     }
-
+    
     public IActionResult Index()
     {
         return View();
@@ -23,6 +28,12 @@ public class HomeController : Controller
     {
         return View();
     }
+    
+    [HttpGet]
+    public IActionResult Register()
+    {
+        return View("Register");
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
@@ -31,27 +42,52 @@ public class HomeController : Controller
     }
     
     [HttpPost]
-    public IActionResult Register(FeilMeldingsModel model)
+    [HttpPost]
+    public async Task<IActionResult> Register(FeilMeldingsModel model)
     {
+        
+        // Logg modellens verdi
+        _logger.LogInformation($"Model: {@model}");
+        
+        
+        // Sjekk om modellen er gyldig
         if (ModelState.IsValid)
         {
-            // Her lagrer vi GeoJSON-strukturen i databasen eller behandler den videre
+            _logger.LogInformation("ModelState er gyldig.");
+            
+            // Her henter vi GeoJSON-strukturen fra modellen
             string geojsonData = model.StringKoordinaterLag;
 
             // Validering av GeoJSON (valgfritt, avhengig av behov)
             if (!IsValidGeoJson(geojsonData))
             {
                 model.FeilMelding = "GeoJSON data is not valid.";
-                return View(model);
+                _logger.LogWarning("GeoJSON-data er ugyldig.");
+                return View(model); // Returner til view hvis GeoJSON er ugyldig
             }
 
-            // Lagrer til databasen (avhengig av hvordan du har satt opp lagring)
-            // dbContext.FeilMeldingsModels.Add(model);
-            // dbContext.SaveChanges();
+            // Lagrer til databasen
+            // Bruker _context som er injisert i controlleren
+            _logger.LogInformation("Legger til data i databasen.");
+            _context.FeilMeldinger.Add(model);
 
-            return RedirectToAction("Success");
+            // Lagre endringer til databasen asynkront
+            await _context.SaveChangesAsync();
+            _logger.LogInformation("Data har blitt lagret i databasen.");
+
+            return RedirectToAction("register"); // Eller til et annet view for å bekrefte lagringen
         }
-
+        
+        _logger.LogWarning("ModelState er ugyldig. Returnerer til view.");
+        foreach (var state in ModelState)
+        {
+            foreach (var error in state.Value.Errors)
+            {
+                _logger.LogWarning($"Valideringsfeil for '{state.Key}': {error.ErrorMessage}");
+            }
+        }
+        
+        // Returner samme view med valideringsfeil hvis modellen ikke er gyldig
         return View(model);
     }
 
@@ -101,7 +137,7 @@ public class HomeController : Controller
     public ViewResult RegistrationPage(LoginDataModel loginData)
     {
         // Hvis registreringen er vellykket, send dataene videre til profilen
-        return View("RegistrationPage", loginData);
+        return View("Register", loginData);
     }
 
     // GET: Viser registreringsskjemaet
