@@ -23,11 +23,11 @@ namespace Kartverket.Migrations
 
             modelBuilder.Entity("Kartverket.Models.FeilMeldingsModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("geodata_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("geodata_id"));
 
                     b.Property<string>("FeilMelding")
                         .HasColumnType("longtext");
@@ -40,9 +40,36 @@ namespace Kartverket.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.HasKey("geodata_id");
 
                     b.ToTable("geo_data");
+                });
+
+            modelBuilder.Entity("Kartverket.Models.LoginDataModel", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("LoginData");
                 });
 #pragma warning restore 612, 618
         }

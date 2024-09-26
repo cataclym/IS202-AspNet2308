@@ -8,4 +8,7 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     public DbSet<FeilMeldingsModel> FeilMeldinger { get; set; }
+    
+    public DbSet<LoginDataModel> LoginData { get; set; }
+
 }

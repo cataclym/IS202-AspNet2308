@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Kartverket.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class UpdateLoginDataModel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,7 @@ namespace Kartverket.Migrations
                 name: "geo_data",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    geodata_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Melding = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -29,7 +29,28 @@ namespace Kartverket.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_geo_data", x => x.Id);
+                    table.PrimaryKey("PK_geo_data", x => x.geodata_id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "LoginData",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Password = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Email = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Phone = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LoginData", x => x.UserId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
         }
@@ -39,6 +60,9 @@ namespace Kartverket.Migrations
         {
             migrationBuilder.DropTable(
                 name: "geo_data");
+
+            migrationBuilder.DropTable(
+                name: "LoginData");
         }
     }
 }

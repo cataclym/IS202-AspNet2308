@@ -4,6 +4,8 @@ using Kartverket.Models;
 using Microsoft.AspNetCore.Mvc;
 using Kartverket.Data;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+
 
 namespace Kartverket.Controllers;
 
@@ -17,7 +19,7 @@ public class HomeController : Controller
         _context = context;
         _logger = logger;
     }
-    
+
     public IActionResult Index()
     {
         return View();
@@ -27,7 +29,7 @@ public class HomeController : Controller
     {
         return View();
     }
-    
+
     [HttpGet]
     public IActionResult Register()
     {
@@ -39,21 +41,20 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
-    
-    [HttpPost]
+
     [HttpPost]
     public async Task<IActionResult> Register(FeilMeldingsModel model)
     {
-        
+
         // Logg modellens verdi
         _logger.LogInformation($"Model: {@model}");
-        
-        
+
+
         // Sjekk om modellen er gyldig
         if (ModelState.IsValid)
         {
             _logger.LogInformation("ModelState er gyldig.");
-            
+
             // Her henter vi GeoJSON-strukturen fra modellen
             string geojsonData = model.StringKoordinaterLag;
 
@@ -76,7 +77,7 @@ public class HomeController : Controller
 
             return View("register", model); // Eller til et annet view for å bekrefte lagringen
         }
-        
+
         _logger.LogWarning("ModelState er ugyldig. Returnerer til view.");
         foreach (var state in ModelState)
         {
@@ -85,7 +86,7 @@ public class HomeController : Controller
                 _logger.LogWarning($"Valideringsfeil for '{state.Key}': {error.ErrorMessage}");
             }
         }
-        
+
         // Returner samme view med valideringsfeil hvis modellen ikke er gyldig
         return View(model);
     }
@@ -111,7 +112,7 @@ public class HomeController : Controller
         return View("RegistrationForm", feilMeldingsModel);
     }
 
-    [HttpGet]   
+    [HttpGet]
     public ViewResult RegistrationForm()
     {
         return View("RegistrationForm");
@@ -147,10 +148,32 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public ViewResult HomePage(LoginDataModel loginData)
+    public async Task<IActionResult> HomePage(LoginDataModel loginData)
     {
-        // Hvis registreringen er vellykket, send dataene videre til profilen
-        return View("HomePage", loginData);
+        // Sjekk om modellen er gyldig
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                // Legger til brukerdata i databasen
+                _context.LoginData.Add(loginData);
+
+                // Lagre endringer til databasen asynkront
+                await _context.SaveChangesAsync();
+
+                // Gå til en suksess- eller bekreftelsesside (eller tilbakemelding på skjema)
+                return RedirectToAction("RegistrationForm"); // Eller returner View("HomePage") for å vise data
+            }
+            catch (Exception ex)
+            {
+                // Logg feil hvis lagringen ikke fungerer
+                _logger.LogError(ex, "Feil ved lagring av brukerdata.");
+                // Returner en feilmelding
+                return View("Error");
+            }
+        }
+
+        return View(loginData);
     }
 
     // GET: Viser registreringsskjemaet
