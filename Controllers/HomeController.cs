@@ -3,7 +3,6 @@ using System.Text.Json;
 using Kartverket.Models;
 using Microsoft.AspNetCore.Mvc;
 using Kartverket.Data;
-using Kartverket.Models;
 using System.Threading.Tasks;
 
 namespace Kartverket.Controllers;
