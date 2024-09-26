@@ -20,7 +20,7 @@
     <form asp-action="Register" method="post" id="mapForm">
         <div>
             <label asp-for="Melding">Beskrivelse</label>
-            <textarea asp-for="Melding" required minlength="1"></textarea>
+            <textarea id="meldingsBoks" asp-for="Melding" required minlength="1"></textarea>
         </div>
         <div>
             <input type="text" class="visually-hidden" id="Koordinater" asp-for="StringKoordinaterLag"></input>
@@ -70,6 +70,10 @@
         // Lagrer GeoJSON-data som en streng i input-feltet
         koordinater.value = JSON.stringify(geojson);
 
+        const meldingsBoks = document.getElementById("meldingsBoks")
+    
+        if (!meldingsBoks.innerHTML.length) return;
+        
         // Sender skjemaet
         document.getElementById("mapForm").submit();
     }
