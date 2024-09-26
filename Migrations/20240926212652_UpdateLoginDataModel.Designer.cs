@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kartverket.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240926204036_UpdateLoginDataModel")]
+    [Migration("20240926212652_UpdateLoginDataModel")]
     partial class UpdateLoginDataModel
     {
         /// <inheritdoc />
