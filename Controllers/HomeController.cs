@@ -75,7 +75,7 @@ public class HomeController : Controller
             await _context.SaveChangesAsync();
             _logger.LogInformation("Data har blitt lagret i databasen.");
 
-            return RedirectToAction("register"); // Eller til et annet view for å bekrefte lagringen
+            return View("register", model); // Eller til et annet view for å bekrefte lagringen
         }
         
         _logger.LogWarning("ModelState er ugyldig. Returnerer til view.");

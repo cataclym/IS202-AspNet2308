@@ -11,7 +11,7 @@
 </head>
 <body>
 <div>
-    @if (Model != null)
+    @if (Model.Melding.Length >= 1 || Model.StringKoordinaterLag.Length >= 1)
     {
         <h1>Rapport registrert</h1>
         <form asp-action="Register" asp-controller="Home" method="post" id="mapForm"> </form>
