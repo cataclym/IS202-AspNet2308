@@ -9,7 +9,7 @@ public class FeilMeldingsModel
 {
     
     [Key]
-    public int Id { get; set; } // Ingen MinLength på int
+    public int geodata_id { get; set; } // Ingen MinLength på int
 
     [Required]
     [MinLength(5)]
