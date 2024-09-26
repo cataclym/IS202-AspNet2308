@@ -137,7 +137,7 @@ public class HomeController : Controller
     public ViewResult RegistrationPage(LoginDataModel loginData)
     {
         // Hvis registreringen er vellykket, send dataene videre til profilen
-        return View("Register", loginData);
+        return View("RegistrationPage", loginData);
     }
 
     // GET: Viser registreringsskjemaet
