@@ -64,7 +64,6 @@
 
         // Finner input-feltet der GeoJSON skal lagres
         const koordinater = document.getElementById("Koordinater");
-
         if (!koordinater) throw new Error("500 Internal error");
 
         // Lagrer GeoJSON-data som en streng i input-feltet
@@ -72,6 +71,7 @@
 
         const meldingsBoks = document.getElementById("meldingsBoks")
     
+        // Validering av at man har skrevet en melding i tekstboksen 
         if (!meldingsBoks.innerHTML.length) return;
         
         // Sender skjemaet

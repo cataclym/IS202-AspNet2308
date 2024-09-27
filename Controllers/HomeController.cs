@@ -162,7 +162,7 @@ public class HomeController : Controller
                 await _context.SaveChangesAsync();
 
                 // Gå til en suksess- eller bekreftelsesside (eller tilbakemelding på skjema)
-                return RedirectToAction("RegistrationForm"); // Eller returner View("HomePage") for å vise data
+                return View("HomePage", loginData); // Eller returner View("HomePage") for å vise data
             }
             catch (Exception ex)
             {
