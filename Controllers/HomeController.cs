@@ -182,4 +182,12 @@ public class HomeController : Controller
     {
         return View();
     }
+
+
+    [HttpGet]
+    public ViewResult About()
+    {
+        return View();
+    }
+
 }
