@@ -3,11 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Legg til env variabler
+builder.Configuration.AddEnvironmentVariables();
+
 // Add services to the container.
-// Konfigurer ApplicationDbContext her
+// Konfigurer ApplicationDbContext her              
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 25)))); // Bytt til riktig versjon av MariaDB
+        new MySqlServerVersion(new Version(8, 0, 39)))); // Bytt til vår versjon av MySQL
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
