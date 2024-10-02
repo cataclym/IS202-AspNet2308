@@ -532,3 +532,4 @@ obj/
 # End of https://www.toptal.com/developers/gitignore/api/csharp,aspnetcore,dotnetcore
 
 .env
+.DS_Store
