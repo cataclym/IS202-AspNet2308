@@ -20,12 +20,12 @@
     <form asp-action="Register" method="post" id="mapForm">
         <div>
             <label asp-for="Melding">Beskrivelse</label>
-            <textarea id="meldingsBoks" asp-for="Melding" required minlength="1"></textarea>
+            <textarea id="meldingsBoks" asp-for="Melding" required minlength="5"></textarea>
         </div>
         <div>
-            <input type="text" class="visually-hidden" id="Koordinater" asp-for="StringKoordinaterLag"></input>
+            <input type="text" class="visually-hidden" id="Koordinater" asp-for="StringKoordinaterLag" required></input>
         </div>
-        <button type="submit" value="send" class="btn btn-primary" onclick="submitForm()">Send inn</button>
+        <button class="btn btn-primary" onclick="submitForm()">Send inn</button>
     </form>
 </div>
 
@@ -64,15 +64,15 @@
 
         // Finner input-feltet der GeoJSON skal lagres
         const koordinater = document.getElementById("Koordinater");
-        if (!koordinater) throw new Error("500 Internal error");
 
         // Lagrer GeoJSON-data som en streng i input-feltet
         koordinater.value = JSON.stringify(geojson);
 
         const meldingsBoks = document.getElementById("meldingsBoks")
     
-        // Validering av at man har skrevet en melding i tekstboksen 
-        if (!meldingsBoks.innerHTML.length) return;
+        // Validering av melding i tekstboksen
+        // Og om det er lagt til et kart-lag
+        if (meldingsBoks.innerHTML.length < 5 || !geojson.features.length) return;
         
         // Sender skjemaet
         document.getElementById("mapForm").submit();

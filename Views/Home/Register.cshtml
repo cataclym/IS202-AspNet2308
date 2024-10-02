@@ -35,8 +35,7 @@
 
 @section Scripts {
     <script>
-    // Skru av zoom
-    const map = lagKart({ zoomControl: false });
+    const map = lagKart({ zoomControl: true });
     
     // Skru av alt som flytter på kartet 
     map.dragging.disable();
@@ -50,23 +49,17 @@
     // Hent kartlag fra layout, legg til i kart
     kartLag.Land.addTo(map); 
 
-    // Sjekk om GeoJSON-data er tilgjengelig
-    const geojsonDataString = '@Html.Raw(Model.StringKoordinaterLag ?? "null")';
+    // Hent GeoJSON Object fra modellen
+    const geoJSONObject = @Html.Raw(Model.StringKoordinaterLag);
 
-    // For feilsøking, logg geojsonDataString
-    console.log("GeoJSON Data String: ", geojsonDataString);
-
-    // Hvis GeoJSON-data eksisterer, konverter til objekt og legg til på kartet
-    if (geojsonDataString !== "null") {
+    // For feilsøking, logg geoJSONObject
+    console.log("GeoJSON: ", geoJSONObject);
+    
+    // Hvis GeoJSON-data eksisterer, legg til på kartet
+    if (geoJSONObject !== null) {
         try {
-            // Konverter JSON-strengen til et JavaScript-objekt
-            const geojsonObject = JSON.parse(geojsonDataString);
-
-            // For feilsøking, logg geojsonObject
-            console.log("GeoJSON Object: ", geojsonObject);
-
             // Legg til GeoJSON-laget på kartet
-            const geoLayer = L.geoJSON(geojsonObject).addTo(map);
+            const geoLayer = L.geoJSON(geoJSONObject).addTo(map);
 
             // Juster kartets visning til å passe GeoJSON-dataene
             const bounds = geoLayer.getBounds();
