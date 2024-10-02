@@ -4,8 +4,7 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionStrings__DefaultConnection":"Server=104.36.110.120;Database=kartverk;User=kartverk;Password=Sun_flower123;Port=3306"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "https://localhost:52543;http://localhost:52544"
     }
