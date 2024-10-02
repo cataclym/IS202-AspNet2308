@@ -1,4 +1,4 @@
-@model FeilMeldingsModel
+@model MapReportsModel
 
 @{
     ViewData["Title"] = "Registrer ny rapport";
@@ -19,7 +19,7 @@
     
     <form asp-action="Register" method="post" id="mapForm">
         <div>
-            <label asp-for="Melding">Beskrivelse</label>
+            <label asp-for="Melding">Beskrivelse (Minst 5 tegn)</label>
             <textarea id="meldingsBoks" asp-for="Melding" required minlength="5"></textarea>
         </div>
         <div>

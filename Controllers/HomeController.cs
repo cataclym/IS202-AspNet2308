@@ -34,7 +34,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Register(FeilMeldingsModel model)
+    public async Task<IActionResult> Register(MapReportsModel model)
     {
         // Logg modellens verdi
         _logger.LogInformation($"Model: {@model}");
@@ -55,7 +55,7 @@ public class HomeController : Controller
             // Lagrer til databasen
             // Bruker _context som er injisert i controlleren
             _logger.LogInformation("Legger til data i databasen.");
-            _context.FeilMeldinger.Add(model);
+            _context.MapReports.Add(model);
 
             // Lagre endringer til databasen asynkront
             await _context.SaveChangesAsync();
@@ -93,7 +93,7 @@ public class HomeController : Controller
     }
     
     [HttpPost]
-    public ViewResult RegistrationForm(FeilMeldingsModel? feilMeldingsModel)
+    public ViewResult RegistrationForm(MapReportsModel? feilMeldingsModel)
     {
         return View("RegistrationForm", feilMeldingsModel);
     }
@@ -111,17 +111,17 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public ViewResult LoginForm(LoginDataModel loginDataModel)
+    public ViewResult LoginForm(Users usersModel)
     {
-        return !ModelState.IsValid ? View("Index", loginDataModel) : View("Homepage", loginDataModel);
+        return !ModelState.IsValid ? View("Index", usersModel) : View("Homepage", usersModel);
     }
 
 
     [HttpPost]
-    public ViewResult RegistrationPage(LoginDataModel loginData)
+    public ViewResult RegistrationPage(Users usersModel)
     {
         // Hvis registreringen er vellykket, send dataene videre til profilen
-        return View("RegistrationPage", loginData);
+        return View("RegistrationPage", usersModel);
     }
 
     // GET: Viser registreringsskjemaet
@@ -132,7 +132,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> HomePage(LoginDataModel loginData)
+    public async Task<IActionResult> HomePage(Users usersModel)
     {
         // Sjekk om modellen er gyldig
         if (ModelState.IsValid)
@@ -140,13 +140,13 @@ public class HomeController : Controller
             try
             {
                 // Legger til brukerdata i databasen
-                _context.LoginData.Add(loginData);
+                _context.Users.Add(usersModel);
 
                 // Lagre endringer til databasen asynkront
                 await _context.SaveChangesAsync();
 
                 // Gå til en suksess- eller bekreftelsesside (eller tilbakemelding på skjema)
-                return View("HomePage", loginData);
+                return View("HomePage", usersModel);
             }   
             catch (Exception ex)
             {
@@ -157,7 +157,7 @@ public class HomeController : Controller
             }
         }
 
-        return View(loginData);
+        return View(usersModel);
     }
 
     // GET: Viser registreringsskjemaet
