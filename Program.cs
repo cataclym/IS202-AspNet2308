@@ -1,6 +1,7 @@
 using Kartverket.Data;
 using Microsoft.EntityFrameworkCore;
 using dotenv.net;
+using Kartverket.Services;
 
 DotEnv.Load();
 var envVars = DotEnv.Read();
@@ -18,6 +19,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Registrer HttpClient for KommuneInfoService og StedsNavnService
+builder.Services.AddHttpClient<MunicipalityService>(client =>
+{
+    client.BaseAddress = new Uri("https://api.kartverket.no/kommuneinfo/v1");
+});
 
 var app = builder.Build();
 

@@ -12,9 +12,9 @@
 <body>  
 <div>
     <div id="map"></div>
-    @if (Model != null && !String.IsNullOrWhiteSpace(Model.FeilMelding))
+    @if (ViewData["ErrorMessage"] != null)
     {
-        <p class="alert-danger">@Model.FeilMelding</p>
+        <p class="alert-danger">@ViewData["ErrorMessage"]</p>
     }
     
     <form asp-action="Register" method="post" id="mapForm">

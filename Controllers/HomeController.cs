@@ -3,6 +3,8 @@ using System.Text.Json;
 using Kartverket.Models;
 using Microsoft.AspNetCore.Mvc;
 using Kartverket.Data;
+using Kartverket.Services;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Kartverket.Controllers;
 
@@ -10,6 +12,7 @@ public class HomeController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<HomeController> _logger;
+    private readonly IServiceProvider _service;
 
     public HomeController(ApplicationDbContext context, ILogger<HomeController> logger)
     {
@@ -43,14 +46,18 @@ public class HomeController : Controller
         if (ModelState.IsValid)
         {
             _logger.LogInformation("ModelState er gyldig.");
+
+            var mapLayers = GetGeoJson(model.StringKoordinaterLag);
             
             // Validering av GeoJSON (valgfritt, avhengig av behov)
-            if (!IsValidGeoJson(model.StringKoordinaterLag))
+            if (mapLayers == null)
             {
-                model.FeilMelding = "Du må markere området på kartet.";
+                ViewData["ErrorMessage"] = "Du må markere området på kartet.";
                 _logger.LogWarning("GeoJSON-data er ugyldig.");
                 return View("RegistrationForm", model); // Returner til view hvis GeoJSON er ugyldig
             }
+            
+            // var municipalityInfo = await GetMunicipalityInfo(model.StringKoordinaterLag);
     
             // Lagrer til databasen
             // Bruker _context som er injisert i controlleren
@@ -77,19 +84,22 @@ public class HomeController : Controller
         return View("RegistrationForm", model);
     }
 
-// Valideringsmetode for GeoJSON (valgfritt)
-    private bool IsValidGeoJson(string geojson)
+    // Valideringsmetode for GeoJSON (valgfritt)
+    private static MapLayersModel? GetGeoJson(string geojson)
     {   
         try
         {
-            var obj = JsonSerializer.Deserialize<JsonDocument>(geojson);
+            var obj = JsonSerializer.Deserialize<MapLayersModel>(geojson);
 
-            return obj?.RootElement.GetProperty("features").GetArrayLength() > 0;
+            if (obj?.features.Count > 0) return obj;
         }
+        // Hvis Deserialize ikke fullførte, returner null
         catch
         {
-            return false;
+            return null;
         }
+
+        return null;
     }
     
     [HttpPost]
@@ -113,7 +123,11 @@ public class HomeController : Controller
     [HttpPost]
     public ViewResult LoginForm(Users usersModel)
     {
-        return !ModelState.IsValid ? View("Index", usersModel) : View("Homepage", usersModel);
+        if (!ModelState.IsValid) return View("Index", usersModel);
+
+//        var user = await _context.Users.FindAsync(usersModel.UserName, usersModel.Password);
+        
+        return View("Homepage", usersModel);
     }
 
 
