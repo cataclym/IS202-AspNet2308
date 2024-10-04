@@ -109,12 +109,5 @@ button {
 
 
 img {
-    width: 400px;
-    height: 300px;
-}
-
-p.italic {
-    font-style: italic;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    object-fit:cover;
 }
