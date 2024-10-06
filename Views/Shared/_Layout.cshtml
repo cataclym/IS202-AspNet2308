@@ -28,14 +28,14 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Hjem</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Personvern</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Min Side</a>
                     </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="RegistrationPage">Registrering</a>
-                        </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area ="" asp-controller="Home" asp-action="About">Om oss</a>
-                            </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Help">Hjelp</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Personvern</a>
+                    </li>   
                 </ul>
             </div>
         </div>
@@ -47,9 +47,19 @@
     </main>
 </div>
 
-<footer class="border-top footer text-muted">
+<footer class="border-top footer text-muted fixed-bottom">
     <div class="container">
-        &copy; 2024 - Kartverket - <a asp-area="" asp-controller="Home" asp-action="Privacy">Personvern</a>
+        <ul class="footer-nav">
+            <li class="">
+                <p class="text-dark">&copy; 2024 - Kartverket</p>
+            </li>
+            <li class="">
+                <p class="text-dark">Mail: <a href="mailto:post@karverket.no">post@karverket.no</a>
+            </li>
+            <li class="">
+                <p class="text-dark">Telefon: <a href="tel:32118000">32 11 80 00</a></p>
+            </li>
+        </ul>
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

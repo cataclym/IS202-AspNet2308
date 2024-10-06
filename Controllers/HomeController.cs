@@ -12,8 +12,7 @@ public class HomeController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<HomeController> _logger;
-    private readonly IServiceProvider _service;
-
+    
     public HomeController(ApplicationDbContext context, ILogger<HomeController> logger)
     {
         _context = context;
@@ -125,7 +124,7 @@ public class HomeController : Controller
     {
         if (!ModelState.IsValid) return View("Index", usersModel);
 
-//        var user = await _context.Users.FindAsync(usersModel.UserName, usersModel.Password);
+        // var user = await _context.Users.FindAsync(usersModel.UserName, usersModel.Password);
         
         return View("Homepage", usersModel);
     }
@@ -184,6 +183,11 @@ public class HomeController : Controller
 
     [HttpGet]
     public ViewResult About()
+    {
+        return View();
+    }
+
+    public ViewResult Help()
     {
         return View();
     }

@@ -1,28 +1,36 @@
+:root {
+    --primary: #006A33;
+    --secondary: #154785;
+
+    --font-family: "Open Sans", sans-serif;
+}
+
 html {
-  font-size: 14px;
+    font-size: 14px;
+    font-family: var(--font-family);
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #008540;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #008540;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;       
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 #map {
-  height: 450px;
+    height: 450px;
 }
 
 
@@ -57,23 +65,22 @@ button {
     align-items: center; /* Justerer elementene vertikalt p� samme linje */
 }
 
-    /* Juster avstand mellom teksten og input-feltet */
-    .password-container p {
-        margin-right: 10px; /* Avstand mellom "Password:" tekst og input-felt */
-        margin-bottom: 0; /* Nullstill bunnmarg for � sikre at den ikke p�virker justeringen */
-    }
+/* Juster avstand mellom teksten og input-feltet */
+.password-container p {
+    margin-right: 10px; /* Avstand mellom "Password:" tekst og input-felt */
+    margin-bottom: 0; /* Nullstill bunnmarg for � sikre at den ikke p�virker justeringen */
+}
 
-    /* Juster avstand mellom input-feltet og knappen */
-    .password-container input {
-        margin-right: 10px; /* Avstand mellom input-felt og knapp */
-        margin-top: -4px; /* Flytt input-feltet opp */
-    }
+/* Juster avstand mellom input-feltet og knappen */
+.password-container input {
+    margin-right: 10px; /* Avstand mellom input-felt og knapp */
+    margin-top: -4px; /* Flytt input-feltet opp */
+}
 
-    /* Juster knappen */
-    .password-container button {
-        margin-top: -4px; /* Flytt knappen opp */
-    }
-
+/* Juster knappen */
+.password-container button {
+    margin-top: -4px; /* Flytt knappen opp */
+}
 
 
 /*CSS for Index*/
@@ -107,7 +114,40 @@ button {
     margin-bottom: 2px !important;
 }
 
-
 img {
+<<<<<<< HEAD
     object-fit:cover;
 }
+=======
+    object-fit: cover;
+}
+
+.footer-nav {
+    list-style-type: none;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-nav li {
+    display: inline-block;
+    font-size: 20px;
+    padding: 20px;
+}
+
+.font-color-primary {
+    color: var(--primary);
+}
+
+.font-color-secondary {
+    color: var(--secondary);
+}
+
+.hjelp-bottom-text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    bottom: 0;
+}
+>>>>>>> origin/master
