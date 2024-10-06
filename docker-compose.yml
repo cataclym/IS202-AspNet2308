@@ -1,9 +1,25 @@
 services:
+  db:
+    image: mysql:8.0.39
+    restart: unless-stopped
+    command: --wait-timeout=28800
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=kartverket
+      - MYSQL_USER=kartverket
+      - MYSQL_PASSWORD=passord
+    volumes:
+      - db:/var/lib/mysql
   kartverket:
+    depends_on:
+      - db
     ports:
       - "8080:8080"
       - "8081:8081"
     build:
       context: .
       dockerfile: Dockerfile
-      
+volumes:
+  db:
