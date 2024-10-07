@@ -12,11 +12,13 @@ public class HomeController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<HomeController> _logger;
-    
-    public HomeController(ApplicationDbContext context, ILogger<HomeController> logger)
+    private readonly MunicipalityService _municipalityService;
+
+    public HomeController(ApplicationDbContext context, ILogger<HomeController> logger, MunicipalityService municipalityService)
     {
         _context = context;
         _logger = logger;
+        _municipalityService = municipalityService;
     }
 
     public IActionResult Index()
@@ -56,8 +58,10 @@ public class HomeController : Controller
                 return View("RegistrationForm", model); // Returner til view hvis GeoJSON er ugyldig
             }
             
-            // var municipalityInfo = await GetMunicipalityInfo(model.StringKoordinaterLag);
-    
+            MunicipalityCountyNames? municipalityInfo = await _municipalityService.GetMunicipalityFromCoordAsync(mapLayers);
+            
+            ViewData["MunicipalityInfo"] = municipalityInfo;
+            
             // Lagrer til databasen
             // Bruker _context som er injisert i controlleren
             _logger.LogInformation("Legger til data i databasen.");
@@ -120,11 +124,11 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public ViewResult LoginForm(Users usersModel)
+    public async Task<ViewResult> LoginForm(Users usersModel)
     {
         if (!ModelState.IsValid) return View("Index", usersModel);
 
-        // var user = await _context.Users.FindAsync(usersModel.UserName, usersModel.Password);
+//        var user = await _context.Users.FindAsync(usersModel.UserName, usersModel.Password);
         
         return View("Homepage", usersModel);
     }
