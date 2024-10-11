@@ -146,3 +146,7 @@ img {
     margin: 0 auto;
     bottom: 0;
 }
+
+.hjelp-bottom-container {
+    min-height: 10rem;
+}
