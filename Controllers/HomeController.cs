@@ -187,5 +187,9 @@ public class HomeController(
     {
         return View();
     }
-
+    
+    public ViewResult Login()
+    {
+        return View();
+    }
 }
