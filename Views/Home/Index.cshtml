@@ -10,43 +10,14 @@
 <body>
     <div class="text-center">
         <h1 class="display-4">Meld inn feil til <span class="highlight">Kartverket</span></h1>
-        <form asp-action="LoginForm" method="post">
-            <div>
-                <label asp-for="UserName">Brukernavn</label>
-                <input asp-for="UserName" />
-            </div>
-            <div>
-                <label asp-for="Password">Passord</label>
-                <div class="password-input-wrapper">
-                    <input asp-for="Password" type="password" id="Password" />
-                    <div class="checkbox-wrapper">
-                            <input type="checkbox" id="togglePassword" class="togglePassword"/>
-                            <label class="text-nowrap margin-bottom-2" for="togglePassword">Vis passord</label>
-                    </div>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Logg inn</button>
-        </form>
-    
-
+        <button type="submit" class="btn btn-primary">Logg inn</button>
+        <p>Logg inn for å melde inn feil </p>
     <!-- Registration-form -->
     <br><br>
-    <p>Har du ikke en bruker?</p>    
     <form asp-action="UserRegistration" asp-controller="Home" method="post">        
         <button type="submit" class="btn btn-secondary">Registrer deg</button>
+        <p>Ny bruker? Registrer deg for å få tilgang</p>
     </form>
     </div>
-
-<script>
-        document.getElementById('togglePassword').addEventListener('change', function () {
-            const passwordField = document.getElementById('Password');
-            if (this.checked) {
-                passwordField.type = 'text'; // Show password
-            } else {
-                passwordField.type = 'password'; // Hide password
-            }
-        });
-    </script>
 </body>
 </html>
