@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@700&display=swap');
+
 :root {
     --primary: #006A33;
     --secondary: #154785;
@@ -54,9 +56,40 @@ button {
     cursor: pointer;
 }
 
+.button {
+    width: 273px;
+    height: 85px;
+    padding: 10px 20px;
+    background-color: #008540;
+    font-size: 32px;
+    color: white;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+
+}
+
+
 /*CSS for HomePage*/
 .header1 {
     text-align: center;
+    
+}
+
+h1 {
+    text-align: center;
+    font-family: 'Mulish', sans-serif ;
+    font-weight: 700;
+    font-size: 40px;
+    margin-top: 40px;  /* Adjust the value as needed */
+    margin-bottom: 40px;
+
+}
+
+.highlight {
+    color: #008540; /* Replace this with the desired color */
 }
 
 /* Flexbox container for password field and button */
