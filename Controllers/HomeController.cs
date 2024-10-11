@@ -4,23 +4,15 @@ using Kartverket.Models;
 using Microsoft.AspNetCore.Mvc;
 using Kartverket.Data;
 using Kartverket.Services;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Kartverket.Controllers;
 
-public class HomeController : Controller
+public class HomeController(
+    ApplicationDbContext context,
+    ILogger<HomeController> logger,
+    MunicipalityService municipalityService)
+    : Controller
 {
-    private readonly ApplicationDbContext _context;
-    private readonly ILogger<HomeController> _logger;
-    private readonly MunicipalityService _municipalityService;
-
-    public HomeController(ApplicationDbContext context, ILogger<HomeController> logger, MunicipalityService municipalityService)
-    {
-        _context = context;
-        _logger = logger;
-        _municipalityService = municipalityService;
-    }
-
     public IActionResult Index()
     {
         return View();
@@ -38,15 +30,15 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Register(MapReportsModel model)
+    public async Task<IActionResult> RegisterMapReport(MapReportsModel model)
     {
         // Logg modellens verdi
-        _logger.LogInformation($"Model: {@model}");
+        logger.LogInformation("Model: {Model}", @model);
 
         // Sjekk om modellen er gyldig
         if (ModelState.IsValid)
         {
-            _logger.LogInformation("ModelState er gyldig.");
+            logger.LogInformation("ModelState er gyldig");
 
             var mapLayers = GetGeoJson(model.StringKoordinaterLag);
             
@@ -54,37 +46,37 @@ public class HomeController : Controller
             if (mapLayers == null)
             {
                 ViewData["ErrorMessage"] = "Du må markere området på kartet.";
-                _logger.LogWarning("GeoJSON-data er ugyldig.");
-                return View("RegistrationForm", model); // Returner til view hvis GeoJSON er ugyldig
+                logger.LogWarning("GeoJSON-data er ugyldig");
+                return View("MapReport", model); // Returner til view hvis GeoJSON er ugyldig
             }
             
-            MunicipalityCountyNames? municipalityInfo = await _municipalityService.GetMunicipalityFromCoordAsync(mapLayers);
+            MunicipalityCountyNames? municipalityInfo = await municipalityService.GetMunicipalityFromCoordAsync(mapLayers);
             
             ViewData["MunicipalityInfo"] = municipalityInfo;
             
             // Lagrer til databasen
             // Bruker _context som er injisert i controlleren
-            _logger.LogInformation("Legger til data i databasen.");
-            _context.MapReports.Add(model);
+            logger.LogInformation("Legger til data i databasen");
+            context.MapReports.Add(model);
 
             // Lagre endringer til databasen asynkront
-            await _context.SaveChangesAsync();
-            _logger.LogInformation("Data har blitt lagret i databasen.");
+            await context.SaveChangesAsync();
+            logger.LogInformation("Data har blitt lagret i databasen");
 
-            return View("Register", model); // Eller til et annet view for å bekrefte lagringen
+            return View("Reported", model); // Eller til et annet view for å bekrefte lagringen
         }
 
-        _logger.LogWarning("ModelState er ugyldig. Returnerer til view.");
+        logger.LogWarning("ModelState er ugyldig. Returnerer til view");
         foreach (var state in ModelState)
         {
             foreach (var error in state.Value.Errors)
             {
-                _logger.LogWarning($"Valideringsfeil for '{state.Key}': {error.ErrorMessage}");
+                logger.LogWarning($"Valideringsfeil for '{state.Key}': {error.ErrorMessage}");
             }
         }
 
         // Returner samme view med valideringsfeil hvis modellen ikke er gyldig
-        return View("RegistrationForm", model);
+        return View("MapReport", model);
     }
 
     // Valideringsmetode for GeoJSON (valgfritt)
@@ -106,15 +98,15 @@ public class HomeController : Controller
     }
     
     [HttpPost]
-    public ViewResult RegistrationForm(MapReportsModel? feilMeldingsModel)
+    public ViewResult MapReport(MapReportsModel? feilMeldingsModel)
     {
-        return View("RegistrationForm", feilMeldingsModel);
+        return View("MapReport", feilMeldingsModel);
     }
 
     [HttpGet]
-    public ViewResult RegistrationForm()
+    public ViewResult MapReport()
     {
-        return View("RegistrationForm");
+        return View("MapReport");
     }
     
     [HttpGet]
@@ -135,15 +127,15 @@ public class HomeController : Controller
 
 
     [HttpPost]
-    public ViewResult RegistrationPage(Users usersModel)
+    public ViewResult UserRegistration(Users usersModel)
     {
         // Hvis registreringen er vellykket, send dataene videre til profilen
-        return View("RegistrationPage", usersModel);
+        return View("UserRegistration", usersModel);
     }
 
     // GET: Viser registreringsskjemaet
     [HttpGet]
-    public ViewResult RegistrationPage()
+    public ViewResult UserRegistration()
     {
         return View();
     }
@@ -157,10 +149,10 @@ public class HomeController : Controller
             try
             {
                 // Legger til brukerdata i databasen
-                _context.Users.Add(usersModel);
+                context.Users.Add(usersModel);
 
                 // Lagre endringer til databasen asynkront
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
 
                 // Gå til en suksess- eller bekreftelsesside (eller tilbakemelding på skjema)
                 return View("HomePage", usersModel);
@@ -168,7 +160,7 @@ public class HomeController : Controller
             catch (Exception ex)
             {
                 // Logg feil hvis lagringen ikke fungerer
-                _logger.LogError(ex, "Feil ved lagring av brukerdata.");
+                logger.LogError(ex, "Feil ved lagring av brukerdata");
                 // Returner en feilmelding
                 return View("Error");
             }
