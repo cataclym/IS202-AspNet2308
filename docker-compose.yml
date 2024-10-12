@@ -6,6 +6,7 @@ services:
     ports:
       - "3307:3306"
     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
       - MYSQL_ROOT_PASSWORD=rootpassword
       - MYSQL_DATABASE=kartverket
       - MYSQL_USER=kartverket
@@ -18,8 +19,11 @@ services:
     ports:
       - "8080:8080"
       - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     build:
       context: .
       dockerfile: Dockerfile
+    
 volumes:
   db:

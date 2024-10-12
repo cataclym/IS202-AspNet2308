@@ -4,15 +4,28 @@ using Kartverket.Models;
 using Microsoft.AspNetCore.Mvc;
 using Kartverket.Data;
 using Kartverket.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+
+
+
 
 namespace Kartverket.Controllers;
 
-public class HomeController(
-    ApplicationDbContext context,
-    ILogger<HomeController> logger,
-    MunicipalityService municipalityService)
-    : Controller
+public class HomeController　: Controller
 {
+    private readonly ApplicationDbContext _context;
+    private readonly ILogger<HomeController> _logger;
+    private readonly MunicipalityService _municipalityService;
+    
+    // Constructor for å injisere ApplicationDbContext
+    public HomeController(ApplicationDbContext context, ILogger<HomeController> logger, MunicipalityService municipalityService)
+    {
+        _context = context;
+        _logger = logger;
+        _municipalityService = municipalityService;
+    }
+    
     public IActionResult Index()
     {
         return View();
@@ -33,12 +46,12 @@ public class HomeController(
     public async Task<IActionResult> RegisterMapReport(MapReportsModel model)
     {
         // Logg modellens verdi
-        logger.LogInformation("Model: {Model}", @model);
+        _logger.LogInformation("Model: {Model}", @model);
 
         // Sjekk om modellen er gyldig
         if (ModelState.IsValid)
         {
-            logger.LogInformation("ModelState er gyldig");
+            _logger.LogInformation("ModelState er gyldig");
 
             var mapLayers = GetGeoJson(model.StringKoordinaterLag);
             
@@ -46,32 +59,32 @@ public class HomeController(
             if (mapLayers == null)
             {
                 ViewData["ErrorMessage"] = "Du må markere området på kartet.";
-                logger.LogWarning("GeoJSON-data er ugyldig");
+                _logger.LogWarning("GeoJSON-data er ugyldig");
                 return View("MapReport", model); // Returner til view hvis GeoJSON er ugyldig
             }
             
-            MunicipalityCountyNames? municipalityInfo = await municipalityService.GetMunicipalityFromCoordAsync(mapLayers);
+            MunicipalityCountyNames? municipalityInfo = await _municipalityService.GetMunicipalityFromCoordAsync(mapLayers);
             
             ViewData["MunicipalityInfo"] = municipalityInfo;
             
             // Lagrer til databasen
             // Bruker _context som er injisert i controlleren
-            logger.LogInformation("Legger til data i databasen");
-            context.MapReports.Add(model);
+            _logger.LogInformation("Legger til data i databasen");
+            _context.MapReports.Add(model);
 
             // Lagre endringer til databasen asynkront
-            await context.SaveChangesAsync();
-            logger.LogInformation("Data har blitt lagret i databasen");
+            await _context.SaveChangesAsync();
+            _logger.LogInformation("Data har blitt lagret i databasen");
 
             return View("Reported", model); // Eller til et annet view for å bekrefte lagringen
         }
 
-        logger.LogWarning("ModelState er ugyldig. Returnerer til view");
+        _logger.LogWarning("ModelState er ugyldig. Returnerer til view");
         foreach (var state in ModelState)
         {
             foreach (var error in state.Value.Errors)
             {
-                logger.LogWarning($"Valideringsfeil for '{state.Key}': {error.ErrorMessage}");
+                _logger.LogWarning($"Valideringsfeil for '{state.Key}': {error.ErrorMessage}");
             }
         }
 
@@ -109,37 +122,6 @@ public class HomeController(
         return View("MapReport");
     }
     
-    [HttpGet]
-    public ViewResult LoginForm()
-    {
-        return View("Homepage");
-    }
-
-    [HttpPost]
-    public async Task<ViewResult> LoginForm(Users usersModel)
-    {
-        if (!ModelState.IsValid) return View("Index", usersModel);
-
-//        var user = await _context.Users.FindAsync(usersModel.UserName, usersModel.Password);
-        
-        return View("Homepage", usersModel);
-    }
-
-
-    [HttpPost]
-    public ViewResult UserRegistration(Users usersModel)
-    {
-        // Hvis registreringen er vellykket, send dataene videre til profilen
-        return View("UserRegistration", usersModel);
-    }
-
-    // GET: Viser registreringsskjemaet
-    [HttpGet]
-    public ViewResult UserRegistration()
-    {
-        return View();
-    }
-
     [HttpPost]
     public async Task<IActionResult> HomePage(Users usersModel)
     {
@@ -149,10 +131,10 @@ public class HomeController(
             try
             {
                 // Legger til brukerdata i databasen
-                context.Users.Add(usersModel);
+                _context.Users.Add(usersModel);
 
                 // Lagre endringer til databasen asynkront
-                await context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
                 // Gå til en suksess- eller bekreftelsesside (eller tilbakemelding på skjema)
                 return View("HomePage", usersModel);
@@ -160,7 +142,7 @@ public class HomeController(
             catch (Exception ex)
             {
                 // Logg feil hvis lagringen ikke fungerer
-                logger.LogError(ex, "Feil ved lagring av brukerdata");
+                _logger.LogError(ex, "Feil ved lagring av brukerdata");
                 // Returner en feilmelding
                 return View("Error");
             }
@@ -171,9 +153,20 @@ public class HomeController(
 
     // GET: Viser registreringsskjemaet
     [HttpGet]
-    public ViewResult HomePage()
+    [Authorize]
+    public async Task<IActionResult> HomePage(int id)
     {
-        return View();
+        // Finn brukeren i databasen basert på UserId
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
+
+        // Hvis brukeren ikke finnes, håndter det ved å omdirigere til login-siden
+        if (user == null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        // Returner brukerdata til viewet
+        return View(user);
     }
 
 
