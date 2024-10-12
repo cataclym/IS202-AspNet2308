@@ -24,20 +24,48 @@ public class AccountController : Controller
     
     // GET: Viser innloggingsskjemaet
     [HttpGet]
-    public IActionResult Login()
+    public IActionResult Login(string returnUrl = null)
     {
+        _logger.LogInformation("Checking authentication status");
+        
+        if (User.Identity.IsAuthenticated)
+        {
+            _logger.LogInformation("User is authenticated");
+            
+            _logger.LogInformation("User is authenticated, Name: {UserName}", User.Identity.Name);
+            return RedirectToAction("HomePage", "Home");
+        }
+        else
+        {
+            _logger.LogInformation("User is NOT authenticated, redirecting to login");
+            // Her omdirigeres brukeren til login-siden
+            // eller en annen side der autentisering kreves
+        }
+
+        // Hvis brukeren ikke er autentisert, vis innloggingssiden
+        ViewData["ReturnUrl"] = returnUrl;
         return View();
     }
     
     // POST: Behandler innlogging
     [HttpPost]
-    public async Task<IActionResult> Login(Users usersModel)
+    public async Task<IActionResult> Login(Users usersModel, string returnUrl = null)
     {
         if (!ModelState.IsValid) return View("Login", usersModel);
-
+        
         // Finn brukeren i databasen basert på brukernavn
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.UserName == usersModel.UserName);
+        
+        
+        
+        // Sjekk om brukeren finnes
+        if (user == null)
+        {
+            ViewBag.ErrorMessage = "Feil brukernavn eller passord.";
+            return View("Login", usersModel);
+        }
+
 
         // Sjekk om brukeren finnes og verifiser passordet
         if (user != null && VerifyPassword(usersModel.Password, user.Password))
@@ -61,13 +89,16 @@ public class AccountController : Controller
             // Logg inn brukeren ved hjelp av cookies
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
             // Logg inn brukeren og omdiriger til ønsket side (for eksempel forsiden)
-            return RedirectToAction("Homepage", "Home", new { id = user.UserId });
+            return RedirectToAction("HomePage", "Home", new { id = user.UserId });
         }
 
         // Feilhåndtering hvis brukernavn eller passord er feil
         ViewBag.ErrorMessage = "Feil brukernavn eller passord.";
         return View("Login", usersModel);
+        
+
     }
+
     
     // Funksjon for å verifisere passord (ved hjelp av hashing)
     private bool VerifyPassword(string inputPassword, string storedPasswordHash)
@@ -103,6 +134,16 @@ public class AccountController : Controller
     [HttpGet]
     public IActionResult UserRegistration()
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            // Brukeren er autentisert
+            Console.WriteLine("User is authenticated");
+        }
+        else
+        {
+            // Brukeren er ikke autentisert
+            Console.WriteLine("User is not authenticated");
+        }
         return View();
     }
     
