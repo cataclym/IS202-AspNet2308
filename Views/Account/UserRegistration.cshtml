@@ -8,33 +8,20 @@
 
 <html>
 <head>
-    <style>
-            h1 {
-                text-align: center;
-            }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input {
-            width: 30%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-    </style>
-
+    <title>Registreringsskjema</title>
 </head>
 
 <body>
-    <h1>Registreringsskjemaaaaaa</h1>
 
+    
+    <div class="registration-form">
+        <h1 class="registration-heading">Registreringsskjema</h1>
     <form asp-action="UserRegistration" asp-controller="Account" method="post">
+    
 
         <br>
         <div>
-            <label asp-for="UserName">Brukernavn:</label>
+            <label asp-for="UserName" class="registration-label">Brukernavn:</label>
             <input asp-for="UserName" />
         </div>
         <br>
@@ -52,17 +39,21 @@
         <br>
        
         <div>
-        <label asp-for="Password">Passord:</label>    
+        <label asp-for="Password">Passord:</label>   
+        <div class="password-input-wrapper">
         <input asp-for="Password" type="password" id="Password" />
             <div class="checkbox-wrapper-registration">
                 <input type="checkbox" id="togglePassword" class="togglePassword flex-grow-0 " />
-                <br>
                 <label class="text-nowrap flex-grow-0 margin-bottom-2" for="togglePassword">Vis passord</label>
             </div>
-            </div>
-            
-        <button type="submit" class="btn btn-secondary">Send inn</button>
+         </div>
+         </div>
+
+         <div class="registration-btn">
+        <button type="submit" class="btn btn-secondary">Registrer deg</button>
+        </div>
     </form>
+    </div>
 
     <script>
         document.getElementById('togglePassword').addEventListener('change', function () {

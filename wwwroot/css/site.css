@@ -56,6 +56,7 @@ button {
     cursor: pointer;
 }
 
+
 .button {
     width: 273px;
     height: 85px;
@@ -134,17 +135,65 @@ h1 {
     justify-content: center; /* Ensure checkbox and label are centered */
 }
 
+
 /*CSS for RegistrationPage*/
-.checkbox-wrapper-registration {
-    width: fit-content;
+.registration-form h1 {
     display: flex;
-    gap: 1rem;
-    align-content: flex-start;
-    justify-content: flex-start; /* Ensure checkbox and label are centered */
+    align-items: center; /* Vertically centers the content */
+    justify-content: center; /* Horizontally centers the content */
+    margin-bottom: -100px; /* Reduce space below heading */
+}
+
+.registration-form div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 5px; /* Space between input groups */
+}
+
+
+.registration-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Horizontal centering */
+    justify-content: center; /* Vertical centering */
+    height: 100vh; /* Full height of the window */
+    width: 100%; /* Full width */
+}
+
+.registration-form input {
+    width: 300px; /* Fixed width for inputs */
+    padding: 10px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+.registration-form label {
+    margin-bottom: -5px;  /*Space between label and input */
+}
+
+ 
+/* Make input boxes smaller and add rounded corners */
+.registration-form input {
+    width: 250px; /* Smaller width for inputs */
+    padding: 8px; /* Reduced padding */
+    margin-top: 5px;
+    box-sizing: border-box;
+    border-radius: 10px; /* Rounded corners */
+    border: 1px solid #ccc; /* Border around input boxes */
+}
+
+/* Juster knappen */
+.registration-form button {
+    display: flex;
+    align-items: flex-start;
+    
 }
 
 .margin-bottom-2 {
     margin-bottom: 2px !important;
+    margin-top: -20px;
+    margin-left: 140px;
 }
 
 img {
