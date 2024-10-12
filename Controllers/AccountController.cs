@@ -51,20 +51,16 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(Users usersModel, string returnUrl = null)
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            return RedirectToAction("HomePage", "Home");
+        }
+        
         if (!ModelState.IsValid) return View("Login", usersModel);
         
         // Finn brukeren i databasen basert på brukernavn
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.UserName == usersModel.UserName);
-        
-        
-        
-        // Sjekk om brukeren finnes
-        if (user == null)
-        {
-            ViewBag.ErrorMessage = "Feil brukernavn eller passord.";
-            return View("Login", usersModel);
-        }
 
 
         // Sjekk om brukeren finnes og verifiser passordet

@@ -4,22 +4,30 @@
     ViewData["Title"] = "Forside";
 }
 
-<html>
+<!DOCTYPE html>
+<html lang="no">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
 </head>
+
 <body>
-    <div class="text-center">
-        <h1 class="display-4">Meld inn feil til <span class="highlight">Kartverket</span></h1>
-        <form asp-action="Login" asp-controller="Account" method="post">
+
+<div class="text-center">
+    <h1 class="display-4">Meld inn feil til <span class="highlight">Kartverket</span></h1>
+    
+    <form asp-action="Login" asp-controller="Account" method="post">
         <button type="submit" class="btn btn-primary">Logg inn</button>
         <p>Logg inn for å melde inn feil </p>
-        </form>
+    </form>
+    
     <!-- Registration-form -->
     <br><br>
-    <form asp-action="UserRegistration" asp-controller="Account" method="post">        
+    <form asp-action="UserRegistration" asp-controller="Account" method="post">
         <button type="submit" class="btn btn-secondary">Registrer deg</button>
         <p>Ny bruker? Registrer deg for å få tilgang</p>
     </form>
-    </div>
+</div>
 </body>
 </html>
