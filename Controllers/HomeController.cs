@@ -6,6 +6,7 @@ using Kartverket.Data;
 using Kartverket.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 
 
@@ -177,12 +178,29 @@ public class HomeController　: Controller
     [HttpGet]
     public async Task<IActionResult> HomePage(int id)
     {
+        // Hvis id ikke er satt, hent det fra claims
+        if (id <= 0)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdClaim, out int userId))
+            {
+                id = userId;
+            }
+            else
+            {
+                _logger.LogInformation("Could not retrieve user id from claims or URL.");
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
+        _logger.LogInformation("User id retrieved: {id}", id);
+
         // Finn brukeren i databasen basert på UserId
         var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
 
-        // Hvis brukeren ikke finnes, håndter det ved å omdirigere til login-siden
         if (user == null)
         {
+            _logger.LogInformation("User not found for id: {id}", id);
             return RedirectToAction("Login", "Account");
         }
 

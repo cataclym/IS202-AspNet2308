@@ -26,17 +26,22 @@ public class AccountController : Controller
     [HttpGet]
     public IActionResult Login(string returnUrl = null)
     {
+        _logger.LogInformation("Checking authentication status");
+        
         if (User.Identity.IsAuthenticated)
         {
-            // Brukeren er autentisert
-            Console.WriteLine("User is authenticated");
-            // Omdiriger til forsiden eller "Min profil" siden
+            _logger.LogInformation("User is authenticated");
+            
+            _logger.LogInformation("User is authenticated, Name: {UserName}", User.Identity.Name);
             return RedirectToAction("HomePage", "Home");
         }
         else
         {
-            Console.WriteLine("User is not authenticated");
+            _logger.LogInformation("User is NOT authenticated, redirecting to login");
+            // Her omdirigeres brukeren til login-siden
+            // eller en annen side der autentisering kreves
         }
+
         // Hvis brukeren ikke er autentisert, vis innloggingssiden
         ViewData["ReturnUrl"] = returnUrl;
         return View();
@@ -51,6 +56,16 @@ public class AccountController : Controller
         // Finn brukeren i databasen basert på brukernavn
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.UserName == usersModel.UserName);
+        
+        
+        
+        // Sjekk om brukeren finnes
+        if (user == null)
+        {
+            ViewBag.ErrorMessage = "Feil brukernavn eller passord.";
+            return View("Login", usersModel);
+        }
+
 
         // Sjekk om brukeren finnes og verifiser passordet
         if (user != null && VerifyPassword(usersModel.Password, user.Password))
@@ -80,7 +95,10 @@ public class AccountController : Controller
         // Feilhåndtering hvis brukernavn eller passord er feil
         ViewBag.ErrorMessage = "Feil brukernavn eller passord.";
         return View("Login", usersModel);
+        
+
     }
+
     
     // Funksjon for å verifisere passord (ved hjelp av hashing)
     private bool VerifyPassword(string inputPassword, string storedPasswordHash)
