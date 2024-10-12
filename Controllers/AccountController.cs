@@ -24,17 +24,30 @@ public class AccountController : Controller
     
     // GET: Viser innloggingsskjemaet
     [HttpGet]
-    public IActionResult Login()
+    public IActionResult Login(string returnUrl = null)
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            // Brukeren er autentisert
+            Console.WriteLine("User is authenticated");
+            // Omdiriger til forsiden eller "Min profil" siden
+            return RedirectToAction("HomePage", "Home");
+        }
+        else
+        {
+            Console.WriteLine("User is not authenticated");
+        }
+        // Hvis brukeren ikke er autentisert, vis innloggingssiden
+        ViewData["ReturnUrl"] = returnUrl;
         return View();
     }
     
     // POST: Behandler innlogging
     [HttpPost]
-    public async Task<IActionResult> Login(Users usersModel)
+    public async Task<IActionResult> Login(Users usersModel, string returnUrl = null)
     {
         if (!ModelState.IsValid) return View("Login", usersModel);
-
+        
         // Finn brukeren i databasen basert på brukernavn
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.UserName == usersModel.UserName);
@@ -61,7 +74,7 @@ public class AccountController : Controller
             // Logg inn brukeren ved hjelp av cookies
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
             // Logg inn brukeren og omdiriger til ønsket side (for eksempel forsiden)
-            return RedirectToAction("Homepage", "Home", new { id = user.UserId });
+            return RedirectToAction("HomePage", "Home", new { id = user.UserId });
         }
 
         // Feilhåndtering hvis brukernavn eller passord er feil
@@ -103,6 +116,16 @@ public class AccountController : Controller
     [HttpGet]
     public IActionResult UserRegistration()
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            // Brukeren er autentisert
+            Console.WriteLine("User is authenticated");
+        }
+        else
+        {
+            // Brukeren er ikke autentisert
+            Console.WriteLine("User is not authenticated");
+        }
         return View();
     }
     

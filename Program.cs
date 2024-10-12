@@ -26,12 +26,18 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.LoginPath = "/Account/Login"; // Sti til innloggingssiden
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Hvor lenge cookien varer
+        options.ExpireTimeSpan = TimeSpan.FromHours(2); // Hvor lenge cookien varer
         options.SlidingExpiration = true; // Fornyer utløpstiden når brukeren er aktiv
         options.Cookie.HttpOnly = true; // Cookie er kun tilgjengelig for serveren, ikke JavaScript
         options.Cookie.SecurePolicy = CookieSecurePolicy.None; // Bruk HTTPS i produksjon
         options.Cookie.SameSite = SameSiteMode.Lax; // Definerer SameSite-policy for cookien
     });
+
+builder.Services.AddAntiforgery(options =>
+{
+    options.Cookie.SameSite = SameSiteMode.Lax; // Endre til None eller Lax om nødvendig
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Endre etter behov
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -63,6 +69,7 @@ app.UseEndpoints(endpoints =>
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
 });
+
 
 app.MapControllerRoute(
     "default",

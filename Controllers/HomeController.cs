@@ -28,11 +28,31 @@ public class HomeController　: Controller
     
     public IActionResult Index()
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            // Brukeren er autentisert
+            Console.WriteLine("User is authenticated");
+        }
+        else
+        {
+            // Brukeren er ikke autentisert
+            Console.WriteLine("User is not authenticated");
+        }
         return View();
     }
 
     public IActionResult Privacy()
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            // Brukeren er autentisert
+            Console.WriteLine("User is authenticated");
+        }
+        else
+        {
+            // Brukeren er ikke autentisert
+            Console.WriteLine("User is not authenticated");
+        }
         return View();
     }
 
@@ -122,6 +142,7 @@ public class HomeController　: Controller
         return View("MapReport");
     }
     
+    
     [HttpPost]
     public async Task<IActionResult> HomePage(Users usersModel)
     {
@@ -152,8 +173,8 @@ public class HomeController　: Controller
     }
 
     // GET: Viser registreringsskjemaet
-    [HttpGet]
     [Authorize]
+    [HttpGet]
     public async Task<IActionResult> HomePage(int id)
     {
         // Finn brukeren i databasen basert på UserId
