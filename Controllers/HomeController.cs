@@ -3,12 +3,12 @@ using System.Text.Json;
 using Kartverket.Models;
 using Microsoft.AspNetCore.Mvc;
 using Kartverket.Data;
+using Kartverket.Models;
 using Kartverket.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-
-
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 
 namespace Kartverket.Controllers;
@@ -73,6 +73,21 @@ public class HomeController　: Controller
         if (ModelState.IsValid)
         {
             _logger.LogInformation("ModelState er gyldig");
+            _logger.LogInformation("GeoJSON-streng: {GeoJson}", model.StringKoordinaterLag);
+
+            // Konverter GeoJSON-strengen til koordinater
+            string coordinatesString = model.ConvertGeoJsonStringToCoordinates();
+            _logger.LogInformation("Konverterte koordinater: {Coordinates}", coordinatesString);
+
+            ViewBag.Coordinates = coordinatesString;
+
+            // Sjekk om koordinatene er gyldige (hvis det er nødvendig)
+            if (string.IsNullOrWhiteSpace(coordinatesString))
+            {
+                ViewData["ErrorMessage"] = "Ugyldige koordinater fra GeoJSON-strengen.";
+                _logger.LogWarning("Konverterte koordinater er ugyldige eller tomme.");
+                return View("MapReport", model); // Returner til view hvis koordinatene er ugyldige
+            }
 
             var mapLayers = GetGeoJson(model.StringKoordinaterLag);
             
@@ -108,7 +123,7 @@ public class HomeController　: Controller
                 _logger.LogWarning($"Valideringsfeil for '{state.Key}': {error.ErrorMessage}");
             }
         }
-
+        
         // Returner samme view med valideringsfeil hvis modellen ikke er gyldig
         return View("MapReport", model);
     }
@@ -207,7 +222,7 @@ public class HomeController　: Controller
         // Returner brukerdata til viewet
         return View(user);
     }
-
+    
 
     [HttpGet]
     public ViewResult About()

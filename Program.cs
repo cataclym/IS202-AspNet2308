@@ -1,89 +1,94 @@
 using Kartverket.Data;
-using Microsoft.EntityFrameworkCore;
-using dotenv.net;
 using Kartverket.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
-DotEnv.Load();
-var envVars = DotEnv.Read();
+namespace Kartverket;
 
-var builder = WebApplication.CreateBuilder(args);
+public class Program
+{
+    public static WebApplication App { get; private set; }
+    public static WebApplicationBuilder Builder { get; private set; }
 
-// Legg til env variabler
-builder.Configuration.AddEnvironmentVariables();
-
-
-// Add services to the container.
-// Konfigurer ApplicationDbContext her              
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 39)))); // Bytt til vår versjon av MySQL
-
-
-// Legg til autentiseringstjenester med cookies
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
+    public static void Main(string[] args)
     {
-        options.LoginPath = "/Account/Login"; // Sti til innloggingssiden
-        options.ExpireTimeSpan = TimeSpan.FromHours(2); // Hvor lenge cookien varer
-        options.SlidingExpiration = true; // Fornyer utløpstiden når brukeren er aktiv
-        options.Cookie.HttpOnly = true; // Cookie er kun tilgjengelig for serveren, ikke JavaScript
-        options.Cookie.SecurePolicy = CookieSecurePolicy.None; // Bruk HTTPS i produksjon
-        options.Cookie.SameSite = SameSiteMode.Lax; // Definerer SameSite-policy for cookien
-    });
+        Builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAntiforgery(options =>
-{
-    options.Cookie.SameSite = SameSiteMode.Lax; // Endre til None eller Lax om nødvendig
-    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Endre etter behov
-});
+        // Legg til env variabler
+        Builder.Configuration.AddEnvironmentVariables();
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+        // Add services to the container.
+        // Konfigurer ApplicationDbContext her              
+        Builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseMySql(Builder.Configuration.GetConnectionString("DefaultConnection"),
+                new MySqlServerVersion(new Version(8, 0, 39)))); // Bytt til vår versjon av MySQL
 
-// Registrer HttpClient for KommuneInfoService og StedsNavnService
-builder.Services.AddHttpClient<MunicipalityService>(client =>
-{
-    client.BaseAddress = new Uri("https://api.kartverket.no/kommuneinfo/v1");
-});
+        // Add services to the container.
+        Builder.Services.AddControllersWithViews();
+        AddCookies();
+        AddRoutes();
 
-var app = builder.Build();
+        // Lag en instans av webapp fra builderen.
+        App = Builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+        // Configure the HTTP request pipeline.
+        if (!App.Environment.IsDevelopment())
+        {
+            App.UseExceptionHandler("/Home/Error");
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            App.UseHsts();
+        }
 
-app.UseAuthentication(); // Denne legger autentisering i pipelinen
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
-app.UseAuthorization();  // Autorisasjon må være etter autentisering
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-});
+        // Denne legger autentisering i pipelinen
+        App.UseAuthentication();
+        App.UseHttpsRedirection();
+        App.UseStaticFiles();
+        App.UseRouting();
+        // Autorisasjon må være etter autentisering
+        App.UseAuthorization();
+        App.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 
+        RunMigrations();
 
-app.MapControllerRoute(
-    "default",
-    "{controller=Home}/{action=Index}/{id?}");
+        App.Run();
+    }
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    if (context.Database.GetPendingMigrations().Any())
+    private static void AddRoutes()
     {
-        context.Database.Migrate();
+        // Registrer HttpClient for KommuneInfoService og StedsNavnService
+        Builder.Services.AddHttpClient<MunicipalityService>(client =>
+        {
+            client.BaseAddress = new Uri("https://api.kartverket.no/kommuneinfo/v1");
+        });
+    }
+
+    private static void AddCookies()
+    {
+        // Legg til autentiseringstjenester med cookies
+        Builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Account/Login"; // Sti til innloggingssiden
+                options.ExpireTimeSpan = TimeSpan.FromHours(2); // Hvor lenge cookien varer
+                options.SlidingExpiration = true; // Fornyer utløpstiden når brukeren er aktiv
+                options.Cookie.HttpOnly = true; // Cookie er kun tilgjengelig for serveren, ikke JavaScript
+                options.Cookie.SecurePolicy = CookieSecurePolicy.None; // Bruk HTTPS i produksjon
+                options.Cookie.SameSite = SameSiteMode.Lax; // Definerer SameSite-policy for cookien
+            });
+
+        Builder.Services.AddAntiforgery(options =>
+        {
+            options.Cookie.SameSite = SameSiteMode.Lax; // Endre til None eller Lax om nødvendig
+            options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Endre etter behov
+        });
+    }
+
+    private static void RunMigrations()
+    {
+        using var scope = App.Services.CreateScope();
+        var services = scope.ServiceProvider;
+
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        if (context.Database.GetPendingMigrations().Any()) context.Database.Migrate();
     }
 }
-
-app.Run();
