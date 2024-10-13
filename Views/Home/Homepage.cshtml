@@ -15,16 +15,22 @@
     <div class="meld-kartfeil">
         <p>Finner du feil i kartet? Trykk her:</p>
        
-        <a asp-action="MapReport"><button type="submit" class="btn btn-secondary">Meld feil</button></a>
+        <a asp-action="MapReport"><button type="submit" class="btn btn-map-report">Meld feil</button></a>
     </div>
 
     <div class="user-information">
-    <h2 class="header2">Min informasjon:</h2>
 
 
+           
 @if (Model != null)
 {
                 <table class="user-info-table">
+                   
+                    <tr class="user-table-header">
+
+                        <th colspan="3" style="text-align: left;" class="user-table-header">Min informasjon:</th> <!-- Overskrift for tabell -->
+                    </tr>
+
                     <tr>
                         <td><strong>Brukernavn:</strong></td>
                         <td>@Model.UserName</td>
@@ -37,7 +43,7 @@
                         <td><strong>Telefonnummer:</strong></td>
                         <td>@Model.Phone</td>
                     </tr>
-                  <!--   <tr>
+                 <tr>
                         <td><strong>Passord:</strong></td>
                          <td>
                             <div class="password-container">
@@ -45,32 +51,57 @@
                                 <button type="button" id="togglePasswordBtn">Vis passord</button>
                             </div>
                         </td>
-                      </tr> -->
+                      </tr>
                 </table>           
 }
 </div>
 
 <div class="map-reports">
-<h2>Tidligere rapporter:</h2>
-<p>Her er en oversikt over dine tidligere innmeldinger</p>
 <!-- Legg til tidligere innmeldinger-->
 
 @if (Model != null)
    {
-                <table class="map-reports-table">
+          <table class="map-reports-table">
+                <thead>
+                        <tr class="reports-table-header">
+                            <th colspan="3" style="text-align: left;">Tidligere rapporter:</th> <!-- Overskrift for tabell -->
+                        </tr>
+                        
                     <tr>
-                        <td>tbd</td>
+                        <th>Dato</th>
+                        <th>Beskrivelse</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>22.07.24</td>
+                        <td>Rapport 1</td>
+                        <td>Behandlet</td>
                     </tr>
                     <tr>
                         <td>tbd</td>
+                        <td>tbd</td>
+                        <td>tbd</td>
                     </tr>
-                </table>
+                        <tr>
+                            <td>tbd</td>
+                            <td>tbd</td>
+                            <td>tbd</td>
+                        </tr>
+                        <tr>
+                            <td>tbd</td>
+                            <td>tbd</td>
+                            <td>tbd</td>
+                        </tr>
+                </tbody>
+          </table>
             }
         
      </div>
 </div>
 
-  <!--  <script>
+<script>
         // JavaScript to toggle password visibility
         const passwordField = document.getElementById("passwordField");
         const togglePasswordBtn = document.getElementById("togglePasswordBtn");
@@ -84,7 +115,7 @@
                 togglePasswordBtn.textContent = "Vis passord";  // Reset button text
             }
         });
-    </script> -->
+    </script>
 
 </body>
 </html>

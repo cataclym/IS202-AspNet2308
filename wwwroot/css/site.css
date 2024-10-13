@@ -183,14 +183,18 @@ p {
     margin-top: -4px; /* Flytt input-feltet opp */
 }
 
-/* Juster knappen */
 .password-container button {
     margin-top: -4px; /* Flytt knappen opp */
+}
+
+body, .homepage {
+    min-height: 100vh; /* 150% av skjermens høyde */
 }
 
 .homepage {
     text-align: center;
     width: 100%;
+    padding-bottom: 200px; /* Legg til plass nederst på siden */
 }
 
 .meld-kartfeil {
@@ -198,26 +202,33 @@ p {
     text-align: center;
 }
 
-.meld-kartefeil button {
-    display: block;
+.btn-map-report {
+    background-color: #038540;
+    border-radius: 10px; /* Runde hjørner */
+    display: inline-block;
+    margin: 0 auto; /* Sentrerer knappen */
+    border: 2px solid black; /* Svart kantlinje */
+    box-shadow: 2px 10px 10px rgba(0, 0, 0, 0.5); /* Skyggeeffekt */
 }
 
 .user-information {
     float: left;
-    margin-top: -10px;
-    width: 300px; /* Adjust width */
+    margin-top: 50px;
+    width: 300px;
     text-align: left;
 }
 
-.user-information h2 {
-    text-align: left;
+.user-table-header th {
+    background-color: #1B589F !important;
+    color: white;
 }
 
 .user-info-table {
-    width: 150%; /* Use full width of the container */
+    width: 150%;
     border-collapse: collapse;
     margin-top: 20px;
-    margin-right: 50px;
+    margin-right: 70px;
+    background-color: #f9f9f9;
 }
 
 .user-info-table td {
@@ -225,23 +236,76 @@ p {
     border: 1px solid #ccc;
 }
 
+    /* tabelloverskrift bakgrunnsfarge */
+    .user-info-table th {
+        background-color: #008540; /* Mørkegrønn bakgrunn */
+        color: white;
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .user-info-table tr:nth-child(even) {
+        background-color: #F5F5F5; /* Lysegrønn bakgunnsfarge for partallsrekker */
+    }
+
+    .user-info-table tr:nth-child(odd) {
+        background-color: #ffffff; /* Hvit bakgrunn for oddetallsrekker */
+    }
+
+
+    .user-info-table td {
+        padding: 10px;
+        border: 1px solid black;
+        color: #333; /* Mørk tekstfarge */
+    }
+
+
 .map-reports {
     float: right;
-    margin-top: -10px;
-    width: 300px; /* Adjust width */
+    margin-top: 50px;
+    margin-right: 150px;
+    width: 300px;
     text-align: left;
 }
 
 .map-reports-table {
-    width: 150%; /* Use full width of the container */
+    width: 150%; /* Full bredde av container */
     border-collapse: collapse;
     margin-top: 20px;
-    margin-right: 50px;
+    margin-right: 100px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd; /* Legg til grense mellom cellene */
 }
 
-.user-information h2 {
-    text-align: left;
+.reports-table-header th {
+    background-color: #1B589F !important;
+    color: white !important;
+    padding: 10px; /* Litt plass rundt innholdet */
+    border: 1px solid black; /* Grense mellom hver th */
 }
+
+.map-reports-table tr:nth-child(even) {
+    background-color: #F5F5F5; /* lysegrønn bakgrunn for partalsrekker */
+}
+
+.map-reports-table tr:nth-child(odd) {
+    background-color: #ffffff; /* hvit bakgrunn for oddetallsrekker */
+}
+
+/* Bakgrunnsfarge for <th> elementer */
+.reports-table-header th {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid black; /* Legg til grense rundt rekkene */
+}
+
+/* Grense for <td> elementer (dataceller) */
+.map-reports td {
+    padding: 10px; /* Valgfritt: Legg til litt plass rundt innholdet */
+    border: 1px solid black; /* Legg til grense rundt hver celle */
+}
+
+
 
 
 /*CSS for Index*/
