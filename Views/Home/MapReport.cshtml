@@ -11,23 +11,27 @@
 </head>
 <body>  
 <div>
-    <div id="map"></div>
+    <div class="map-container">
+        <div id="map"></div>
+    </div>
     @if (ViewData["ErrorMessage"] != null)
     {
         <p class="alert-danger">@ViewData["ErrorMessage"]</p>
     }
     
-    <form asp-action="RegisterMapReport" method="post" id="mapForm">
-        <div>
-            <label asp-for="Melding">Beskrivelse (Minst 5 tegn)</label>
-            <textarea id="meldingsBoks" asp-for="Melding" required minlength="5"></textarea>
-        </div>
-        <div>
-            <input type="text" class="visually-hidden" id="Koordinater" asp-for="StringKoordinaterLag" required></input>
-        </div>
-        <button class="btn btn-primary" onclick="submitForm()">Send inn</button>
-    </form>
-</div>
+    <div class="center-horizontal" style="height: 180px;">
+        <form asp-action="RegisterMapReport" method="post" id="mapForm">
+            <div>
+                <label asp-for="Melding">Beskrivelse (Minst 5 tegn)</label>
+                <textarea id="meldingsBoks" asp-for="Melding" required minlength="5"></textarea>
+            </div>
+            <div>
+                <input type="text" class="visually-hidden" id="Koordinater" asp-for="StringKoordinaterLag" required></input>
+            </div>
+            <button class="btn btn-primary" onclick="submitForm()">Send inn</button>
+        </form>
+    </div>
+    </div>
 
 @section Scripts {
     <script>

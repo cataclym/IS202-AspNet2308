@@ -36,7 +36,24 @@ body {
 }
 
 #map {
-    height: 450px;
+    height: 500px;
+    width: 900px;
+    border: 1px solid #a8a5a5; /* Border */
+    border-radius: 5px; /* Optional: rounds the corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Drop shadow */
+
+}
+
+.map-container {
+    display: flex;
+    justify-content: center;
+    height: 500px;
+}
+
+.center-horizontal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -270,10 +287,10 @@ h1 {
 
 .navbar, .nav-link {
     font-family: 'Mulish', sans-serif; 
-    font-weight: 100;
-    font-size: 20px;
-    margin-top: 5px;
-    margin-left: 40px;
+    font-weight: 50;
+    font-size: 18px;
+    margin-top: 12px;
+    margin-left: 50px;
 }
 
 .footer-nav {
