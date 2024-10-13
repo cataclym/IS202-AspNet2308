@@ -4,12 +4,16 @@
     --primary: #006A33;
     --secondary: #154785;
 
-    --font-family: "Open Sans", sans-serif;
+    --font-family: 'Mulish', sans-serif;
 }
 
 html {
     font-size: 18px;
-    font-family: var(--font-family);
+    font-family: var(--font-family) !important;
+}
+
+body {
+    font-family: var(--font-family) !important;
 }
 
 @media (min-width: 768px) {
@@ -24,7 +28,7 @@ html {
 
 html {
     position: relative;
-    min-height: 100%;       
+    min-height: 100%;
 }
 
 body {
@@ -87,11 +91,10 @@ button {
 }
 
 
-
 /*CSS for HomePage*/
 .header1 {
     text-align: center;
-    
+
 }
 
 h1 {
@@ -99,7 +102,7 @@ h1 {
     font-family: 'Mulish', sans-serif;
     font-weight: 700;
     font-size: 40px;
-    margin-top: 40px;  
+    margin-top: 40px;
     margin-bottom: 40px;
 
 }
@@ -146,11 +149,11 @@ h1 {
 }
 
 .user-information {
-        float: left;
-        margin-top: -10px;
-        width: 300px; /* Adjust width */
-        text-align: left;
-    }
+    float: left;
+    margin-top: -10px;
+    width: 300px; /* Adjust width */
+    text-align: left;
+}
 
 .user-information h2 {
     text-align: left;
@@ -163,10 +166,10 @@ h1 {
     margin-right: 50px;
 }
 
-    .user-info-table td {
-        padding: 10px;
-        border: 1px solid #ccc;
-    }
+.user-info-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
 
 .map-reports {
     float: right;
@@ -185,7 +188,6 @@ h1 {
 .user-information h2 {
     text-align: left;
 }
-
 
 
 /*CSS for Index*/
@@ -240,10 +242,10 @@ h1 {
 }
 
 .registration-form label {
-    margin-bottom: -5px;  /*Space between label and input */
+    margin-bottom: -5px; /*Space between label and input */
 }
 
- 
+
 /* Make input boxes smaller and add rounded corners */
 .registration-form input {
     width: 250px; /* Smaller width for inputs */
@@ -266,35 +268,30 @@ h1 {
     margin-left: 140px;
 }
 
-img {
-<<<<<<< HEAD
-    object-fit:cover;
-}
-=======
-    object-fit: cover;
-}
-
-.footer {
-    background-color: #fff;
-    color: #000;
-    text-align: center;
+.navbar, .nav-link {
+    font-family: 'Mulish', sans-serif; 
+    font-weight: 100;
+    font-size: 20px;
+    margin-top: 5px;
+    margin-left: 40px;
 }
 
 .footer-nav {
     list-style-type: none;
     text-align: center;
-   
+
 }
 
-    .footer-nav li {
-        display: inline-block;
-        font-family: 'Mulish', sans-serif;
-        font-weight: 100;
-        font-size: 18px;
-        margin: 10px 30px; /* Juster footer */
-        text-align: center;
-        text-decoration: none;
-    }
+.footer-nav li {
+    display: inline-block;
+    font-family: 'Mulish', sans-serif;
+    font-weight: 100;
+    font-size: 18px;
+    margin-right: 200px;
+    margin-top: 20px;
+    text-align: center;
+    text-decoration: none;
+}
 
 .font-color-primary {
     color: var(--primary);
@@ -311,11 +308,7 @@ img {
     margin: 0 auto;
     bottom: 0;
 }
-<<<<<<< HEAD
->>>>>>> origin/master
-=======
 
 .hjelp-bottom-container {
     min-height: 10rem;
 }
->>>>>>> origin/master
