@@ -72,6 +72,21 @@ button {
 
 }
 
+.btn {
+    width: 200px; /* bredde på knappen */
+    height: 50px; /* høyde på knappen */
+    font-size: 18px; /* tekststørrelse på knappen */
+}
+
+/* Sentraliser knappene og legg til mellomrom mellom dem */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* avstand mellom knappene */
+}
+
+
 
 /*CSS for HomePage*/
 .header1 {
