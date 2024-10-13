@@ -36,7 +36,24 @@ body {
 }
 
 #map {
-    height: 450px;
+    height: 500px;
+    width: 900px;
+    border: 1px solid #a8a5a5; /* Border */
+    border-radius: 5px; /* Optional: rounds the corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Drop shadow */
+
+}
+
+.map-container {
+    display: flex;
+    justify-content: center;
+    height: 500px;
+}
+
+.center-horizontal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -51,45 +68,42 @@ input {
     box-sizing: border-box;
 }
 
-button {
-    margin-top: 30px;
-    padding: 10px 20px;
-    background-color: #008540;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-
-.button {
-    width: 273px;
-    height: 85px;
-    padding: 10px 20px;
-    background-color: #008540;
-    font-size: 32px;
-    color: white;
-    border: none;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    text-decoration: none;
-
+.button-container {
+    display: flex;
+    flex-direction: row; /* Plasserer knappene horisontalt */
+    align-items: center; /* Sentrerer knappene vertikalt */
+    justify-content: center; /* Sentrerer knappene horisontalt */
+    height: 30vh; 
+    gap: 80px; /* Økt avstand mellom knappene */
 }
 
 .btn {
-    width: 200px; /* bredde på knappen */
-    height: 50px; /* høyde på knappen */
-    font-size: 18px; /* tekststørrelse på knappen */
+    width: 273px; 
+    height: 85px; 
+    font-size: 32px; 
+    background-color: #006A33FF; /* Bakgrunnsfarge */
+    color: white; 
+    border: none; /* Ingen ramme */
+    cursor: pointer; /* Håndmus ved hover */
+    display: flex; /* Gjør knappen til en flex-container */
+    align-items: center; /* Sentrerer innholdet vertikalt */
+    justify-content: center; /* Sentrerer innholdet horisontalt */
+    text-decoration: none; /* Ingen understreking på tekst */
+    box-sizing: border-box; /* Inkluderer padding og border i bredden/høyden */
 }
 
-/* Sentraliser knappene og legg til mellomrom mellom dem */
-.button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px; /* avstand mellom knappene */
+.btn-primary {
+    background-color: #038540; /* Egen bakgrunnsfarge for primærknapp */
 }
 
+.btn-secondary {
+    background-color: #1B589F; /* Egen bakgrunnsfarge for sekundærknapp */
+}
+
+.text-center {
+    text-align: center; /* Sentraliserer teksten */
+    margin-bottom: 20px; /* Avstand mellom overskrift og knapper */
+}
 
 /*CSS for HomePage*/
 .header1 {
@@ -107,9 +121,49 @@ h1 {
 
 }
 
+p {
+    font-family: 'Verdana', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    
+}
+
+.list-container {
+    display: flex; /* Bruker Flexbox for å lage to kolonner */
+    justify-content: space-between; /* Plasserer dem på hver sin side */
+    padding: 20px; /* Gir litt innrykk fra kantene */
+    box-sizing: border-box; /* Inkluderer padding i høyden */
+}
+
+/* Stiler for lister */
+.my-list {
+    list-style-type: disc; /* Angir punkttegn (standard) */
+    padding-left: 20px; /* Gir litt innrykk fra venstre */
+    margin: 0; /* Fjerner standard margin */
+    flex: 1; /* Gjør at lister fyller opp plassen */
+    display: flex;
+    flex-direction: column; /* Arrangerer elementene vertikalt */
+    justify-content: flex-start; /* Plasserer listeelementene øverst */
+    height: auto; /* Høyden tilpasses innholdet */
+    font-size: 20px;
+}
+
+/* Stiler for listeelementer */
+.my-list li {
+    margin-bottom: 10px; /* Gir litt avstand mellom hvert punkt */
+}
+
+/* Stiler for hver liste for å gi dem lik høyde */
+.list-item {
+    display: flex; /* Bruker Flexbox for å justere innholdet */
+    flex-direction: column; /* Arrangerer elementene vertikalt */
+    height: 100%; /* Setter høyden til 100% av containeren */
+}
+
 .highlight {
     color: #008540; /* Replace this with the desired color */
 }
+
 
 /* Flexbox container for password field and button */
 .password-container {
@@ -270,10 +324,10 @@ h1 {
 
 .navbar, .nav-link {
     font-family: 'Mulish', sans-serif; 
-    font-weight: 100;
-    font-size: 20px;
-    margin-top: 5px;
-    margin-left: 40px;
+    font-weight: 50;
+    font-size: 18px;
+    margin-top: 12px;
+    margin-left: 50px;
 }
 
 .font-color-primary {
