@@ -122,7 +122,6 @@ h1 {
 }
 
 p {
-    text-align: center;
     font-family: 'Verdana', sans-serif;
     font-weight: 400;
     font-size: 20px;
@@ -132,7 +131,6 @@ p {
 .list-container {
     display: flex; /* Bruker Flexbox for å lage to kolonner */
     justify-content: space-between; /* Plasserer dem på hver sin side */
-    height: 100vh; /* Setter høyden til 100% av viewport høyden */
     padding: 20px; /* Gir litt innrykk fra kantene */
     box-sizing: border-box; /* Inkluderer padding i høyden */
 }
