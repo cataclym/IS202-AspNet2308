@@ -74,7 +74,7 @@ public class MapReportsModel
         if (coordinates != null && coordinates.Type == JTokenType.Array)
         {
             var sb = new StringBuilder();
-            sb.Append("Polygon koordinater: ");
+            sb.Append("Lokasjon: ");
             foreach (var ring in coordinates)
             {
                 foreach (var coordPair in ring)

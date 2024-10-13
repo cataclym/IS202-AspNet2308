@@ -19,14 +19,35 @@
     <div class="button-container">
         <form asp-action="Login" asp-controller="Account" method="post">
             <button type="submit" class="btn btn-primary">Logg inn</button>
-            <p>Logg inn for å melde inn feil</p>
+            <p class="highlight">Logg inn for å melde inn feil</p>
         </form>
 
         <!-- Registration-form -->
         <form asp-action="UserRegistration" asp-controller="Account" method="post">
             <button type="submit" class="btn btn-secondary">Registrer deg</button>
-            <p>Ny bruker? Registrer deg for å få tilgang</p>
+            <p class="highlight">Ny bruker? Registrer deg for å få tilgang</p>
         </form>
+    </div>
+</div>
+<div class="text-left">
+    <div class="list-container">
+        <div class="list-item">
+            <h2 class="highlight">Fremgangsmetode</h2>
+            <ul class="my-list">
+                <li>Registrer deg</li>
+                <li>Finn området på kartet</li>
+                <li>Marker og beskriv feilen</li>
+                <li>Send inn</li>
+            </ul>
+        </div>
+        <div class="list-item">
+            <h2 class="highlight">Hvorfor denne løsningen?</h2>
+            <ul class="my-list">
+                <li>Enkelt å melde inn feil</li>
+                <li>Du bidrar til å oppdatere kartet</li>
+                <li>Spor tidligere rapporter</li>
+            </ul>
+        </div>
     </div>
 </div>
 </body>
