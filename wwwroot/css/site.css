@@ -129,6 +129,39 @@ p {
     
 }
 
+.list-container {
+    display: flex; /* Bruker Flexbox for å lage to kolonner */
+    justify-content: space-between; /* Plasserer dem på hver sin side */
+    height: 100vh; /* Setter høyden til 100% av viewport høyden */
+    padding: 20px; /* Gir litt innrykk fra kantene */
+    box-sizing: border-box; /* Inkluderer padding i høyden */
+}
+
+/* Stiler for lister */
+.my-list {
+    list-style-type: disc; /* Angir punkttegn (standard) */
+    padding-left: 20px; /* Gir litt innrykk fra venstre */
+    margin: 0; /* Fjerner standard margin */
+    flex: 1; /* Gjør at lister fyller opp plassen */
+    display: flex;
+    flex-direction: column; /* Arrangerer elementene vertikalt */
+    justify-content: flex-start; /* Plasserer listeelementene øverst */
+    height: auto; /* Høyden tilpasses innholdet */
+    font-size: 20px;
+}
+
+/* Stiler for listeelementer */
+.my-list li {
+    margin-bottom: 10px; /* Gir litt avstand mellom hvert punkt */
+}
+
+/* Stiler for hver liste for å gi dem lik høyde */
+.list-item {
+    display: flex; /* Bruker Flexbox for å justere innholdet */
+    flex-direction: column; /* Arrangerer elementene vertikalt */
+    height: 100%; /* Setter høyden til 100% av containeren */
+}
+
 .highlight {
     color: #008540; /* Replace this with the desired color */
 }
