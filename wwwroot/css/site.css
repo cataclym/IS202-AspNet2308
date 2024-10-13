@@ -116,6 +116,62 @@ h1 {
     margin-top: -4px; /* Flytt knappen opp */
 }
 
+.homepage {
+    text-align: center;
+    width: 100%;
+}
+
+.meld-kartfeil {
+    margin-top: -20px;
+    text-align: center;
+}
+
+.meld-kartefeil button {
+    display: block;
+}
+
+.user-information {
+        float: left;
+        margin-top: -10px;
+        width: 300px; /* Adjust width */
+        text-align: left;
+    }
+
+.user-information h2 {
+    text-align: left;
+}
+
+.user-info-table {
+    width: 150%; /* Use full width of the container */
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-right: 50px;
+}
+
+    .user-info-table td {
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+
+.map-reports {
+    float: right;
+    margin-top: -10px;
+    width: 300px; /* Adjust width */
+    text-align: left;
+}
+
+.map-reports-table {
+    width: 150%; /* Use full width of the container */
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-right: 50px;
+}
+
+.user-information h2 {
+    text-align: left;
+}
+
+
 
 /*CSS for Index*/
 .password-input-wrapper {
@@ -187,7 +243,6 @@ h1 {
 .registration-form button {
     display: flex;
     align-items: flex-start;
-    
 }
 
 .margin-bottom-2 {
@@ -200,12 +255,10 @@ img {
     object-fit: cover;
 }
 
-.navbar, .nav-link {
-    font-family: 'Mulish', sans-serif; 
-    font-weight: 100;
-    font-size: 20px;
-    margin-top: 5px;
-    margin-left: 40px;
+.footer {
+    background-color: #fff;
+    color: #000;
+    text-align: center;
 }
 
 .footer-nav {
@@ -214,16 +267,15 @@ img {
    
 }
 
-.footer-nav li {
-    display: inline-block;
-    font-family: 'Mulish', sans-serif;
-    font-weight: 100;
-    font-size: 18px;
-    margin-right: 200px;
-    margin-top: 20px;
-    text-align: center;
-    text-decoration: none;
-}
+    .footer-nav li {
+        display: inline-block;
+        font-family: 'Mulish', sans-serif;
+        font-weight: 100;
+        font-size: 18px;
+        margin: 10px 30px; /* Juster footer */
+        text-align: center;
+        text-decoration: none;
+    }
 
 .font-color-primary {
     color: var(--primary);

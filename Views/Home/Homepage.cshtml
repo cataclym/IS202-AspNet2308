@@ -8,34 +8,67 @@
 
 <html>
 <body>
-    <h1 class="header1">Min Profil</h1>
+    <h1 class="header1">Min <span class="highlight">Side</span></h1>
     
-    <div>
+    <div class="homepage">
+
+    <div class="meld-kartfeil">
         <p>Finner du feil i kartet? Trykk her:</p>
        
         <a asp-action="MapReport"><button type="submit" class="btn btn-secondary">Meld feil</button></a>
-        <br><br><br>
     </div>
 
+    <div class="user-information">
     <h2 class="header2">Min informasjon:</h2>
+
 
 @if (Model != null)
 {
-    <!-- Display informasjon fra Overview -->
-    <p><strong>Brukernavn:</strong> @Model.UserName</p>
-    <p><strong>E-post:</strong> @Model.Email</p>
-    <p><strong>Telefonnummer:</strong> @Model.Phone</p>
-
-    <div class="password-container">
-        <p><strong>Passord:</strong></p>
-        <input type="password" id="passwordField" value="@Model.Password" readonly/>
-        <button type="button" id="togglePasswordBtn">Vis passord</button>
-    </div>
+                <table class="user-info-table">
+                    <tr>
+                        <td><strong>Brukernavn:</strong></td>
+                        <td>@Model.UserName</td>
+                    </tr>
+                    <tr>
+                        <td><strong>E-post:</strong></td>
+                        <td>@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Telefonnummer:</strong></td>
+                        <td>@Model.Phone</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Passord:</strong></td>
+                        <td>
+                            <div class="password-container">
+                                <input type="password" id="passwordField" value="@Model.Password" readonly />
+                                <button type="button" id="togglePasswordBtn">Vis passord</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>           
 }
-<br><br><br>
+</div>
+
+<div class="map-reports">
 <h2>Tidligere rapporter:</h2>
 <p>Her er en oversikt over dine tidligere innmeldinger</p>
 <!-- Legg til tidligere innmeldinger-->
+
+@if (Model != null)
+   {
+                <table class="map-reports-table">
+                    <tr>
+                        <td>tbd</td>
+                    </tr>
+                    <tr>
+                        <td>tbd</td>
+                    </tr>
+                </table>
+            }
+        
+     </div>
+</div>
 
     <script>
         // JavaScript to toggle password visibility
