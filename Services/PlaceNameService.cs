@@ -27,3 +27,8 @@ public class PlaceNameService
     // }
 }
 
+public class PlaceNameResponse
+{
+    
+}
+

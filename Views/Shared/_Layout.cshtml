@@ -11,13 +11,16 @@
           crossorigin=""/>
     <link
         rel="stylesheet"
-        href="https://unpkg.com/@@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"/>
+        href="https://unpkg.com/@@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Kartverket</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/Logo.svg" width="140" class="d-inline-block align-top" alt=""/>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -54,7 +57,7 @@
                 <p class="text-dark">&copy; 2024 - Kartverket</p>
             </li>
             <li class="">
-                <p class="text-dark">Mail: <a href="mailto:post@karverket.no">post@karverket.no</a>
+                <p class="text-dark">Mail: <a href="mailto:post@kartverket.no">post@kartverket.no</a>
             </li>
             <li class="">
                 <p class="text-dark">Telefon: <a href="tel:32118000">32 11 80 00</a></p>
@@ -68,9 +71,10 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin=""></script>
-<script src="https://unpkg.com/@@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.js"></script>
+<script src="https://unpkg.com/@@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
 <script>
-    // Lag som viser land eller sjø kart
+    // Lag som viser land eller sjø-kart
     // https://leafletjs.com/examples/wms/wms.html
     // Kartlag som kan hentes fra alle views
     const kartLag = Object.freeze({
@@ -83,10 +87,19 @@
             attribution: 'Kartverket'
         }),
     })
+    
+    // Instillinger for locate 
+    const locateOptions = Object.freeze({
+        position: "topleft",
+        flyTo: true,
+        strings: {
+            title: "Hvis meg hvor jeg er",
+        }
+    })
+    
     // Lager leaflet map, med kartverk sine kartlag
     // options blir passert til L.map funksjonen
     function lagKart(options = {}) {
-        // TODO: setview til å bruke brukerens lokasjon
         const map = L.map('map', options).setView([58.151, 8], 13);
 
         // Setter landkart som standardkart
@@ -94,6 +107,9 @@
 
         // Legger til sjøkart 
         L.control.layers(kartLag).addTo(map);
+
+        // Legg til leaflet locate funksjon (GPS lokasjon)
+        L.control.locate(locateOptions).addTo(map);
 
         return map;
     }

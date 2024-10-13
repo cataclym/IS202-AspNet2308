@@ -13,24 +13,25 @@
     <div>
         <p>Finner du feil i kartet? Trykk her:</p>
        
-        <a asp-action="RegistrationForm"><button type="submit" class="btn btn-secondary">Meld feil</button></a>
+        <a asp-action="MapReport"><button type="submit" class="btn btn-secondary">Meld feil</button></a>
         <br><br><br>
     </div>
 
     <h2 class="header2">Min informasjon:</h2>
 
+@if (Model != null)
+{
     <!-- Display informasjon fra Overview -->
     <p><strong>Brukernavn:</strong> @Model.UserName</p>
     <p><strong>E-post:</strong> @Model.Email</p>
     <p><strong>Telefonnummer:</strong> @Model.Phone</p>
 
-
     <div class="password-container">
         <p><strong>Passord:</strong></p>
-        <input type="password" id="passwordField" value="@Model.Password" readonly />
+        <input type="password" id="passwordField" value="@Model.Password" readonly/>
         <button type="button" id="togglePasswordBtn">Vis passord</button>
     </div>
-
+}
 <br><br><br>
 <h2>Tidligere rapporter:</h2>
 <p>Her er en oversikt over dine tidligere innmeldinger</p>

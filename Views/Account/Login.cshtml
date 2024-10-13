@@ -1,0 +1,38 @@
+@model Users
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="text-center">
+    <h3 class="display-4">Logg inn</h3>
+    <br/>
+    <form asp-action="Login" method="post">
+        <div>
+            <label asp-for="UserName">Brukernavn</label>
+            <input asp-for="UserName" />
+        </div>
+        <div>
+            <label asp-for="Password">Passord</label>
+            <div class="password-input-wrapper">
+                <input asp-for="Password" type="password" id="Password" />
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="togglePassword" class="togglePassword"/>
+                    <label class="text-nowrap margin-bottom-2" for="togglePassword">Vis passord</label>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Logg inn</button>
+    </form>
+
+
+    <!-- Registration-form -->
+    <br><br>
+    <p>Har du ikke en bruker?</p>
+    <form asp-action="UserRegistration" asp-controller="Account" method="post">
+        <button type="submit" class="btn btn-secondary">Registrer deg</button>
+    </form>
+</div>
+

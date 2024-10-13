@@ -4,28 +4,56 @@ using Kartverket.Models;
 using Microsoft.AspNetCore.Mvc;
 using Kartverket.Data;
 using Kartverket.Services;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
+
+
 
 namespace Kartverket.Controllers;
 
-public class HomeController : Controller
+public class HomeController　: Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<HomeController> _logger;
+    private readonly MunicipalityService _municipalityService;
     
-    public HomeController(ApplicationDbContext context, ILogger<HomeController> logger)
+    // Constructor for å injisere ApplicationDbContext
+    public HomeController(ApplicationDbContext context, ILogger<HomeController> logger, MunicipalityService municipalityService)
     {
         _context = context;
         _logger = logger;
+        _municipalityService = municipalityService;
     }
-
+    
     public IActionResult Index()
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            // Brukeren er autentisert
+            Console.WriteLine("User is authenticated");
+        }
+        else
+        {
+            // Brukeren er ikke autentisert
+            Console.WriteLine("User is not authenticated");
+        }
         return View();
     }
 
     public IActionResult Privacy()
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            // Brukeren er autentisert
+            Console.WriteLine("User is authenticated");
+        }
+        else
+        {
+            // Brukeren er ikke autentisert
+            Console.WriteLine("User is not authenticated");
+        }
         return View();
     }
 
@@ -36,15 +64,15 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Register(MapReportsModel model)
+    public async Task<IActionResult> RegisterMapReport(MapReportsModel model)
     {
         // Logg modellens verdi
-        _logger.LogInformation($"Model: {@model}");
+        _logger.LogInformation("Model: {Model}", @model);
 
         // Sjekk om modellen er gyldig
         if (ModelState.IsValid)
         {
-            _logger.LogInformation("ModelState er gyldig.");
+            _logger.LogInformation("ModelState er gyldig");
 
             var mapLayers = GetGeoJson(model.StringKoordinaterLag);
             
@@ -52,25 +80,27 @@ public class HomeController : Controller
             if (mapLayers == null)
             {
                 ViewData["ErrorMessage"] = "Du må markere området på kartet.";
-                _logger.LogWarning("GeoJSON-data er ugyldig.");
-                return View("RegistrationForm", model); // Returner til view hvis GeoJSON er ugyldig
+                _logger.LogWarning("GeoJSON-data er ugyldig");
+                return View("MapReport", model); // Returner til view hvis GeoJSON er ugyldig
             }
             
-            // var municipalityInfo = await GetMunicipalityInfo(model.StringKoordinaterLag);
-    
+            MunicipalityCountyNames? municipalityInfo = await _municipalityService.GetMunicipalityFromCoordAsync(mapLayers);
+            
+            ViewData["MunicipalityInfo"] = municipalityInfo;
+            
             // Lagrer til databasen
             // Bruker _context som er injisert i controlleren
-            _logger.LogInformation("Legger til data i databasen.");
+            _logger.LogInformation("Legger til data i databasen");
             _context.MapReports.Add(model);
 
             // Lagre endringer til databasen asynkront
             await _context.SaveChangesAsync();
-            _logger.LogInformation("Data har blitt lagret i databasen.");
+            _logger.LogInformation("Data har blitt lagret i databasen");
 
-            return View("Register", model); // Eller til et annet view for å bekrefte lagringen
+            return View("Reported", model); // Eller til et annet view for å bekrefte lagringen
         }
 
-        _logger.LogWarning("ModelState er ugyldig. Returnerer til view.");
+        _logger.LogWarning("ModelState er ugyldig. Returnerer til view");
         foreach (var state in ModelState)
         {
             foreach (var error in state.Value.Errors)
@@ -80,7 +110,7 @@ public class HomeController : Controller
         }
 
         // Returner samme view med valideringsfeil hvis modellen ikke er gyldig
-        return View("RegistrationForm", model);
+        return View("MapReport", model);
     }
 
     // Valideringsmetode for GeoJSON (valgfritt)
@@ -102,48 +132,18 @@ public class HomeController : Controller
     }
     
     [HttpPost]
-    public ViewResult RegistrationForm(MapReportsModel? feilMeldingsModel)
+    public ViewResult MapReport(MapReportsModel? feilMeldingsModel)
     {
-        return View("RegistrationForm", feilMeldingsModel);
+        return View("MapReport", feilMeldingsModel);
     }
 
     [HttpGet]
-    public ViewResult RegistrationForm()
+    public ViewResult MapReport()
     {
-        return View("RegistrationForm");
+        return View("MapReport");
     }
     
-    [HttpGet]
-    public ViewResult LoginForm()
-    {
-        return View("Homepage");
-    }
-
-    [HttpPost]
-    public ViewResult LoginForm(Users usersModel)
-    {
-        if (!ModelState.IsValid) return View("Index", usersModel);
-
-        // var user = await _context.Users.FindAsync(usersModel.UserName, usersModel.Password);
-        
-        return View("Homepage", usersModel);
-    }
-
-
-    [HttpPost]
-    public ViewResult RegistrationPage(Users usersModel)
-    {
-        // Hvis registreringen er vellykket, send dataene videre til profilen
-        return View("RegistrationPage", usersModel);
-    }
-
-    // GET: Viser registreringsskjemaet
-    [HttpGet]
-    public ViewResult RegistrationPage()
-    {
-        return View();
-    }
-
+    
     [HttpPost]
     public async Task<IActionResult> HomePage(Users usersModel)
     {
@@ -164,7 +164,7 @@ public class HomeController : Controller
             catch (Exception ex)
             {
                 // Logg feil hvis lagringen ikke fungerer
-                _logger.LogError(ex, "Feil ved lagring av brukerdata.");
+                _logger.LogError(ex, "Feil ved lagring av brukerdata");
                 // Returner en feilmelding
                 return View("Error");
             }
@@ -174,10 +174,38 @@ public class HomeController : Controller
     }
 
     // GET: Viser registreringsskjemaet
+    [Authorize]
     [HttpGet]
-    public ViewResult HomePage()
+    public async Task<IActionResult> HomePage(int id)
     {
-        return View();
+        // Hvis id ikke er satt, hent det fra claims
+        if (id <= 0)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdClaim, out int userId))
+            {
+                id = userId;
+            }
+            else
+            {
+                _logger.LogInformation("Could not retrieve user id from claims or URL.");
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
+        _logger.LogInformation("User id retrieved: {id}", id);
+
+        // Finn brukeren i databasen basert på UserId
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
+
+        if (user == null)
+        {
+            _logger.LogInformation("User not found for id: {id}", id);
+            return RedirectToAction("Login", "Account");
+        }
+
+        // Returner brukerdata til viewet
+        return View(user);
     }
 
 
@@ -191,5 +219,9 @@ public class HomeController : Controller
     {
         return View();
     }
-
+    
+    public ViewResult Login()
+    {
+        return View();
+    }
 }
