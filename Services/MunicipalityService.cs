@@ -63,7 +63,7 @@ public class MunicipalityService
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error fetching KommuneInfo for punk: {ex.Message}");
+            _logger.LogError($"Error fetching KommuneInfo for punkt: {ex.Message}");
             return null;
         }
     }
