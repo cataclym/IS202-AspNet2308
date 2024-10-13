@@ -276,23 +276,6 @@ h1 {
     margin-left: 40px;
 }
 
-.footer-nav {
-    list-style-type: none;
-    text-align: center;
-
-}
-
-.footer-nav li {
-    display: inline-block;
-    font-family: 'Mulish', sans-serif;
-    font-weight: 100;
-    font-size: 18px;
-    margin-right: 200px;
-    margin-top: 20px;
-    text-align: center;
-    text-decoration: none;
-}
-
 .font-color-primary {
     color: var(--primary);
 }

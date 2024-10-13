@@ -1,5 +1,7 @@
+using System.Globalization;
 using System.Text.Json;
 using Kartverket.Models;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Kartverket.Services;
 
@@ -49,13 +51,23 @@ public class MunicipalityService
         try
         {
             // Send en GET forespørsel til kartverkets API, med kommuner endpoint
-            var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/punkt?nord={northEast[1]}&ost={northEast[0]}&koordsys=4258");
+            var query = new Dictionary<string, string?>()
+            {
+                ["nord"] = northEast[1].ToString(CultureInfo.InvariantCulture),
+                ["ost"] = northEast[0].ToString(CultureInfo.InvariantCulture),
+                ["koordsys"] = "4258"
+            };
+
+            var url = QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}/punkt", query);
+            _logger.LogInformation("Henter kommuneinfo fra: {Url}", url);
+            var response = await _httpClient.GetAsync(url);
+            
             // Kaster hvis responsen ikke er ok
             response.EnsureSuccessStatusCode();
-
+            
             // Hent json som string
             var json = await response.Content.ReadAsStringAsync();
-            _logger.LogInformation($"Kommune punkt Response: {json}");
+            _logger.LogInformation("Kommune punkt Response: {Json}", json);
             
             // Hent JSON fra string med KommuneInfo Modellen 
             var municipalityInfo = JsonSerializer.Deserialize<MunicipalityCountyNames>(json);
@@ -63,7 +75,7 @@ public class MunicipalityService
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error fetching KommuneInfo for punkt: {ex.Message}");
+            _logger.LogError("Error fetching KommuneInfo for punkt: {ExMessage} - {ExStackTrace}", ex.Message, ex.StackTrace);
             return null;
         }
     }
