@@ -204,11 +204,8 @@ body, .homepage {
 
 .btn-map-report {
     background-color: #038540;
-    border-radius: 10px; /* Runde hjørner */
     display: inline-block;
     margin: 0 auto; /* Sentrerer knappen */
-    border: 2px solid black; /* Svart kantlinje */
-    box-shadow: 2px 10px 10px rgba(0, 0, 0, 0.5); /* Skyggeeffekt */
 }
 
 .user-information {
