@@ -19,10 +19,8 @@
                     </form>
                 </div>
             </div>
-    <div class="user-information">
-
-
-           
+    
+            <div class="user-information">
 @if (Model != null)
 {
                 <table class="user-info-table">
@@ -49,7 +47,7 @@
                          <td>
                             <div class="password-container">
                                 <input type="password" id="passwordField" value="@Model.Password" readonly />
-                                <button type="button" class="btn-general btn primary" id="togglePasswordBtn">Vis passord</button>
+                                <button type="button" class="btn-general btn secondary" id="togglePasswordBtn">Vis passord</button>
                             </div>
                         </td>
                       </tr>
@@ -75,7 +73,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr class="map-reports-td">
                         <td>22.07.24</td>
                         <td>Rapport 1</td>
                         <td>Behandlet</td>
