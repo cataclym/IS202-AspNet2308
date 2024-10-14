@@ -376,7 +376,17 @@ body, .homepage {
 /* Juster knappen */
 .registration-form button {
     display: flex;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 40px;
+    font-size: 20px;
+    background-color: #1B589F; /* Bakgrunnsfarge */
+    color: white;
+    border-radius: 10px;
+    border: none; /* Ingen ramme */
+    cursor: pointer; /* Håndmus ved hover */
+    
 }
 
 .margin-bottom-2 {
