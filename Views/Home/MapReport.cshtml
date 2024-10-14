@@ -64,6 +64,8 @@
         layers.forEach(layer => {
             // Konverterer hvert lag til GeoJSON-format og legger det til 'features'
             const geojsonFeature = layer.toGeoJSON();
+            // Filtrer ut GPS lokasjon
+            if (geojsonFeature.geometry.type === "Point") return;
             geojson.features.push(geojsonFeature);
         });
 
