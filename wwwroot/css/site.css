@@ -76,13 +76,14 @@ input {
     gap: 80px; /* Økt avstand mellom knappene */
 }
 
-.btn {
+.btn-index {
     width: 273px;
     height: 85px;
     font-size: 32px;
     background-color: #006A33FF; /* Bakgrunnsfarge */
     color: white;
     border: none; /* Ingen ramme */
+    border-radius: 10px;
     cursor: pointer; /* Håndmus ved hover */
     display: flex; /* Gjør knappen til en flex-container */
     align-items: center; /* Sentrerer innholdet vertikalt */
