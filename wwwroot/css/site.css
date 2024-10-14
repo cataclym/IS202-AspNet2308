@@ -398,10 +398,36 @@ body, .homepage {
 
 .navbar, .nav-link {
     font-family: 'Mulish', sans-serif; 
-    font-weight: 50;
+    font-weight: ;
     font-size: 20px;
     margin-top: 12px;
     margin-left: 50px;
+}
+
+.nav-link {
+    color: #000; /* Default text color for navbar links */
+    text-decoration: none; /* Removes default underline */
+    position: relative; /* Needed for the pseudo-element */
+    transition: color 2s; /* Smooth transition for color */
+}
+
+.nav-link:hover {
+    color: #038540; /* Change text color on hover */
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0; /* Position the underline at the bottom of the link */
+    width: 0; /* Start with no width (hidden) */
+    height: 2px; /* Thickness of the underline */
+    background-color: #1B589F; /* Blue color for underline */
+    transition: width 0.3s ease; /* Smoothly animate the underline */
+}
+
+.nav-link:hover::after {
+    width: 100%; 
 }
 
 .footer-nav {
