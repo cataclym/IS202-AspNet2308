@@ -11,49 +11,55 @@
     <h1 class="header1">Min <span class="highlight">Side</span></h1>
     
     <div class="homepage">
-            <div class="meld-kartfeil">
-                <p>Finner du feil i kartet? Trykk her:</p>
-                <div class="center-horizontal" style="text-decoration: none">
-                    <form asp-action="MapReport" method="post">
-                        <button type="submit" class="btn-general btn-primary">Meld feil</button>
-                    </form>
-                </div>
+        <div class="meld-kartfeil">
+            <p>Finner du feil i kartet? Trykk her:</p>
+            <div class="center-horizontal" style="text-decoration: none">
+                <form asp-action="MapReport" method="post">
+                    <button type="submit" class="btn-general btn-primary">Meld feil</button>
+                </form>
             </div>
-    
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <form asp-controller="Account" asp-action="Logout" method="post">
+                <button type="submit" class="btn-general btn-loggut">Logg ut</button>
+            </form>
+        </div>
+        
             <div class="user-information">
-@if (Model != null)
-{
-                <table class="user-info-table">
-                   
-                    <tr class="user-table-header">
+                @if (Model != null)
+                {
+                    <table class="user-info-table">
 
-                        <th colspan="3" style="text-align: left;" class="user-table-header">Min informasjon:</th> <!-- Overskrift for tabell -->
-                    </tr>
+                        <tr class="user-table-header">
 
-                    <tr>
-                        <td><strong>Brukernavn:</strong></td>
-                        <td>@Model.UserName</td>
-                    </tr>
-                    <tr>
-                        <td><strong>E-post:</strong></td>
-                        <td>@Model.Email</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Telefonnummer:</strong></td>
-                        <td>@Model.Phone</td>
-                    </tr>
-                 <tr>
-                        <td><strong>Passord:</strong></td>
-                         <td>
-                            <div class="password-container">
-                                <input type="password" id="passwordField" value="@Model.Password" readonly />
-                                <button type="button" class="btn-general btn secondary" id="togglePasswordBtn">Vis passord</button>
-                            </div>
-                        </td>
-                      </tr>
-                </table>           
-}
-</div>
+                            <th colspan="3" style="text-align: left;" class="user-table-header">Min informasjon:</th> <!-- Overskrift for tabell -->
+                        </tr>
+
+                        <tr>
+                            <td><strong>Brukernavn:</strong></td>
+                            <td>@Model.UserName</td>
+                        </tr>
+                        <tr>
+                            <td><strong>E-post:</strong></td>
+                            <td>@Model.Email</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Telefonnummer:</strong></td>
+                            <td>@Model.Phone</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Passord:</strong></td>
+                            <td>
+                                <div class="password-container">
+                                    <input type="password" id="passwordField" value="@Model.Password" readonly/>
+                                    <button type="button" class="btn-general btn secondary" id="togglePasswordBtn">Vis passord</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                }
+            </div>
 
 <div class="map-reports">
 <!-- Legg til tidligere innmeldinger-->

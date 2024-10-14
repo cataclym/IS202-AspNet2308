@@ -120,6 +120,11 @@ input {
     background-color: #1B589F; /* Egen bakgrunnsfarge for sekundærknapp */
 }
 
+.btn-loggut {
+    background-color: #ff2205; /* Egen bakgrunnsfarge for sekundærknapp */
+}
+
+
 
 .text-center {
     text-align: center; /* Sentraliserer teksten */

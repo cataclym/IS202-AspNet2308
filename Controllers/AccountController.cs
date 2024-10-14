@@ -94,6 +94,15 @@ public class AccountController : Controller
         
 
     }
+    
+    //Funksjon for å logge ut brukeren
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        
+        // Logg ut og redirect til login eller startsiden
+        return RedirectToAction("Login", "Account");
+    }
 
     
     // Funksjon for å verifisere passord (ved hjelp av hashing)
