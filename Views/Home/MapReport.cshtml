@@ -28,6 +28,7 @@
     }
 
     <div id="descriptionForm" style="height: 180px;">
+        <button class="close-button" onclick="closeForm()">&times;</button>
         <form asp-action="RegisterMapReport" method="post" id="mapForm">
             <div>
                 <textarea id="meldingsBoks" asp-for="Melding" required minlength="5" style="width: 250px; height: 105px;" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
@@ -103,6 +104,11 @@
         map.on('pm:create', function(e) {
             document.getElementById('descriptionForm').style.display = 'block';
         });
+        
+    // funksjon for å krysse ut descriptionForm boks
+        function closeForm() {
+            document.getElementById("descriptionForm").style.display = "none"; // Skjuler boksen
+        }
 
     
     

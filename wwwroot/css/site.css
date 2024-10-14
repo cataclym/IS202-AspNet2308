@@ -533,3 +533,17 @@ body, .homepage {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Gir en lett skygge for å heve boksen litt visuelt */
     z-index: 9999;
 }
+
+.close-button {
+    position: absolute; /* Plasserer knappen absolutt inne i boksen */
+    top: 0px; /* Justerer posisjonen fra toppen */
+    right: 0px; /* Justerer posisjonen fra høyre */
+    background-color: transparent; /* Gjør bakgrunnen transparent */
+    border: none; /* Fjerner standard knappkant */
+    font-size: 30px; /* Gjør krysset stort */
+    cursor: pointer; /* Endrer musepekeren til en peker */
+}
+
+.close-button:hover {
+    color: red; /* Endrer fargen på krysset ved hover */
+}
