@@ -83,6 +83,7 @@ input {
     background-color: #006A33FF; /* Bakgrunnsfarge */
     color: white;
     border: none; /* Ingen ramme */
+    border-radius: 10px;
     cursor: pointer; /* Håndmus ved hover */
     display: flex; /* Gjør knappen til en flex-container */
     align-items: center; /* Sentrerer innholdet vertikalt */
