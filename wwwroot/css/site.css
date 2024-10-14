@@ -76,7 +76,7 @@ input {
     gap: 80px; /* Økt avstand mellom knappene */
 }
 
-.btn {
+.btn-index {
     width: 273px;
     height: 85px;
     font-size: 32px;
