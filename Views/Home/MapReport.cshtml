@@ -24,13 +24,13 @@
     <div class="center-horizontal" style="height: 180px;">
         <form asp-action="RegisterMapReport" method="post" id="mapForm">
             <div>
-                <textarea id="meldingsBoks" asp-for="Melding" required minlength="5" style="width: 700px; height: 80px;" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
+                <textarea id="meldingsBoks" asp-for="Melding" required minlength="5" style="width: 900px; height: 80px;" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
             </div>
             <div>
                 <input type="text" class="visually-hidden" id="Koordinater" asp-for="StringKoordinaterLag" required></input>
             </div>
             <div class="center-horizontal">
-            <button class="btn btn-primary" onclick="submitForm()">Send inn</button>
+            <button class="btn-general btn-primary" onclick="submitForm()">Send inn</button>
             </div>
         </form>
     </div>

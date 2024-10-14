@@ -68,6 +68,26 @@ input {
     box-sizing: border-box;
 }
 
+.btn-general {
+    background-color: #038540;
+    color: white;
+    display: inline-block;
+    margin: 0 auto; /* Sentrerer knappen */
+    width: 130px;
+    height: 40px;
+    font-size: 16px;
+    display: flex; /* Gjør knappen til en flex-container */
+    align-items: center; /* Sentrerer innholdet vertikalt */
+    justify-content: center; /* Sentrerer innholdet horisontalt */
+    text-decoration: none; /* Ingen understreking på tekst */
+    box-sizing: border-box; /* Inkluderer padding og border i bredden/høyden */
+    border: none; /* Remove any default border */
+    outline: none; /* Remove focus outline */
+    box-shadow: none; /* Prevent any shadow effects */
+    border-radius: 10px;
+}
+
+
 .button-container {
     display: flex;
     flex-direction: row; /* Plasserer knappene horisontalt */
@@ -184,10 +204,6 @@ p {
     margin-top: -4px; /* Flytt input-feltet opp */
 }
 
-.password-container button {
-    margin-top: -4px; /* Flytt knappen opp */
-}
-
 body, .homepage {
     min-height: 100vh; /* 150% av skjermens høyde */
 }
@@ -202,12 +218,6 @@ body, .homepage {
     margin-top: -20px;
     text-align: center;
     text-decoration: none;
-}
-
-.btn-map-report {
-    background-color: #038540;
-    display: inline-block;
-    margin: 0 auto; /* Sentrerer knappen */
 }
 
 .user-information {
@@ -372,22 +382,6 @@ body, .homepage {
     box-sizing: border-box;
     border-radius: 10px; /* Rounded corners */
     border: 1px solid #ccc; /* Border around input boxes */
-}
-
-/* Juster knappen */
-.registration-form button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 150px;
-    height: 40px;
-    font-size: 20px;
-    background-color: #1B589F; /* Bakgrunnsfarge */
-    color: white;
-    border-radius: 10px;
-    border: none; /* Ingen ramme */
-    cursor: pointer; /* Håndmus ved hover */
-    
 }
 
 .margin-bottom-2 {

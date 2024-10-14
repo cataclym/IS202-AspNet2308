@@ -15,7 +15,7 @@
                 <p>Finner du feil i kartet? Trykk her:</p>
                 <div class="center-horizontal" style="text-decoration: none">
                     <form asp-action="MapReport" method="post">
-                        <button type="submit" class="btn btn-primary">Meld feil</button>
+                        <button type="submit" class="btn-general btn-primary">Meld feil</button>
                     </form>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                          <td>
                             <div class="password-container">
                                 <input type="password" id="passwordField" value="@Model.Password" readonly />
-                                <button type="button" id="togglePasswordBtn">Vis passord</button>
+                                <button type="button" class="btn-general btn primary" id="togglePasswordBtn">Vis passord</button>
                             </div>
                         </td>
                       </tr>
