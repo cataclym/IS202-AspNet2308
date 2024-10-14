@@ -73,17 +73,17 @@ input {
     flex-direction: row; /* Plasserer knappene horisontalt */
     align-items: center; /* Sentrerer knappene vertikalt */
     justify-content: center; /* Sentrerer knappene horisontalt */
-    height: 30vh; 
     gap: 80px; /* Økt avstand mellom knappene */
 }
 
 .btn {
-    width: 273px; 
-    height: 85px; 
-    font-size: 32px; 
+    width: 250px; 
+    height: 70px; 
+    font-size: 25px; 
     background-color: #006A33FF; /* Bakgrunnsfarge */
     color: white; 
     border: none; /* Ingen ramme */
+    border-radius: 5px;
     cursor: pointer; /* Håndmus ved hover */
     display: flex; /* Gjør knappen til en flex-container */
     align-items: center; /* Sentrerer innholdet vertikalt */
@@ -99,6 +99,7 @@ input {
 .btn-secondary {
     background-color: #1B589F; /* Egen bakgrunnsfarge for sekundærknapp */
 }
+
 
 .text-center {
     text-align: center; /* Sentraliserer teksten */
@@ -183,41 +184,51 @@ p {
     margin-top: -4px; /* Flytt input-feltet opp */
 }
 
-/* Juster knappen */
 .password-container button {
     margin-top: -4px; /* Flytt knappen opp */
+}
+
+body, .homepage {
+    min-height: 100vh; /* 150% av skjermens høyde */
 }
 
 .homepage {
     text-align: center;
     width: 100%;
+    padding-bottom: 200px; /* Legg til plass nederst på siden */
 }
 
 .meld-kartfeil {
     margin-top: -20px;
     text-align: center;
+    text-decoration: none;
 }
 
-.meld-kartefeil button {
-    display: block;
+.btn-map-report {
+    background-color: #038540;
+    display: inline-block;
+    margin: 0 auto; /* Sentrerer knappen */
 }
 
 .user-information {
     float: left;
-    margin-top: -10px;
-    width: 300px; /* Adjust width */
+    margin-top: 50px;
+    width: 300px;
     text-align: left;
+    text-decoration: none;
 }
 
-.user-information h2 {
-    text-align: left;
+.user-table-header th {
+    background-color: #1B589F !important;
+    color: white;
 }
 
 .user-info-table {
-    width: 150%; /* Use full width of the container */
+    width: 150%;
     border-collapse: collapse;
     margin-top: 20px;
-    margin-right: 50px;
+    margin-right: 70px;
+    background-color: #f9f9f9;
 }
 
 .user-info-table td {
@@ -225,23 +236,76 @@ p {
     border: 1px solid #ccc;
 }
 
+    /* tabelloverskrift bakgrunnsfarge */
+    .user-info-table th {
+        background-color: #008540; /* Mørkegrønn bakgrunn */
+        color: white;
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .user-info-table tr:nth-child(even) {
+        background-color: #F5F5F5; /* Lysegrønn bakgunnsfarge for partallsrekker */
+    }
+
+    .user-info-table tr:nth-child(odd) {
+        background-color: #ffffff; /* Hvit bakgrunn for oddetallsrekker */
+    }
+
+
+    .user-info-table td {
+        padding: 10px;
+        border: 1px solid black;
+        color: #333; /* Mørk tekstfarge */
+    }
+
+
 .map-reports {
     float: right;
-    margin-top: -10px;
-    width: 300px; /* Adjust width */
+    margin-top: 50px;
+    margin-right: 150px;
+    width: 300px;
     text-align: left;
 }
 
 .map-reports-table {
-    width: 150%; /* Use full width of the container */
+    width: 150%; /* Full bredde av container */
     border-collapse: collapse;
     margin-top: 20px;
-    margin-right: 50px;
+    margin-right: 100px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd; /* Legg til grense mellom cellene */
 }
 
-.user-information h2 {
-    text-align: left;
+.reports-table-header th {
+    background-color: #1B589F !important;
+    color: white !important;
+    padding: 10px; /* Litt plass rundt innholdet */
+    border: 1px solid black; /* Grense mellom hver th */
 }
+
+.map-reports-table tr:nth-child(even) {
+    background-color: #F5F5F5; /* lysegrønn bakgrunn for partalsrekker */
+}
+
+.map-reports-table tr:nth-child(odd) {
+    background-color: #ffffff; /* hvit bakgrunn for oddetallsrekker */
+}
+
+/* Bakgrunnsfarge for <th> elementer */
+.reports-table-header th {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid black; /* Legg til grense rundt rekkene */
+}
+
+/* Grense for <td> elementer (dataceller) */
+.map-reports td {
+    padding: 10px; /* Valgfritt: Legg til litt plass rundt innholdet */
+    border: 1px solid black; /* Legg til grense rundt hver celle */
+}
+
+
 
 
 /*CSS for Index*/
@@ -313,7 +377,17 @@ p {
 /* Juster knappen */
 .registration-form button {
     display: flex;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 40px;
+    font-size: 20px;
+    background-color: #1B589F; /* Bakgrunnsfarge */
+    color: white;
+    border-radius: 10px;
+    border: none; /* Ingen ramme */
+    cursor: pointer; /* Håndmus ved hover */
+    
 }
 
 .margin-bottom-2 {
@@ -370,3 +444,4 @@ p {
 .hjelp-bottom-container {
     min-height: 10rem;
 }
+
