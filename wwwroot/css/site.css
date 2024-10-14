@@ -77,13 +77,12 @@ input {
 }
 
 .btn {
-    width: 250px; 
-    height: 70px; 
-    font-size: 25px; 
+    width: 273px;
+    height: 85px;
+    font-size: 32px;
     background-color: #006A33FF; /* Bakgrunnsfarge */
-    color: white; 
+    color: white;
     border: none; /* Ingen ramme */
-    border-radius: 5px;
     cursor: pointer; /* Håndmus ved hover */
     display: flex; /* Gjør knappen til en flex-container */
     align-items: center; /* Sentrerer innholdet vertikalt */
@@ -404,8 +403,6 @@ body, .homepage {
     margin-left: 50px;
 }
 
-<<<<<<< Updated upstream
-=======
 .footer-nav {
     list-style-type: none;
     text-align: center;
@@ -424,7 +421,6 @@ body, .homepage {
     text-decoration: none;
 }
 
->>>>>>> Stashed changes
 .font-color-primary {
     color: var(--primary);
 }
