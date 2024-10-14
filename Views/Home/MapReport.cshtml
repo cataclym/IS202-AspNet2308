@@ -16,7 +16,9 @@
     </div>
     @if (ViewData["ErrorMessage"] != null)
     {
-        <p class="alert-danger">@ViewData["ErrorMessage"]</p>
+        <div class="alert-danger m-auto mt-1 mb-1 width-900 p-1 border-danger border-1 border-black border-radius-5">
+            <p class="mb-0">@ViewData["ErrorMessage"]</p>
+        </div>
     }
     
     <div class="center-horizontal" style="height: 180px;">
