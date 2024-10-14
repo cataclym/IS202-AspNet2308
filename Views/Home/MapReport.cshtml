@@ -8,11 +8,17 @@
 
 <html>
 <head>
+    <style>
+        body {
+            overflow: hidden; /* Forhindrer scrolling på siden */
+        }
+    </style>
 </head>
-<body>  
+<body>
+
 <div>
     <div class="map-container">
-        <div id="map"></div>
+        <div id="map" class="styledMap"></div>
     </div>
     @if (ViewData["ErrorMessage"] != null)
     {
@@ -20,24 +26,29 @@
             <p class="mb-0">@ViewData["ErrorMessage"]</p>
         </div>
     }
-    
-    <div class="center-horizontal" style="height: 180px;">
+
+    <div id="descriptionForm" style="height: 180px;">
         <form asp-action="RegisterMapReport" method="post" id="mapForm">
             <div>
-                <textarea id="meldingsBoks" asp-for="Melding" required minlength="5" style="width: 900px; height: 80px;" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
+                <textarea id="meldingsBoks" asp-for="Melding" required minlength="5" style="width: 250px; height: 105px;" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
             </div>
             <div>
                 <input type="text" class="visually-hidden" id="Koordinater" asp-for="StringKoordinaterLag" required></input>
             </div>
             <div class="center-horizontal">
-            <button class="btn-general btn-primary" onclick="submitForm()">Send inn</button>
+                <button class="btn-general btn-primary" onclick="submitForm()">Send inn</button>
             </div>
         </form>
     </div>
-    </div>
+</div>
 
 @section Scripts {
     <script>
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('modal-overlay').style.display = 'none';
+            document.getElementById('modal-content').style.display = 'none';
+        });
     
     const map = lagKart();
     
@@ -86,7 +97,15 @@
         // Sender skjemaet
         document.getElementById("mapForm").submit();
     }
+    
 
+    // Lytt til pm:create eventen for å vise tekstboksen og knappen
+        map.on('pm:create', function(e) {
+            document.getElementById('descriptionForm').style.display = 'block';
+        });
+
+    
+    
     </script>
 }
 

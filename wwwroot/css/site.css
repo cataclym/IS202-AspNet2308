@@ -41,13 +41,17 @@ body {
     border: 1px solid #a8a5a5; /* Border */
     border-radius: 5px; /* Optional: rounds the corners */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Drop shadow */
+}
 
+.styledMap {
+    border-radius: 0px !important;
+    height: calc(100vh - 100px - 50px) !important; /* 100px for header, 50px for footer */
+    width: 100% !important; /* Fyller hele bredden */
 }
 
 .map-container {
     display: flex;
     justify-content: center;
-    height: 500px;
 }
 
 .center-horizontal {
@@ -513,4 +517,19 @@ body, .homepage {
 
 .border-radius-5 {
     border-radius: 5px;
+}
+
+#descriptionForm {
+    display: none; /* Skjuler tekstboksen og knappen til polygon er tegnet */
+    position: fixed; /* Gjør at boksen er fast plassert i forhold til vinduet */
+    top: 50%; /* Plasserer den 50% ned på siden */
+    left: 50%; /* Plasserer den 50% til høyre på siden */
+    transform: translate(-50%, -50%); /* Flytter den tilbake til midten ved å forskyve med 50% */
+    background-color: #f9f9f9; /* Lys bakgrunnsfarge */
+    padding: 20px; /* Gir litt luft rundt elementene inni boksen */
+    border: 1px solid #ccc; /* Gir en tynn grå ramme */
+    border-radius: 8px; /* Runder hjørnene på boksen */
+    width: 300px; /* Setter bredden på boksen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Gir en lett skygge for å heve boksen litt visuelt */
+    z-index: 9999;
 }
