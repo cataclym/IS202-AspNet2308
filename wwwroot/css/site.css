@@ -45,7 +45,7 @@ body {
 
 .styledMap {
     border-radius: 0px !important;
-    height: calc(100vh - 100px - 50px) !important; /* 100px for header, 50px for footer */
+    height: calc(100vh - 100px - 40px) !important; /* 100px for header, 50px for footer */
     width: 100% !important; /* Fyller hele bredden */
 }
 
