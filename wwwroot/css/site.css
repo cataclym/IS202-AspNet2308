@@ -502,3 +502,10 @@ body, .homepage {
     min-height: 10rem;
 }
 
+.width-900 {
+    width: 900px;
+}
+
+.border-radius-5 {
+    border-radius: 5px;
+}

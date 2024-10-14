@@ -16,13 +16,15 @@
     </div>
     @if (ViewData["ErrorMessage"] != null)
     {
-        <p class="alert-danger">@ViewData["ErrorMessage"]</p>
+        <div class="alert-danger m-auto mt-1 mb-1 width-900 p-1 border-danger border-1 border-black border-radius-5">
+            <p class="mb-0">@ViewData["ErrorMessage"]</p>
+        </div>
     }
     
     <div class="center-horizontal" style="height: 180px;">
         <form asp-action="RegisterMapReport" method="post" id="mapForm">
             <div>
-                <textarea id="meldingsBoks" asp-for="Melding" required minlength="5" style="width: 700px; height: 80px;" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
+                <textarea id="meldingsBoks" asp-for="Melding" required minlength="5" style="width: 900px; height: 80px;" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
             </div>
             <div>
                 <input type="text" class="visually-hidden" id="Koordinater" asp-for="StringKoordinaterLag" required></input>
