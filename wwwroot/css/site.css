@@ -448,6 +448,18 @@ body, .homepage {
     text-decoration: none;
 }
 
+.footer-link {
+    color: #000; /* Black text color */
+    text-decoration: none; /* Remove default underline */
+    border-bottom: 2px solid #000; /* Black underline */
+    transition: color 0.3s, border-color 0.3s; /* Smooth transition */
+}
+
+.footer-link:hover {
+    color: #000; /* Keep text black on hover */
+    border-bottom-color: #000; /* Keep underline black on hover */
+}
+
 .font-color-primary {
     color: var(--primary);
 }
