@@ -72,7 +72,7 @@ input {
     display: flex;
     flex-direction: row; /* Plasserer knappene horisontalt */
     align-items: center; /* Sentrerer knappene vertikalt */
-    justify-content: center; /* Sentrerer knappene horisontalt */
+    justify-content: space-evenly; /* Sentrerer knappene horisontalt */
     gap: 80px; /* Økt avstand mellom knappene */
 }
 
@@ -398,7 +398,7 @@ body, .homepage {
 
 .navbar, .nav-link {
     font-family: 'Mulish', sans-serif; 
-    font-weight: ;
+    font-weight: 700;
     font-size: 20px;
     margin-top: 12px;
     margin-left: 50px;

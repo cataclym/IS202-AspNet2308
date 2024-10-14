@@ -7,8 +7,8 @@ namespace Kartverket;
 
 public class Program
 {
-    public static WebApplication App { get; private set; }
-    public static WebApplicationBuilder Builder { get; private set; }
+    private static WebApplication App { get; set; }
+    private static WebApplicationBuilder Builder { get; set; }
 
     public static void Main(string[] args)
     {

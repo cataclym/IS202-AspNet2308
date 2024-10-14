@@ -19,14 +19,14 @@
         <h1 class="display-4"><b>Meld inn feil til</b> <span class="highlight"><b>Kartverket</b></span></h1>
     </div>
     <div class="button-container">
-        <form asp-action="Login" asp-controller="Account" method="post">
-            <button type="submit" class="btn-index btn-primary">Logg inn</button>
+        <form asp-action="Login" asp-controller="Account" method="post" class="flex-grow-1">
+            <button type="submit" class="btn-index btn-primary m-auto">Logg inn</button>
             <p class="highlight">Logg inn for å melde inn feil</p>
         </form>
 
         <!-- Registration-form -->
-        <form asp-action="UserRegistration" asp-controller="Account" method="post">
-            <button type="submit" class="btn-index btn-secondary">Registrer deg</button>
+        <form asp-action="UserRegistration" asp-controller="Account" method="post" class="flex-grow-1">
+            <button type="submit" class="btn-index btn-secondary m-auto">Registrer deg</button>
             <p class="highlight">Ny bruker? Registrer deg for å få tilgang</p>
         </form>
     </div>
