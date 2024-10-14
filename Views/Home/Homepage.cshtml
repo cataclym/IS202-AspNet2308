@@ -11,13 +11,14 @@
     <h1 class="header1">Min <span class="highlight">Side</span></h1>
     
     <div class="homepage">
-
-    <div class="meld-kartfeil">
-        <p>Finner du feil i kartet? Trykk her:</p>
-       
-        <a asp-action="MapReport"><button type="submit" class="btn btn-map-report">Meld feil</button></a>
-    </div>
-
+            <div class="meld-kartfeil">
+                <p>Finner du feil i kartet? Trykk her:</p>
+                <div class="center-horizontal" style="text-decoration: none">
+                    <form asp-action="MapReport" method="post">
+                        <button type="submit" class="btn btn-primary">Meld feil</button>
+                    </form>
+                </div>
+            </div>
     <div class="user-information">
 
 

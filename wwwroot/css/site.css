@@ -73,7 +73,6 @@ input {
     flex-direction: row; /* Plasserer knappene horisontalt */
     align-items: center; /* Sentrerer knappene vertikalt */
     justify-content: center; /* Sentrerer knappene horisontalt */
-    height: 30vh; 
     gap: 80px; /* Økt avstand mellom knappene */
 }
 
@@ -99,6 +98,7 @@ input {
 .btn-secondary {
     background-color: #1B589F; /* Egen bakgrunnsfarge for sekundærknapp */
 }
+
 
 .text-center {
     text-align: center; /* Sentraliserer teksten */
@@ -200,6 +200,7 @@ body, .homepage {
 .meld-kartfeil {
     margin-top: -20px;
     text-align: center;
+    text-decoration: none;
 }
 
 .btn-map-report {
@@ -216,6 +217,7 @@ body, .homepage {
     margin-top: 50px;
     width: 300px;
     text-align: left;
+    text-decoration: none;
 }
 
 .user-table-header th {
@@ -413,3 +415,4 @@ body, .homepage {
 .hjelp-bottom-container {
     min-height: 10rem;
 }
+
