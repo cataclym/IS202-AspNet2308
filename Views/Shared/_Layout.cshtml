@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -13,6 +13,9 @@
         rel="stylesheet"
         href="https://unpkg.com/@@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
 </head>
 <body>
 <header>
@@ -71,6 +74,8 @@
         crossorigin=""></script>
 <script src="https://unpkg.com/@@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
 <script>
     // Lag som viser land eller sjø-kart
     // https://leafletjs.com/examples/wms/wms.html
@@ -94,6 +99,17 @@
             title: "Hvis meg hvor jeg er",
         }
     })
+
+    //Instillinger for Search
+        var searchOptions = {
+            geocoder: new L.Control.Geocoder.nominatim({
+                geocodingQueryParams: {
+                    "countrycodes": "No"
+                }
+            })
+        };
+
+        var geocoder = L.Control.geocoder(options).addTo(map);
     
     // Lager leaflet map, med kartverk sine kartlag
     // options blir passert til L.map funksjonen
@@ -108,6 +124,9 @@
 
         // Legg til leaflet locate funksjon (GPS lokasjon)
         L.control.locate(locateOptions).addTo(map);
+
+        //Search Bar Add
+        L.Control.geocoder(searchOptions).addTo(map);
 
         return map;
     }
