@@ -31,16 +31,20 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Hjem</a>
+                        <a class="nav-link text-dark @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="Index">Hjem</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Min Side</a>
+                        <a class="nav-link text-dark @(ViewContext.RouteData.Values["action"]?.ToString() == "HomePage" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="HomePage">Min Side</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Help">Hjelp</a>
+                        <a class="nav-link text-dark @(ViewContext.RouteData.Values["action"]?.ToString() == "Help" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="Help">Hjelp</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Personvern</a>
+                        <a class="nav-link text-dark @(ViewContext.RouteData.Values["action"]?.ToString() == "Privacy" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="Privacy">Personvern</a>
                     </li>
                 </ul>
             </div>
