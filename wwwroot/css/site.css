@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&display=swap');
 
 :root {
     --primary: #006A33;
@@ -123,12 +123,6 @@ input {
 .btn-secondary {
     background-color: #1B589F; /* Egen bakgrunnsfarge for sekundærknapp */
 }
-
-.btn-loggut {
-    background-color: #ff2205; /* Egen bakgrunnsfarge for sekundærknapp */
-}
-
-
 
 .text-center {
     text-align: center; /* Sentraliserer teksten */
@@ -435,9 +429,16 @@ body, .homepage {
     margin-left: 50px;
 }
 
+.navbar {
+    display: flex;
+    gap: 20px;
+}
+
 .nav-link {
-    color: #000; /* Default text color for navbar links */
-    text-decoration: none; /* Removes default underline */
+    font-family: 'Mulish', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    text-decoration: none;
     position: relative; /* Needed for the pseudo-element */
     transition: color 2s; /* Smooth transition for color */
 }
@@ -459,6 +460,11 @@ body, .homepage {
 
 .nav-link:hover::after {
     width: 100%; 
+}
+
+.nav-link.active {
+    font-weight: 700;
+    color: #1B589F;
 }
 
 .footer-nav {
@@ -499,16 +505,21 @@ body, .homepage {
     color: var(--secondary);
 }
 
-.hjelp-bottom-text {
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    bottom: 0;
+.hjelp-bottom-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0px; /* For å gi avstand fra toppen */
 }
 
-.hjelp-bottom-container {
-    min-height: 10rem;
+.hjelp-bottom-text {
+    margin: 80px 0; /* For å gi plass over og under teksten */
+}
+
+.down-arrow-icon {
+    width: 50px; /* Juster størrelsen etter behov */
+    height: auto; /* Behold proporsjonene */
+    margin-top: 40px; /* Avstand over pilen */
 }
 
 .width-900 {
