@@ -1,24 +1,24 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Kartverket.Models;
 
 [Table("Reports")]
-public class MapReportsModel
+public sealed class MapReportsModel
 {
-    [Key] public int geodata_id { get; set; } // Ingen MinLength på int
+    [Key] public int GeodataId { get; set; } // Ingen MinLength på int
 
     [Required]
     [MinLength(5)]
+    [MaxLength(256)]
     public string? Melding { get; set; } // MinLength fungerer kun på strenger, arrays, eller samlinger
 
     [Required] public string? StringKoordinaterLag { get; set; } // Ingen valideringsattributt som ikke passer
 
     // Referrer til Users tabell
-    public virtual Users? Users { get; set; }
+    public Users? Users { get; set; }
 
     //Konverterer GeoJson koordinater til en streng med koordinater
     public string ConvertGeoJsonStringToCoordinates()
@@ -43,18 +43,15 @@ public class MapReportsModel
                     var geometryType = feature["geometry"]?["type"]?.ToString();
                     var coordinates = feature["geometry"]?["coordinates"];
 
-                    // Hent koordinater avhengig av typen geometri
-                    switch (geometryType)
-                    {
-                        case "Polygon":
-                            return ParsePolygonCoordinates(coordinates);
+                    if (coordinates is null) throw new Exception("Ingen koordinater tilgjengelige");
                     
-                        case "MultiPolygon":
-                            return ParseMultiPolygonCoordinates(coordinates);
-
-                        default:
-                            return "Geometri-typen støttes ikke eller er ukjent";
-                    }
+                    // Hent koordinater avhengig av typen geometri
+                    return geometryType switch
+                    {
+                        "Polygon" => ParsePolygonCoordinates(coordinates),
+                        "MultiPolygon" => ParseMultiPolygonCoordinates(coordinates),
+                        _ => "Geometri-typen støttes ikke eller er ukjent"
+                    };
                 }
             }
             else
@@ -69,37 +66,33 @@ public class MapReportsModel
             return $"Feil ved parsing av GeoJSON-streng: {ex.Message}";
         }
     }
-    private string ParsePolygonCoordinates(JToken coordinates)
+    private static string ParsePolygonCoordinates(JToken coordinates)
     {
-        if (coordinates != null && coordinates.Type == JTokenType.Array)
+        if (coordinates is not { Type: JTokenType.Array }) return "Ingen koordinater funnet for Polygon";
+        
+        var sb = new StringBuilder();
+        sb.Append("Lokasjon: ");
+        foreach (var ring in coordinates)
         {
-            var sb = new StringBuilder();
-            sb.Append("Lokasjon: ");
-            foreach (var ring in coordinates)
+            foreach (var coordPair in ring)
             {
-                foreach (var coordPair in ring)
-                {
-                    double lng = (double)coordPair[0];
-                    double lat = (double)coordPair[1];
-                    sb.Append($"[Lat: {lat}, Lng: {lng}], ");
-                }
+                var lng = (double?) coordPair[0];
+                var lat = (double?) coordPair[1];
+                sb.Append($"[Lat: {lat}, Lng: {lng}], ");
             }
-            return sb.ToString().TrimEnd(',', ' ');
         }
-        return "Ingen koordinater funnet for Polygon";
+        return sb.ToString().TrimEnd(',', ' ');
     }
-    private string ParseMultiPolygonCoordinates(JToken coordinates)
+    private static string ParseMultiPolygonCoordinates(JToken coordinates)
     {
-        if (coordinates != null && coordinates.Type == JTokenType.Array)
+        if (coordinates is not { Type: JTokenType.Array }) return "Ingen koordinater funnet for MultiPolygon";
+        
+        var sb = new StringBuilder();
+        sb.Append("MultiPolygon koordinater: ");
+        foreach (var polygon in coordinates)
         {
-            var sb = new StringBuilder();
-            sb.Append("MultiPolygon koordinater: ");
-            foreach (var polygon in coordinates)
-            {
-                sb.Append(ParsePolygonCoordinates(polygon)).Append(" | ");
-            }
-            return sb.ToString().TrimEnd(' ', '|');
+            sb.Append(ParsePolygonCoordinates(polygon)).Append(" | ");
         }
-        return "Ingen koordinater funnet for MultiPolygon";
+        return sb.ToString().TrimEnd(' ', '|');
     }
 }

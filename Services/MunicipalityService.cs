@@ -50,7 +50,7 @@ public class MunicipalityService
         
         try
         {
-            // Send en GET forespørsel til kartverkets API, med kommuner endpoint
+            // Her defineres query parametere
             var query = new Dictionary<string, string?>()
             {
                 ["nord"] = northEast[1].ToString(CultureInfo.InvariantCulture),
@@ -58,6 +58,7 @@ public class MunicipalityService
                 ["koordsys"] = "4258"
             };
 
+            // Send en GET forespørsel til kartverkets API, med punkt endpoint
             var url = QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}/punkt", query);
             _logger.LogInformation("Henter kommuneinfo fra: {Url}", url);
             var response = await _httpClient.GetAsync(url);

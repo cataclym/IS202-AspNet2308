@@ -33,13 +33,13 @@
     else
     {
         <p>Model er null, kunne ikke vise data.</p>
-
     }
 </div>
 
 @section Scripts {
     <script>
-    const map = lagKart({ zoomControl: true });
+    // Henter kart uten gps og search
+    const map = lagKart({ zoomControl: true }, false, false);
     
     // Skru av alt som flytter på kartet 
     map.dragging.disable();
@@ -74,6 +74,6 @@
     } else {
         console.error("Ingen GeoJSON-data funnet");
     }
+    
     </script>
-}
 }

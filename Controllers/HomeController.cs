@@ -44,7 +44,7 @@ public class HomeController　: Controller
 
     public IActionResult Privacy()
     {
-        if (User.Identity.IsAuthenticated)
+        if (User.Identity?.IsAuthenticated == true)
         {
             // Brukeren er autentisert
             Console.WriteLine("User is authenticated");
