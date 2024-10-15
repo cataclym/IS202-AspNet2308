@@ -85,15 +85,31 @@
     // https://leafletjs.com/examples/wms/wms.html
     // Kartlag som kan hentes fra alle views
     const kartLag = Object.freeze({
+        // WMS-lag for Land
         Land: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
             layers: "kd_arealdekkeflate,kd_veger,kd_bygninger,kd_jernbane,kd_stedsnavn",
-            attribution: 'Kartverket'
+            format: 'image/jpeg',
+            attribution: 'Kartverket',
+            maxZoom: 18,
+            tileSize: 512,
+            keepBuffer: 5, // Holder på fliser fra tidligere visninger
+            maxNativeZoom: 16 // Begrens hvor mye detaljer som lastes inn
         }),
-        "Sjø": L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
+
+        // WMS-lag for Sjø
+        Sjø: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
             layers: "kd_arealdekkeflate,kd_vannkontur,kd_vannflate,kd_elver,kd_ferger,kd_stedsnavn",
-            attribution: 'Kartverket'
-        }),
-    })
+            format: 'image/jpeg',
+            attribution: 'Kartverket',
+            maxZoom: 18,
+            tileSize: 512,
+            keepBuffer: 5, // Holder på fliser fra tidligere visninger
+            maxNativeZoom: 16 // Begrens hvor mye detaljer som lastes inn
+        })
+    });
+
+    // Legge til standardlag på kartet
+    kartLag.Cachelager.addTo(map);  // Du kan også velge andre lag om du ønsker.
     
     // Instillinger for locate 
     const locateOptions = Object.freeze({
