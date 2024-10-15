@@ -425,13 +425,13 @@ body, .homepage {
     font-family: 'Mulish', sans-serif; 
     font-weight: 700;
     font-size: 20px;
-    margin-top: 12px;
-    margin-left: 50px;
+    margin-top: 0px;
+    padding-left: 40px;
 }
 
 .navbar {
     display: flex;
-    gap: 20px;
+    background-color: lightblue!important;
 }
 
 .nav-link {
@@ -441,6 +441,7 @@ body, .homepage {
     text-decoration: none;
     position: relative; /* Needed for the pseudo-element */
     transition: color 2s; /* Smooth transition for color */
+    margin-left: 70px;
 }
 
 .nav-link:hover {
