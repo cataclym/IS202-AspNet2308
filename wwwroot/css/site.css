@@ -188,6 +188,22 @@ p {
     color: #008540; /* Replace this with the desired color */
 }
 
+.password-input-wrapper {
+    display: flex !important;
+    align-items: right !important; 
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center; /* Sørger for at avkrysningsboksen og teksten "Vis passord" er på samme linje */
+    margin-left: 8px; /* Gir litt mellomrom mellom input-feltet og avkrysningsboksen */
+    margin-top: 3px;
+}
+
+.text-nowrap {
+    white-space: nowrap; /* Sørger for at teksten "Vis passord" ikke brytes til neste linje */
+    margin-left: 4px; /* Liten avstand mellom avkrysningsboksen og teksten */
+}
 
 /* Flexbox container for password field and button */
 .password-container {

@@ -13,17 +13,18 @@
             <label asp-for="UserName">Brukernavn</label>
             <input asp-for="UserName" />
         </div>
-        <div>
+        <br>
             <label asp-for="Password">Passord</label>
             <div class="password-input-wrapper">
                 <input asp-for="Password" type="password" id="Password" />
                 <div class="checkbox-wrapper">
-                    <input type="checkbox" id="togglePassword" class="togglePassword"/>
+                    <input type="checkbox" id="togglePassword" class="togglePassword" />
+                    <br>
+                    <br>
                     <label class="text-nowrap margin-bottom-2" for="togglePassword">Vis passord</label>
                 </div>
             </div>
-        </div>
-<div class="center-horizontal" style="margin-top: 15px;">
+            <div class="center-horizontal" style="margin-top: 15px;">
         <button type="submit" class="btn-general btn-primary">Logg inn</button>
 </div>
     </form>
