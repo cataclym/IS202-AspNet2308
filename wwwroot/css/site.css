@@ -117,11 +117,11 @@ input {
 }
 
 .btn-primary {
-    background-color: #038540; /* Egen bakgrunnsfarge for primærknapp */
+    background-color: #038540; /* Egen bakgrunnsfarge for primærknapp (grønn)*/
 }
 
 .btn-secondary {
-    background-color: #1B589F; /* Egen bakgrunnsfarge for sekundærknapp */
+    background-color: #1B589F; /* Egen bakgrunnsfarge for sekundærknapp (blå)*/
 }
 
 .text-center {
@@ -199,6 +199,13 @@ p {
     margin-left: 8px; /* Gir litt mellomrom mellom input-feltet og avkrysningsboksen */
     margin-top: 3px;
 }
+
+
+.checkbox-wrapper-login {
+    display: flex; /* Flex-container for å sette checkbox og label på samme linje */
+    align-items: center;
+}
+
 
 .text-nowrap {
     white-space: nowrap; /* Sørger for at teksten "Vis passord" ikke brytes til neste linje */
@@ -399,7 +406,6 @@ body, .homepage {
     margin-bottom: 5px; /* Space between input groups */
 }
 
-
 .registration-form form {
     display: flex;
     flex-direction: column;
@@ -409,26 +415,68 @@ body, .homepage {
     width: 100%; /* Full width */
 }
 
-.registration-form input {
-    width: 300px; /* Fixed width for inputs */
-    padding: 10px;
-    margin-top: 5px;
-    box-sizing: border-box;
-}
-
 .registration-form label {
     margin-bottom: -5px; /*Space between label and input */
 }
 
-
-/* Make input boxes smaller and add rounded corners */
 .registration-form input {
-    width: 250px; /* Smaller width for inputs */
-    padding: 8px; /* Reduced padding */
+    width: 250px;
+    padding: 8px;
     margin-top: 5px;
     box-sizing: border-box;
-    border-radius: 10px; /* Rounded corners */
-    border: 1px solid #ccc; /* Border around input boxes */
+    border-radius: 10px; /* Runda hjørner */
+    border: 1px solid #ccc;
+}
+
+/* CSS for login */
+
+.checkbox-center {
+    display: flex; /* Use flexbox layout */
+
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 2vh;
+}
+
+input[type="checkbox"] {
+    margin: 0; /* Remove default margin */
+}
+
+
+/* CSS for AdminReview */
+
+.user-reports {
+    display: flex;
+    margin-top: 4%;
+
+}
+
+.user-reports-table {
+    margin-top: 80px;
+    width: 100%; 
+    height: auto;
+    font-size: 1.2em; 
+    padding: 10px;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.user-reports th {
+    padding: 10px; /* Valgfritt: Legg til litt plass rundt innholdet */
+    border: 1px solid #ccc; /* Legg til grense rundt hver celle */
+}
+
+    .user-reports td {
+    padding: 10px; /* Valgfritt: Legg til litt plass rundt innholdet */
+    border: 1px solid #ccc; /* Legg til grense rundt hver celle */
+}
+
+.user-reports tr:nth-child(even) {
+    background-color: #F5F5F5; /* lysegrønn bakgrunn for partalsrekker */
+}
+
+.user-reports tr:nth-child(odd) {
+    background-color: #ffffff; /* hvit bakgrunn for oddetallsrekker */
 }
 
 .margin-bottom-2 {
@@ -437,8 +485,79 @@ body, .homepage {
     margin-left: 140px;
 }
 
+
+.button-status {
+    display: inline-flex; /* Lar elementene ligge på samme linje */
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 25px;
+}
+
+
+.btn-status-a, .btn-status-b, .btn-status-c {
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-status-a {
+    border: 2px solid red;
+}
+
+.btn-status-b {
+    border: 2px solid green;
+}
+
+.btn-status-c {
+    border: 2px solid orange;
+}
+
+
+.dropbtn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    float: right;
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    right: 0;
+    z-index: 1;
+}
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+.dropdown a:hover {
+    background-color: #ddd;
+}
+
+.show {
+    display: block;
+}
+
+
 .navbar, .nav-link {
-    font-family: 'Mulish', sans-serif; 
+    font-family: 'Mulish', sans-serif;
     font-weight: 700;
     font-size: 20px;
     margin-top: 0px;
