@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
 namespace Kartverket.Models;
@@ -13,13 +14,13 @@ public sealed class MapReportsModel
     [Required]
     [MinLength(5)]
     [MaxLength(256)]
-    public string? Melding { get; set; } // MinLength fungerer kun på strenger, arrays, eller samlinger
+    public string Melding { get; set; } // MinLength fungerer kun på strenger, arrays, eller samlinger
 
-    [Required] public string? StringKoordinaterLag { get; set; } // Ingen valideringsattributt som ikke passer
+    [Required] public string StringKoordinaterLag { get; set; } // Ingen valideringsattributt som ikke passer
 
-    // Referrer til Users tabell
-    public Users? Users { get; set; }
-
+    // Referrer til Messages tabell
+    public ICollection<MessagesModel> Messages { get; set; } = new List<MessagesModel>();
+    public int UserId { get; set; }
     //Konverterer GeoJson koordinater til en streng med koordinater
     public string ConvertGeoJsonStringToCoordinates()
     {

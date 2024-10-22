@@ -1,15 +1,12 @@
+using System.Security.Claims;
+using Kartverket.Database;
+using Kartverket.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Kartverket.Data;
-using Kartverket.Models;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using BCrypt.Net;
 
-
+namespace Kartverket.Controllers;
 
 public class AccountController : Controller
 {
@@ -28,7 +25,7 @@ public class AccountController : Controller
     {
         _logger.LogInformation("Checking authentication status");
         
-        if (User.Identity.IsAuthenticated)
+        if (User.Identity is { IsAuthenticated: true })
         {
             _logger.LogInformation("User is authenticated");
             
@@ -49,27 +46,27 @@ public class AccountController : Controller
     
     // POST: Behandler innlogging
     [HttpPost]
-    public async Task<IActionResult> Login(Users usersModel, string returnUrl = null)
+    public async Task<IActionResult> Login(LoginModel loginModel, string returnUrl = null)
     {
-        if (User.Identity.IsAuthenticated)
+        if (User.Identity is { IsAuthenticated: true })
         {
             return RedirectToAction("HomePage", "Home");
         }
-        
-        if (!ModelState.IsValid) return View("Login", usersModel);
+        Console.WriteLine(ModelState.IsValid);
+        if (!ModelState.IsValid) return View("Login", loginModel);
         
         // Finn brukeren i databasen basert på brukernavn
         var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.UserName == usersModel.UserName);
+            .FirstOrDefaultAsync(u => u.Username == loginModel.Username);
 
 
         // Sjekk om brukeren finnes og verifiser passordet
-        if (user != null && VerifyPassword(usersModel.Password, user.Password))
+        if (user != null && VerifyPassword(loginModel.Password, user.Password))
         {
             // Opprett en liste over påstander (claims) som identifiserer brukeren
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
             };
 
@@ -90,9 +87,7 @@ public class AccountController : Controller
 
         // Feilhåndtering hvis brukernavn eller passord er feil
         ViewBag.ErrorMessage = "Feil brukernavn eller passord.";
-        return View("Login", usersModel);
-        
-
+        return View("Login", loginModel);
     }
     
     //Funksjon for å logge ut brukeren
@@ -115,40 +110,33 @@ public class AccountController : Controller
 
     
     [HttpPost]
-    public async Task<IActionResult> UserRegistration(Users usersModel)
+    public async Task<IActionResult> UserRegistration(UsersModel usersModelModel)
     {
         // Sjekk om modellen er gyldig (at brukernavn og passord er fylt ut korrekt)
         if (!ModelState.IsValid)
         {
             // Hvis noe er galt med input (f.eks. passord for kort), returner til registreringssiden med feilmeldinger
-            return View("UserRegistration", usersModel);
+            return View("UserRegistration", usersModelModel);
         }
 
         // Hashe passordet før det lagres i databasen
-        usersModel.Password = BCrypt.Net.BCrypt.HashPassword(usersModel.Password);
+        usersModelModel.Password = BCrypt.Net.BCrypt.HashPassword(usersModelModel.Password);
 
         // Legg til brukeren i databasen
-        _context.Users.Add(usersModel);
+        _context.Users.Add(usersModelModel);
         await _context.SaveChangesAsync(); // Lagrer endringene i databasen
 
         // Returner til en side for å bekrefte at registreringen er vellykket
-        return RedirectToAction("HomePage", "Home", new { id = usersModel.UserId }); // Omdirigerer til brukerens profilside, for eksempel
+        return RedirectToAction("HomePage", "Home", new { id = usersModelModel.UserId }); // Omdirigerer til brukerens profilside, for eksempel
     }
 
 // GET: Viser registreringsskjemaet
     [HttpGet]
     public IActionResult UserRegistration()
     {
-        if (User.Identity.IsAuthenticated)
-        {
-            // Brukeren er autentisert
-            Console.WriteLine("User is authenticated");
-        }
-        else
-        {
-            // Brukeren er ikke autentisert
-            Console.WriteLine("User is not authenticated");
-        }
+        // Brukeren er ikke autentisert
+        // Brukeren er autentisert
+        Console.WriteLine(User.Identity is { IsAuthenticated: true } ? "User is authenticated" : "User is not authenticated");
         return View();
     }
 

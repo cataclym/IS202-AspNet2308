@@ -1,4 +1,4 @@
-using Kartverket.Data;
+using Kartverket.Database;
 using Kartverket.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;

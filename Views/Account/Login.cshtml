@@ -1,4 +1,4 @@
-@model Users
+@model LoginModel
 
 @{
     ViewBag.Title = "title";
@@ -10,8 +10,8 @@
     <br/>
     <form asp-action="Login" method="post">
         <div>
-            <label asp-for="UserName">Brukernavn</label>
-            <input asp-for="UserName" />
+            <label asp-for="Username">Brukernavn</label>
+            <input asp-for="Username" />
         </div>
         <br>
             <label asp-for="Password">Passord</label>

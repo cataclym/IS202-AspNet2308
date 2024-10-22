@@ -94,7 +94,7 @@
     const kartLag = Object.freeze({
         // WMS-lag for Land
         Land: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
-            layers: "kd_arealdekkeflate,kd_veger,kd_bygninger,kd_jernbane,kd_stedsnavn",
+            layers: "kd_arealdekkeflate,kd_vannkontur,kd_vannflate,kd_elver,kd_veger,kd_bygninger,kd_jernbane,kd_stedsnavn",
             format: 'image/jpeg',
             attribution: 'Kartverket',
             maxZoom: 18,
@@ -105,7 +105,7 @@
 
         // WMS-lag for Sjø
         Sjø: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
-            layers: "kd_arealdekkeflate,kd_vannkontur,kd_vannflate,kd_elver,kd_ferger,kd_stedsnavn",
+            layers: "kd_arealdekkeflate,kd_hoydelag,kd_hoydepunkt,kd_vannkontur,kd_vannflate,kd_elver,kd_ferger,kd_stedsnavn,kd_turisthytte,kd_tettsted,kd_spesiell_detalj,kd_jernbane,kd_jernbanestasjon",
             format: 'image/jpeg',
             attribution: 'Kartverket',
             maxZoom: 18,

@@ -1,29 +1,24 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Kartverket.Database.Models;
+using Kartverket.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Kartverket.Models;
+namespace Kartverket.Database.Models;
 
-// Data tilhørende login form
 [PrimaryKey("UserId")] // Denne linjen angir at UserId er primærnøkkelen.
-public class UsersModel
+public class Users
 {
     [Key] public int UserId { get; set; }
-    [Required]
-    [PasswordPropertyText]
-    [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Brukernavnet må kun bestå av bokstaver og tall.")]
     public string Username { get; set; }
-    [Required]
-    [PasswordPropertyText]
-    [DataType(DataType.Password)]
     public string Password { get; set; }
-    [EmailAddress] public string Email { get; set; }
-    [Phone] public string Phone { get; set; }
+    public string Email { get; set; }
+    public string Phone { get; set; }
     public bool isAdmin { get; set; } = false;
     public ICollection<Reports> MapReports { get; set; } = new List<Reports>();
+
     // Konverterer Users til UsersModel uten problemer fordi det er samme felt
-    public static implicit operator Users(UsersModel users) => new()
+    public static implicit operator UsersModel(Users users) => new()
     {
         UserId = users.UserId,
         Email = users.Email,

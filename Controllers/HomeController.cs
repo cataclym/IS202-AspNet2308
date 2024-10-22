@@ -2,14 +2,13 @@ using System.Diagnostics;
 using System.Text.Json;
 using Kartverket.Models;
 using Microsoft.AspNetCore.Mvc;
-using Kartverket.Data;
-using Kartverket.Models;
+using Kartverket.Database;
 using Kartverket.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
+using Kartverket.Database.Models;
+using Newtonsoft.Json.Linq;
 
 namespace Kartverket.Controllers;
 
@@ -29,16 +28,9 @@ public class HomeController　: Controller
     
     public IActionResult Index()
     {
-        if (User.Identity.IsAuthenticated)
-        {
-            // Brukeren er autentisert
-            Console.WriteLine("User is authenticated");
-        }
-        else
-        {
-            // Brukeren er ikke autentisert
-            Console.WriteLine("User is not authenticated");
-        }
+        // Brukeren er ikke autentisert
+        // Brukeren er autentisert
+        Console.WriteLine(User.Identity.IsAuthenticated ? "User is authenticated" : "User is not authenticated");
         return View();
     }
 
@@ -103,10 +95,21 @@ public class HomeController　: Controller
             
             ViewData["MunicipalityInfo"] = municipalityInfo;
             
-            // Lagrer til databasen
-            // Bruker _context som er injisert i controlleren
             _logger.LogInformation("Legger til data i databasen");
-            _context.MapReports.Add(model);
+            
+            // Konstruerer database modellen
+            var report = new Reports
+            {
+                GeoJsonString = model.StringKoordinaterLag,
+                Messages = new List<Messages>()
+            };
+            report.Messages.Add(new Messages
+            {
+                Message = model.Melding
+            });
+            // Legger modellen til i database
+            // Bruker _context som er injisert i controlleren
+            _context.Reports.Add(report);
 
             // Lagre endringer til databasen asynkront
             await _context.SaveChangesAsync();
@@ -160,41 +163,49 @@ public class HomeController　: Controller
     
     
     [HttpPost]
-    public async Task<IActionResult> HomePage(Users usersModel)
+    public async Task<IActionResult> HomePage(UsersModel usersModelModel)
     {
         // Sjekk om modellen er gyldig
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid) return View(usersModelModel);
+        
+        try
         {
-            try
+            var users = new Users
             {
-                // Legger til brukerdata i databasen
-                _context.Users.Add(usersModel);
+                Username = usersModelModel.Username,
+                Password = usersModelModel.Password,
+                Email = usersModelModel.Email,
+                Phone = usersModelModel.Phone,
+                isAdmin = usersModelModel.isAdmin,
+                MapReports = new List<Reports>()
+            };
+            // Legger til brukerdata i databasen
+            _context.Users.Add(users);
 
-                // Lagre endringer til databasen asynkront
-                await _context.SaveChangesAsync();
+            // Lagre endringer til databasen asynkront
+            await _context.SaveChangesAsync();
 
-                // Gå til en suksess- eller bekreftelsesside (eller tilbakemelding på skjema)
-                return View("HomePage", usersModel);
-            }   
-            catch (Exception ex)
-            {
-                // Logg feil hvis lagringen ikke fungerer
-                _logger.LogError(ex, "Feil ved lagring av brukerdata");
-                // Returner en feilmelding
-                return View("Error");
-            }
+            // Gå til en suksess- eller bekreftelsesside (eller tilbakemelding på skjema)
+            return View("HomePage", usersModelModel);
+        }   
+        catch (Exception ex)
+        {
+            // Logg feil hvis lagringen ikke fungerer
+            _logger.LogError(ex, "Feil ved lagring av brukerdata");
+            // Returner en feilmelding
+            return View("Error");
         }
 
-        return View(usersModel);
+        return View(usersModelModel);
     }
 
     // GET: Viser registreringsskjemaet
     [Authorize]
     [HttpGet]
-    public async Task<IActionResult> HomePage(int id)
+    public async Task<IActionResult> HomePage(int? id)
     {
         // Hvis id ikke er satt, hent det fra claims
-        if (id <= 0)
+        if (id == null)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (int.TryParse(userIdClaim, out int userId))
@@ -213,16 +224,13 @@ public class HomeController　: Controller
         // Finn brukeren i databasen basert på UserId
         var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
 
-        if (user == null)
-        {
-            _logger.LogInformation("User not found for id: {id}", id);
-            return RedirectToAction("Login", "Account");
-        }
+        if (user != null) return View((UsersModel)user);
+        
+        _logger.LogInformation("User not found for id: {id}", id);
+        return RedirectToAction("Login", "Account");
 
         // Returner brukerdata til viewet
-        return View(user);
     }
-    
 
     [HttpGet]
     public ViewResult About()
