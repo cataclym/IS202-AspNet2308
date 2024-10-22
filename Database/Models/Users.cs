@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Kartverket.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -14,7 +15,7 @@ public class Users
     public string Password { get; set; }
     public string Email { get; set; }
     public string Phone { get; set; }
-    public bool isAdmin { get; set; } = false;
+    public bool IsAdmin { get; set; } = false;
     public ICollection<Reports> MapReports { get; set; } = new List<Reports>();
 
     // Konverterer Users til UsersModel uten problemer fordi det er samme felt
@@ -22,11 +23,10 @@ public class Users
     {
         UserId = users.UserId,
         Email = users.Email,
-        isAdmin = users.isAdmin,
+        IsAdmin = users.IsAdmin,
         MapReports = users.MapReports,
         Password = users.Password,
         Username = users.Username,
         Phone = users.Phone,
     };
-
 }

@@ -20,14 +20,14 @@ public class UsersModel
     public string Password { get; set; }
     [EmailAddress] public string Email { get; set; }
     [Phone] public string Phone { get; set; }
-    public bool isAdmin { get; set; } = false;
+    public bool IsAdmin { get; set; } = false;
     public ICollection<Reports> MapReports { get; set; } = new List<Reports>();
     // Konverterer Users til UsersModel uten problemer fordi det er samme felt
     public static implicit operator Users(UsersModel users) => new()
     {
         UserId = users.UserId,
         Email = users.Email,
-        isAdmin = users.isAdmin,
+        IsAdmin = users.IsAdmin,
         MapReports = users.MapReports,
         Password = users.Password,
         Username = users.Username,

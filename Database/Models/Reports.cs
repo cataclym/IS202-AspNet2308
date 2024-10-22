@@ -11,5 +11,4 @@ public sealed class Reports
     public string GeoJsonString { get; set; }
     // Referrer til Messages tabell
     public ICollection<Messages> Messages { get; set; } = new List<Messages>();
-    public int UserId { get; set; }
 }

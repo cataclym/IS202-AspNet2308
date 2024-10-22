@@ -176,7 +176,7 @@ public class HomeController　: Controller
                 Password = usersModelModel.Password,
                 Email = usersModelModel.Email,
                 Phone = usersModelModel.Phone,
-                isAdmin = usersModelModel.isAdmin,
+                IsAdmin = usersModelModel.IsAdmin,
                 MapReports = new List<Reports>()
             };
             // Legger til brukerdata i databasen
@@ -195,8 +195,6 @@ public class HomeController　: Controller
             // Returner en feilmelding
             return View("Error");
         }
-
-        return View(usersModelModel);
     }
 
     // GET: Viser registreringsskjemaet
