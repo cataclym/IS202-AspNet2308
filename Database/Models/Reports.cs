@@ -20,5 +20,5 @@ public enum Status
 {
     Ubehandlet,
     Under_Behandling,
-    Ferdig_Behandlet
+    Behandlet
 }
