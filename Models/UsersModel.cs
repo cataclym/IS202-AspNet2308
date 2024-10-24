@@ -19,7 +19,7 @@ public class UsersModel
     [DataType(DataType.Password)]
     public string Password { get; set; }
     [EmailAddress] public string Email { get; set; }
-    [Phone] public string Phone { get; set; }
+    [Phone] public string? Phone { get; set; }
     public bool IsAdmin { get; set; } = false;
     public ICollection<Reports> MapReports { get; set; } = new List<Reports>();
     // Konverterer Users til UsersModel uten problemer fordi det er samme felt

@@ -14,8 +14,8 @@ public class Users
     public string Password { get; set; }
     [MaxLength(50)]
     public string Email { get; set; }
-    [MaxLength(15)]
-    public string Phone { get; set; }
+    [MaxLength(15)] // Valgfritt felt
+    public string? Phone { get; set; }
     public bool IsAdmin { get; set; } = false;
     public DateTime CreatedAt { get; set; }  = DateTime.Now;
     public ICollection<Reports> MapReports { get; set; } = new List<Reports>();
