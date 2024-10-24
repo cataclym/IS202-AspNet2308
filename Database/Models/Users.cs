@@ -10,7 +10,7 @@ public class Users
     [Key] public int UserId { get; set; }
     [MaxLength(45)]
     public string Username { get; set; }
-    [MaxLength(45)]
+    [MaxLength(72)]
     public string Password { get; set; }
     [MaxLength(50)]
     public string Email { get; set; }
