@@ -60,7 +60,6 @@ body {
     align-items: center;
 }
 
-
 label {
     display: block;
     margin-bottom: 5px;
@@ -77,18 +76,16 @@ input {
     color: white;
     display: inline-block;
     margin: 0 auto; /* Sentrerer knappen */
-    width: 130px;
-    height: 40px;
+    width: 145px;
+    height: 45px;
     font-size: 16px;
-    display: flex; /* Gjør knappen til en flex-container */
+    border: 2px solid !important; /* Angi bredde og stil, men ikke farge */
+    border-radius: 10px;
+    cursor: pointer; /* Håndmus ved hover */
     align-items: center; /* Sentrerer innholdet vertikalt */
     justify-content: center; /* Sentrerer innholdet horisontalt */
     text-decoration: none; /* Ingen understreking på tekst */
     box-sizing: border-box; /* Inkluderer padding og border i bredden/høyden */
-    border: none; /* Remove any default border */
-    outline: none; /* Remove focus outline */
-    box-shadow: none; /* Prevent any shadow effects */
-    border-radius: 10px;
 }
 
 
@@ -97,16 +94,16 @@ input {
     flex-direction: row; /* Plasserer knappene horisontalt */
     align-items: center; /* Sentrerer knappene vertikalt */
     justify-content: space-evenly; /* Sentrerer knappene horisontalt */
-    gap: 80px; /* Økt avstand mellom knappene */
+    width: 70%; /* Juster bredde om nødvendig */
+    margin: 0 auto; /* Sentrer containeren */
+    gap: 0px; /* Økt avstand mellom knappene */
 }
 
 .btn-index {
     width: 273px;
     height: 85px;
     font-size: 32px;
-    background-color: #006A33FF; /* Bakgrunnsfarge */
-    color: white;
-    border: none; /* Ingen ramme */
+    border: 2px solid !important; /* Angi bredde og stil, men ikke farge */
     border-radius: 10px;
     cursor: pointer; /* Håndmus ved hover */
     display: flex; /* Gjør knappen til en flex-container */
@@ -117,11 +114,16 @@ input {
 }
 
 .btn-primary {
-    background-color: #038540; /* Egen bakgrunnsfarge for primærknapp (grønn)*/
+    background-color: #FFFFFF; /* Egen bakgrunnsfarge for primærknapp */
+    border-color: #006F35; /* Fargen på border (stroke) */
+    color: #006F35; /* Grønn tekstfarge */
+
 }
 
 .btn-secondary {
-    background-color: #1B589F; /* Egen bakgrunnsfarge for sekundærknapp (blå)*/
+    background-color: #FFFFFF; 
+    border-color: #1B589F; /* Fargen på border (stroke) */
+    color: #1B589F; 
 }
 
 .text-center {
@@ -153,10 +155,12 @@ p {
 }
 
 .list-container {
-    display: flex; /* Bruker Flexbox for å lage to kolonner */
-    justify-content: space-between; /* Plasserer dem på hver sin side */
-    padding: 20px; /* Gir litt innrykk fra kantene */
-    box-sizing: border-box; /* Inkluderer padding i høyden */
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: stretch; /* Sikrer at begge boksene har lik høyde */
+    width: 90%; /* Juster bredde om nødvendig */
+    margin: 0 auto; /* Sentrer containeren */
 }
 
 /* Stiler for lister */
@@ -179,9 +183,15 @@ p {
 
 /* Stiler for hver liste for å gi dem lik høyde */
 .list-item {
+    background-color: #f9e8d2; /* Lys bakgrunnsfarge */
     display: flex; /* Bruker Flexbox for å justere innholdet */
     flex-direction: column; /* Arrangerer elementene vertikalt */
-    height: 100%; /* Setter høyden til 100% av containeren */
+    padding: 20px; /* Litt padding rundt innholdet */
+    border-radius: 10px; /* Avrundede hjørner */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Legger til en liten skygge */
+    margin: 20px; /* Litt mellomrom rundt hver boks */
+    flex: 1;
+    max-width: 430px;
 }
 
 .highlight {
@@ -566,7 +576,7 @@ input[type="checkbox"] {
 
 .navbar {
     display: flex;
-    background-color: lightblue!important;
+    background-color: #F7F7F7!important;
 }
 
 .nav-link {
