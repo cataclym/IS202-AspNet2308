@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Kartverket.Database.Models;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace Kartverket.Controllers;
 
@@ -228,6 +229,23 @@ public class HomeController　: Controller
         return RedirectToAction("Login", "Account");
 
         // Returner brukerdata til viewet
+
+        // Hent rapporter for brukeren, sorter etter CreatedAt, og hent bare ReportId
+        var reportIds = await _context.Reports
+            .Where(r => r.UserId == id)
+            .OrderBy(r => r.CreatedAt)
+            .Select(r => r.ReportId)
+            .ToListAsync();
+
+        // Opprett ViewModel som kombinerer brukerdata og rapportdata
+        var viewModel = new HomePageViewModel
+        {
+            User = (UsersModel)user,
+            ReportIds = reportIds
+        };
+
+        // Returner brukerdata og rapporter til viewet
+        return View(viewModel);
     }
 
     [HttpGet]

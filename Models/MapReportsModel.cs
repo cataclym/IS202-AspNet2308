@@ -7,46 +7,62 @@ using Newtonsoft.Json.Linq;
 namespace Kartverket.Models;
 
 [Table("Reports")]
-public sealed class MapReportsModel
+public sealed class ReportsModel
 {
-    [Key] public int GeodataId { get; set; } // Ingen MinLength på int
+    [Key]
+    public int ReportId { get; set; }
+
+    [NotMapped]
+    public int GeodataId
+    {
+        get => ReportId;
+        set => ReportId = value;
+    }
 
     [Required]
     [MinLength(5)]
     [MaxLength(256)]
-    public string Melding { get; set; } // MinLength fungerer kun på strenger, arrays, eller samlinger
+    public string Melding { get; set; }
 
-    [Required] public string StringKoordinaterLag { get; set; } // Ingen valideringsattributt som ikke passer
+    [Required]
+    public string GeoJsonString { get; set; }
 
-    // Referrer til Messages tabell
-    public ICollection<MessagesModel> Messages { get; set; } = new List<MessagesModel>();
+    [NotMapped]
+    public string StringKoordinaterLag
+    {
+        get => GeoJsonString;
+        set => GeoJsonString = value;
+    }
+
+    public DateTime CreatedAt { get; set; }
+    public DateTime? ResolvedAt { get; set; }
+    public int Status { get; set; }
+
     public int UserId { get; set; }
-    //Konverterer GeoJson koordinater til en streng med koordinater
+    public UsersModel User { get; set; }
+
+    public ICollection<MessagesModel> Messages { get; set; } = new List<MessagesModel>();
+
     public string ConvertGeoJsonStringToCoordinates()
     {
-        if (string.IsNullOrWhiteSpace(StringKoordinaterLag))
+        if (string.IsNullOrWhiteSpace(GeoJsonString))
         {
             return "Ingen GeoJSON-streng tilgjengelig";
         }
 
         try
         {
-            // Parse GeoJSON-strengen
-            var geoJsonObject = JObject.Parse(StringKoordinaterLag);
-
-            // Sjekk om dette er en 'FeatureCollection'
+            var geoJsonObject = JObject.Parse(GeoJsonString);
             var features = geoJsonObject["features"];
             if (features != null && features.Type == JTokenType.Array)
             {
-                // Håndter hver 'Feature' i 'FeatureCollection'
                 foreach (var feature in features)
                 {
                     var geometryType = feature["geometry"]?["type"]?.ToString();
                     var coordinates = feature["geometry"]?["coordinates"];
 
                     if (coordinates is null) throw new Exception("Ingen koordinater tilgjengelige");
-                    
-                    // Hent koordinater avhengig av typen geometri
+
                     return geometryType switch
                     {
                         "Polygon" => ParsePolygonCoordinates(coordinates),
@@ -67,27 +83,29 @@ public sealed class MapReportsModel
             return $"Feil ved parsing av GeoJSON-streng: {ex.Message}";
         }
     }
+
     private static string ParsePolygonCoordinates(JToken coordinates)
     {
         if (coordinates is not { Type: JTokenType.Array }) return "Ingen koordinater funnet for Polygon";
-        
+
         var sb = new StringBuilder();
         sb.Append("Lokasjon: ");
         foreach (var ring in coordinates)
         {
             foreach (var coordPair in ring)
             {
-                var lng = (double?) coordPair[0];
-                var lat = (double?) coordPair[1];
+                var lng = (double?)coordPair[0];
+                var lat = (double?)coordPair[1];
                 sb.Append($"[Lat: {lat}, Lng: {lng}], ");
             }
         }
         return sb.ToString().TrimEnd(',', ' ');
     }
+
     private static string ParseMultiPolygonCoordinates(JToken coordinates)
     {
         if (coordinates is not { Type: JTokenType.Array }) return "Ingen koordinater funnet for MultiPolygon";
-        
+
         var sb = new StringBuilder();
         sb.Append("MultiPolygon koordinater: ");
         foreach (var polygon in coordinates)
