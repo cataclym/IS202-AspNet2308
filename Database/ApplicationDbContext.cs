@@ -22,6 +22,11 @@ public class ApplicationDbContext : DbContext
             .HasIndex(u => u.Email)
             .IsUnique();
         
+        modelBuilder.Entity<Messages>()
+            .HasOne(m => m.User)
+            .WithMany(u => u.Messages)
+            .HasForeignKey(m => m.UserId);
+        
         base.OnModelCreating(modelBuilder);
     }
 }

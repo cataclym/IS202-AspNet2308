@@ -41,9 +41,14 @@ namespace Kartverket.Migrations
                     b.Property<int?>("ReportsReportId")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("MessageId");
 
                     b.HasIndex("ReportsReportId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
@@ -129,6 +134,14 @@ namespace Kartverket.Migrations
                     b.HasOne("Kartverket.Database.Models.Reports", null)
                         .WithMany("Messages")
                         .HasForeignKey("ReportsReportId");
+
+                    b.HasOne("Kartverket.Database.Models.Users", "User")
+                        .WithMany("Messages")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Kartverket.Database.Models.Reports", b =>
@@ -143,6 +156,11 @@ namespace Kartverket.Migrations
                 });
 
             modelBuilder.Entity("Kartverket.Database.Models.Reports", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("Kartverket.Database.Models.Users", b =>
                 {
                     b.Navigation("Messages");
                 });

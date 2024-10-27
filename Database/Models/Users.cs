@@ -18,4 +18,6 @@ public class Users
     public string? Phone { get; set; }
     public bool IsAdmin { get; set; } = false;
     public DateTime CreatedAt { get; set; }  = DateTime.Now;
+    
+    public ICollection<Messages> Messages { get; set; } = new List<Messages>();
 }
