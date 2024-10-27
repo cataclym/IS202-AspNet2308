@@ -1,15 +1,10 @@
-@model UsersModel
-
-@{
-    ViewData["Title"] = "Min side";
-}
+@model Kartverket.Models.HomePageModel
 
 <!DOCTYPE html>
-
 <html>
 <body>
     <h1 class="header1">Min <span class="highlight">Side</span></h1>
-    
+
     <div class="homepage">
         <div class="meld-kartfeil">
             <p>Finner du feil i kartet? Trykk her:</p>
@@ -18,109 +13,93 @@
                     <button type="submit" class="btn-general btn-primary">Meld feil</button>
                 </form>
             </div>
-        </div>
-        
-        <div style="margin-top: 20px;">
-            <form asp-controller="Account" asp-action="Logout" method="post">
-                <button type="submit" class="btn-general btn-secondary">Logg ut</button>
-            </form>
-        </div>
-        
-            <div class="user-information">
-                @if (Model != null)
-                {
-                    <table class="user-info-table">
-
-                        <tr class="user-table-header">
-
-                            <th colspan="3" style="text-align: left;" class="user-table-header">Min informasjon:</th> <!-- Overskrift for tabell -->
-                        </tr>
-
-                        <tr>
-                            <td><strong>Brukernavn:</strong></td>
-                            <td>@Model.Username</td>
-                        </tr>
-                        <tr>
-                            <td><strong>E-post:</strong></td>
-                            <td>@Model.Email</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Telefonnummer:</strong></td>
-                            <td>@Model.Phone</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Passord:</strong></td>
-                            <td>
-                                <div class="password-container">
-                                    <input type="password" id="passwordField" value="@Model.Password" readonly/>
-                                    <button type="button" class="btn-general btn secondary" id="togglePasswordBtn">Vis passord</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                }
+            <div style="margin-top: 20px;">
+                <form asp-controller="Account" asp-action="Logout" method="post">
+                    <button type="submit" class="btn-general btn-secondary">Logg ut</button>
+                </form>
             </div>
-
-<div class="map-reports">
-<!-- Legg til tidligere innmeldinger-->
-
-@if (Model != null)
-   {
-          <table class="map-reports-table">
-                <thead>
-                        <tr class="reports-table-header">
-                            <th colspan="3" style="text-align: left;">Tidligere rapporter:</th> <!-- Overskrift for tabell -->
-                        </tr>
-                        
-                    <tr>
-                        <th>Dato</th>
-                        <th>Beskrivelse</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="map-reports-td">
-                        <td>22.07.24</td>
-                        <td>Rapport 1</td>
-                        <td>Behandlet</td>
-                    </tr>
-                    <tr>
-                        <td>tbd</td>
-                        <td>tbd</td>
-                        <td>tbd</td>
-                    </tr>
-                        <tr>
-                            <td>tbd</td>
-                            <td>tbd</td>
-                            <td>tbd</td>
-                        </tr>
-                        <tr>
-                            <td>tbd</td>
-                            <td>tbd</td>
-                            <td>tbd</td>
-                        </tr>
-                </tbody>
-          </table>
-            }
+        </div>
         
-     </div>
-</div>
+        
+        <div class="user-information">
+            @if (Model != null)
+            {
+            <table class="user-info-table">
 
-<script>
+                <tr class="user-table-header">
+
+                    <th colspan="3" style="text-align: left;" class="user-table-header">Min informasjon:</th> <!-- Overskrift for tabell -->
+                </tr>
+
+                <tr>
+                    <td><strong>Brukernavn:</strong></td>
+                    <td>@Model.User.Username</td>
+                </tr>
+                <tr>
+                    <td><strong>E-post:</strong></td>
+                    <td>@Model.User.Email</td>
+                </tr>
+                <tr>
+                    <td><strong>Telefonnummer:</strong></td>
+                    <td>@Model.User.Phone</td>
+                </tr>
+            </table>
+            }
+        </div>
+
+    <div class="map-reports">
+        <table class="user-info-table">
+                
+            <!-- Table header row for column names -->
+            <thead>
+            <tr>
+                <th>Rapport ID</th>
+                <th>Melding</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+
+            <!-- Table body for reports data -->
+            <tbody>
+            @if (Model.Reports != null && Model.Reports.Any())
+            {
+                @foreach (var report in Model.Reports)
+                {
+                    <tr>
+                        <td>@report.ReportId</td>
+                        <td>@report.Message</td>
+                        <td>@report.Status.ToString()</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3">No reports available.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+    
+    <script>
         // JavaScript to toggle password visibility
         const passwordField = document.getElementById("passwordField");
         const togglePasswordBtn = document.getElementById("togglePasswordBtn");
 
-        togglePasswordBtn.addEventListener("click", function () {
-            if (passwordField.type === "password") {
-                passwordField.type = "text";  // Show password
-                togglePasswordBtn.textContent = "Skjul passord";  // Change button text
-            } else {
-                passwordField.type = "password";  // Hide password
-                togglePasswordBtn.textContent = "Vis passord";  // Reset button text
-            }
-        });
+        if (passwordField && togglePasswordBtn) {
+            togglePasswordBtn.addEventListener("click", function () {
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";  // Show password
+                    togglePasswordBtn.textContent = "Skjul passord";  // Change button text
+                } else {
+                    passwordField.type = "password";  // Hide password
+                    togglePasswordBtn.textContent = "Vis passord";  // Reset button text
+                }
+            });
+        }
     </script>
-
 </body>
 </html>

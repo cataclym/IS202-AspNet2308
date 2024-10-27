@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Kartverket.Database.Models;
+using Kartverket.Models;
 
 namespace Kartverket.Database;
 
@@ -20,5 +21,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Users>()
             .HasIndex(u => u.Email)
             .IsUnique();
+        
+        base.OnModelCreating(modelBuilder);
     }
 }

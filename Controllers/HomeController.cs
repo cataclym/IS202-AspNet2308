@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Kartverket.Database.Models;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace Kartverket.Controllers;
 
@@ -56,7 +57,7 @@ public class HomeController　: Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> RegisterMapReport(MapReportsModel model)
+    public async Task<IActionResult> RegisterMapReport(ReportViewModel model)
     {
         // Logg modellens verdi
         _logger.LogInformation("Model: {Model}", @model);
@@ -65,7 +66,7 @@ public class HomeController　: Controller
         if (ModelState.IsValid)
         {
             _logger.LogInformation("ModelState er gyldig");
-            _logger.LogInformation("GeoJSON-streng: {GeoJson}", model.StringKoordinaterLag);
+            _logger.LogInformation("GeoJSON-streng: {GeoJson}", model.GeoJsonString);
 
             // Konverter GeoJSON-strengen til koordinater
             string coordinatesString = model.ConvertGeoJsonStringToCoordinates();
@@ -81,7 +82,7 @@ public class HomeController　: Controller
                 return View("MapReport", model); // Returner til view hvis koordinatene er ugyldige
             }
 
-            var mapLayers = GetGeoJson(model.StringKoordinaterLag);
+            var mapLayers = GetGeoJson(model.GeoJsonString);
             
             // Validering av GeoJSON (valgfritt, avhengig av behov)
             if (mapLayers == null)
@@ -97,23 +98,37 @@ public class HomeController　: Controller
             
             _logger.LogInformation("Legger til data i databasen");
             
-            // Konstruerer database modellen
+            
+            // Forutsetter at brukeren er autentisert
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            
+            // Konstruerer database-modellen for Reports
             var report = new Reports
             {
-                GeoJsonString = model.StringKoordinaterLag,
-                Messages = new List<Messages>()
+                UserId = int.Parse(userId), // Henter brukerens ID fra claims
+                GeoJsonString = model.GeoJsonString,
+                CreatedAt = DateTime.Now,
+                Messages = new List<Messages>() // Oppretter en tom liste for meldinger
             };
-            report.Messages.Add(new Messages
+
+            // Legg til meldingen til Messages-listen hvis det finnes en melding i modellen
+            if (!string.IsNullOrWhiteSpace(model.Message))
             {
-                Message = model.Melding
-            });
-            // Legger modellen til i database
-            // Bruker _context som er injisert i controlleren
+                report.Messages.Add(new Messages
+                {
+                    Message = model.Message,
+                    CreatedAt = DateTime.Now
+                });
+            }
+
+            // Legg til rapporten i databasen
             _context.Reports.Add(report);
 
             // Lagre endringer til databasen asynkront
             await _context.SaveChangesAsync();
             _logger.LogInformation("Data har blitt lagret i databasen");
+
+            return View("Reported", model); // Eller til et annet view for å bekrefte lagringen
 
             return View("Reported", model); // Eller til et annet view for å bekrefte lagringen
         }
@@ -150,7 +165,7 @@ public class HomeController　: Controller
     }
     
     [HttpPost]
-    public ViewResult MapReport(MapReportsModel? feilMeldingsModel)
+    public ViewResult MapReport(ReportViewModel? feilMeldingsModel)
     {
         return View("MapReport", feilMeldingsModel);
     }
@@ -163,21 +178,20 @@ public class HomeController　: Controller
     
     
     [HttpPost]
-    public async Task<IActionResult> HomePage(UsersModel usersModelModel)
+    public async Task<IActionResult> RegisterUser(UserRegistrationModel userRegistrationModelModel)
     {
         // Sjekk om modellen er gyldig
-        if (!ModelState.IsValid) return View(usersModelModel);
+        if (!ModelState.IsValid) return View(userRegistrationModelModel);
         
         try
         {
             var users = new Users
             {
-                Username = usersModelModel.Username,
-                Password = usersModelModel.Password,
-                Email = usersModelModel.Email,
-                Phone = usersModelModel.Phone,
-                IsAdmin = usersModelModel.IsAdmin,
-                MapReports = new List<Reports>()
+                Username = userRegistrationModelModel.Username,
+                Password = userRegistrationModelModel.Password,
+                Email = userRegistrationModelModel.Email,
+                Phone = userRegistrationModelModel.Phone,
+                IsAdmin = userRegistrationModelModel.IsAdmin,
             };
             // Legger til brukerdata i databasen
             _context.Users.Add(users);
@@ -186,7 +200,7 @@ public class HomeController　: Controller
             await _context.SaveChangesAsync();
 
             // Gå til en suksess- eller bekreftelsesside (eller tilbakemelding på skjema)
-            return View("HomePage", usersModelModel);
+            return View("Min Side", userRegistrationModelModel);
         }   
         catch (Exception ex)
         {
@@ -200,10 +214,14 @@ public class HomeController　: Controller
     // GET: Viser registreringsskjemaet
     [Authorize]
     [HttpGet]
-    public async Task<IActionResult> HomePage(int? id)
+    public async Task<IActionResult> HomePage(int id = 0)
     {
-        // Hvis id ikke er satt, hent det fra claims
-        if (id == null)
+        ViewData["Title"] = "Min Side"; // Set the title here in the controller
+        // Your existing logic for setting up the model
+        // Fetch the user data based on the ID or claims
+        
+        // Retrieve the user ID from claims if not provided
+        if (id == 0)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (int.TryParse(userIdClaim, out int userId))
@@ -219,15 +237,45 @@ public class HomeController　: Controller
 
         _logger.LogInformation("User id retrieved: {id}", id);
 
-        // Finn brukeren i databasen basert på UserId
+        // Retrieve user from the database based on the UserId
         var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
 
-        if (user != null) return View((UsersModel)user);
+        if (user == null)
+        {
+            _logger.LogInformation("User not found for id: {id}", id);
+            return RedirectToAction("Login", "Account");
+        }
         
-        _logger.LogInformation("User not found for id: {id}", id);
-        return RedirectToAction("Login", "Account");
+        // Map user data to UserViewModel
+        var userRegistrationModel = new UserRegistrationModel()
+        {
+            Username = user.Username,
+            Email = user.Email,
+            Phone = user.Phone
+        };
+    
+        // Retrieve reports for the user, including ReportId, Status, and the first Message
+        var reports = await _context.Reports
+            .Where(r => r.UserId == id)
+            .OrderBy(r => r.CreatedAt)
+            .Include(r => r.Messages) // Include Messages to access related messages
+            .Select(r => new ReportViewModel
+            {
+                ReportId = r.ReportId,
+                Message = r.Messages != null && r.Messages.Any() ? r.Messages.First().Message : "No message",
+                Status = r.Status
+            })
+            .ToListAsync();
 
-        // Returner brukerdata til viewet
+        // Map data to HomePageModel
+        var viewModel = new HomePageModel
+        {
+            Reports = reports,
+            User = userRegistrationModel
+        };
+
+        // Pass the model to the view
+        return View(viewModel);
     }
 
     [HttpGet]

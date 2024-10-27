@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Kartverket.Models;
 
-public class LoginModel
+public class UserLoginModel
 {
     [Required]
     [PasswordPropertyText]

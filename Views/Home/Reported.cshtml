@@ -1,4 +1,4 @@
-@model MapReportsModel
+@model ReportViewModel
 
 @{
     ViewData["Title"] = "Registrert rapport";
@@ -8,13 +8,13 @@
 <!DOCTYPE html>
 
 <div>
-    @if (Model.Melding?.Length >= 1 || Model.StringKoordinaterLag?.Length >= 1)
+    @if (Model.Message?.Length >= 1 || Model.StringKoordinaterLag?.Length >= 1)
     {
         <h1>Rapport registrert</h1>
         <form asp-action="RegisterMapReport" asp-controller="Home" method="post" id="mapForm"> </form>
         <div>
             <h3>Melding</h3>
-            <p>@Model.Melding</p>
+            <p>@Model.Message</p>
             @if (municipalityCountyNames != null)
             {
                 <h3>Fylke</h3>
