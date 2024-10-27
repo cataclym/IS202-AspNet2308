@@ -13,7 +13,13 @@
                     <button type="submit" class="btn-general btn-primary">Meld feil</button>
                 </form>
             </div>
+            <div style="margin-top: 20px;">
+                <form asp-controller="Account" asp-action="Logout" method="post">
+                    <button type="submit" class="btn-general btn-secondary">Logg ut</button>
+                </form>
+            </div>
         </div>
+        
         
         <div class="user-information">
             @if (Model != null)
@@ -41,51 +47,43 @@
             }
         </div>
 
-        <div class="map-reports">
-            <table class="user-info-table">
+    <div class="map-reports">
+        <table class="user-info-table">
                 
-                <!-- Table header row for column names -->
-                <thead>
-                <tr>
-                    <th>Rapport ID</th>
-                    <th>Melding</th>
-                    <th>Status</th>
-                </tr>
-                </thead>
+            <!-- Table header row for column names -->
+            <thead>
+            <tr>
+                <th>Rapport ID</th>
+                <th>Melding</th>
+                <th>Status</th>
+            </tr>
+            </thead>
 
-                <!-- Table body for reports data -->
-                <tbody>
-                @if (Model.Reports != null && Model.Reports.Any())
-                {
+            <!-- Table body for reports data -->
+            <tbody>
+            @if (Model.Reports != null && Model.Reports.Any())
+            {
                 @foreach (var report in Model.Reports)
                 {
-                <tr>
-                    <td>@report.ReportId</td>
-                    <td>@report.Message</td>
-                    <td>@report.Status.ToString()</td>
-                </tr>
+                    <tr>
+                        <td>@report.ReportId</td>
+                        <td>@report.Message</td>
+                        <td>@report.Status.ToString()</td>
+                    </tr>
                 }
-                }
-                else
-                {
+            }
+            else
+            {
                 <tr>
                     <td colspan="3">No reports available.</td>
                 </tr>
-                }
-                </tbody>
-            </table>
-        </div>
-
-
-        <div style="margin-top: 20px;">
-        <form asp-controller="Account" asp-action="Logout" method="post">
-            <button type="submit" class="btn-general btn-secondary">Logg ut</button>
-        </form>
-       </div>
+            }
+            </tbody>
+        </table>
+    </div>
     </div>
 
-        
-
+    
     <script>
         // JavaScript to toggle password visibility
         const passwordField = document.getElementById("passwordField");
