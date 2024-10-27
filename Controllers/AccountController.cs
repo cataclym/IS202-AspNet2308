@@ -46,22 +46,22 @@ public class AccountController : Controller
     
     // POST: Behandler innlogging
     [HttpPost]
-    public async Task<IActionResult> Login(LoginModel loginModel, string returnUrl = null)
+    public async Task<IActionResult> Login(UserLoginModel userLoginModel, string returnUrl = null)
     {
         if (User.Identity is { IsAuthenticated: true })
         {
             return RedirectToAction("HomePage", "Home");
         }
         Console.WriteLine(ModelState.IsValid);
-        if (!ModelState.IsValid) return View("Login", loginModel);
+        if (!ModelState.IsValid) return View("Login", userLoginModel);
         
         // Finn brukeren i databasen basert på brukernavn
         var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Username == loginModel.Username);
+            .FirstOrDefaultAsync(u => u.Username == userLoginModel.Username);
 
 
         // Sjekk om brukeren finnes og verifiser passordet
-        if (user != null && VerifyPassword(loginModel.Password, user.Password))
+        if (user != null && VerifyPassword(userLoginModel.Password, user.Password))
         {
             // Opprett en liste over påstander (claims) som identifiserer brukeren
             var claims = new List<Claim>
@@ -87,7 +87,7 @@ public class AccountController : Controller
 
         // Feilhåndtering hvis brukernavn eller passord er feil
         ViewBag.ErrorMessage = "Feil brukernavn eller passord.";
-        return View("Login", loginModel);
+        return View("Login", userLoginModel);
     }
     
     //Funksjon for å logge ut brukeren
@@ -110,24 +110,24 @@ public class AccountController : Controller
 
     
     [HttpPost]
-    public async Task<IActionResult> UserRegistration(UsersModel usersModelModel)
+    public async Task<IActionResult> UserRegistration(UserRegistrationModel userRegistrationModelModel)
     {
         // Sjekk om modellen er gyldig (at brukernavn og passord er fylt ut korrekt)
         if (!ModelState.IsValid)
         {
             // Hvis noe er galt med input (f.eks. passord for kort), returner til registreringssiden med feilmeldinger
-            return View("UserRegistration", usersModelModel);
+            return View("UserRegistration", userRegistrationModelModel);
         }
 
         // Hashe passordet før det lagres i databasen
-        usersModelModel.Password = BCrypt.Net.BCrypt.HashPassword(usersModelModel.Password);
+        userRegistrationModelModel.Password = BCrypt.Net.BCrypt.HashPassword(userRegistrationModelModel.Password);
 
         // Legg til brukeren i databasen
-        _context.Users.Add(usersModelModel);
+        _context.Users.Add(userRegistrationModelModel);
         await _context.SaveChangesAsync(); // Lagrer endringene i databasen
 
         // Returner til en side for å bekrefte at registreringen er vellykket
-        return RedirectToAction("HomePage", "Home", new { id = usersModelModel.UserId }); // Omdirigerer til brukerens profilside, for eksempel
+        return RedirectToAction("HomePage", "Home", new { id = userRegistrationModelModel.UserId }); // Omdirigerer til brukerens profilside, for eksempel
     }
 
 // GET: Viser registreringsskjemaet

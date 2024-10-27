@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Kartverket.Database.Models;
 using Newtonsoft.Json.Linq;
 
 namespace Kartverket.Models;
@@ -19,7 +20,7 @@ public class ReportViewModel
 
     public DateTime CreatedAt { get; set; }
     public DateTime? ResolvedAt { get; set; }
-    public int Status { get; set; } = 0;
+    public Status Status { get; set; }
 
     public string StringKoordinaterLag
     {

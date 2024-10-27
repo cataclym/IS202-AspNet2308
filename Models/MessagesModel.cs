@@ -17,7 +17,7 @@ namespace Kartverket.Models
 
         // Hvis meldinger har en relasjon til en bruker eller rapport
         public int UserId { get; set; }
-        public UsersModel User { get; set; }
+        public UserRegistrationModel UserRegistration { get; set; }
 
         // Legg til andre nødvendige felter og relasjoner her...
     }

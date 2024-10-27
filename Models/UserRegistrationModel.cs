@@ -7,7 +7,7 @@ namespace Kartverket.Models;
 
 // Data tilhørende login form
 [PrimaryKey("UserId")] // Denne linjen angir at UserId er primærnøkkelen.
-public class UsersModel
+public class UserRegistrationModel
 {
     [Key] public int UserId { get; set; }
     [Required]
@@ -23,19 +23,19 @@ public class UsersModel
     public bool IsAdmin { get; set; } = false;
     public ICollection<ReportViewModel> MapReports { get; set; } = new List<ReportViewModel>();
     // Konverterer Users til UsersModel uten problemer fordi det er samme felt
-    public static implicit operator Users(UsersModel users) => new Users
+    public static implicit operator Users(UserRegistrationModel userRegistration) => new Users
     {
-        UserId = users.UserId,
-        Email = users.Email,
-        IsAdmin = users.IsAdmin,
-        Password = users.Password,
-        Username = users.Username,
-        Phone = users.Phone,
+        UserId = userRegistration.UserId,
+        Email = userRegistration.Email,
+        IsAdmin = userRegistration.IsAdmin,
+        Password = userRegistration.Password,
+        Username = userRegistration.Username,
+        Phone = userRegistration.Phone,
     };
     
-    public static UsersModel FromUsers(Users user)
+    public static UserRegistrationModel FromUsers(Users user)
     {
-        return new UsersModel
+        return new UserRegistrationModel
         {
             UserId = user.UserId,
             Username = user.Username,

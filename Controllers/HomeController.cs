@@ -178,20 +178,20 @@ public class HomeController　: Controller
     
     
     [HttpPost]
-    public async Task<IActionResult> HomePage(UsersModel usersModelModel)
+    public async Task<IActionResult> RegisterUser(UserRegistrationModel userRegistrationModelModel)
     {
         // Sjekk om modellen er gyldig
-        if (!ModelState.IsValid) return View(usersModelModel);
+        if (!ModelState.IsValid) return View(userRegistrationModelModel);
         
         try
         {
             var users = new Users
             {
-                Username = usersModelModel.Username,
-                Password = usersModelModel.Password,
-                Email = usersModelModel.Email,
-                Phone = usersModelModel.Phone,
-                IsAdmin = usersModelModel.IsAdmin,
+                Username = userRegistrationModelModel.Username,
+                Password = userRegistrationModelModel.Password,
+                Email = userRegistrationModelModel.Email,
+                Phone = userRegistrationModelModel.Phone,
+                IsAdmin = userRegistrationModelModel.IsAdmin,
             };
             // Legger til brukerdata i databasen
             _context.Users.Add(users);
@@ -200,7 +200,7 @@ public class HomeController　: Controller
             await _context.SaveChangesAsync();
 
             // Gå til en suksess- eller bekreftelsesside (eller tilbakemelding på skjema)
-            return View("HomePage", usersModelModel);
+            return View("Min Side", userRegistrationModelModel);
         }   
         catch (Exception ex)
         {
@@ -216,7 +216,11 @@ public class HomeController　: Controller
     [HttpGet]
     public async Task<IActionResult> HomePage(int id = 0)
     {
-        // Hvis id ikke er satt, hent det fra claims
+        ViewData["Title"] = "Min Side"; // Set the title here in the controller
+        // Your existing logic for setting up the model
+        // Fetch the user data based on the ID or claims
+        
+        // Retrieve the user ID from claims if not provided
         if (id == 0)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -233,7 +237,7 @@ public class HomeController　: Controller
 
         _logger.LogInformation("User id retrieved: {id}", id);
 
-        // Finn brukeren i databasen basert på UserId
+        // Retrieve user from the database based on the UserId
         var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
 
         if (user == null)
@@ -242,30 +246,35 @@ public class HomeController　: Controller
             return RedirectToAction("Login", "Account");
         }
         
-        // Returner brukerdata til viewet
-        
-        // Bruk mapper funksjonen for å konvertere `Users` til `UsersModel`
-        var userModel = UsersModel.FromUsers(user);
-        
-        // Hent rapporter for brukeren, sorter etter CreatedAt, og hent ReportId, Message og Status
+        // Map user data to UserViewModel
+        var userRegistrationModel = new UserRegistrationModel()
+        {
+            Username = user.Username,
+            Email = user.Email,
+            Phone = user.Phone
+        };
+    
+        // Retrieve reports for the user, including ReportId, Status, and the first Message
         var reports = await _context.Reports
             .Where(r => r.UserId == id)
             .OrderBy(r => r.CreatedAt)
-            .Include(r => r.Messages) // Inkluderer relasjonen til Messages
+            .Include(r => r.Messages) // Include Messages to access related messages
             .Select(r => new ReportViewModel
             {
                 ReportId = r.ReportId,
-                Message = r.Messages != null && r.Messages.Any() ? r.Messages.First().Message : "Ingen melding",
+                Message = r.Messages != null && r.Messages.Any() ? r.Messages.First().Message : "No message",
                 Status = r.Status
             })
             .ToListAsync();
 
-        var viewModel = new HomepageViewModel
+        // Map data to HomePageModel
+        var viewModel = new HomePageModel
         {
-            User = userModel, 
-            Reports = reports  
+            Reports = reports,
+            User = userRegistrationModel
         };
 
+        // Pass the model to the view
         return View(viewModel);
     }
 
