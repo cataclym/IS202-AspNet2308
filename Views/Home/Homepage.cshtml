@@ -8,7 +8,8 @@
 
 <html>
 <body>
-    <h1 class="header1">Min <span class="highlight">Side</span></h1>
+<h1 class="header1">Min <span class="highlight">Side</span></h1>
+<h2 class="center-horizontal">Velkommen, @ViewBag.User.Username!</h2>
     
     <div class="homepage">
         <div class="meld-kartfeil">
@@ -18,6 +19,28 @@
                     <button type="submit" class="btn-general btn-primary">Meld feil</button>
                 </form>
             </div>
+        </div>
+
+        <div class="map-reports">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Rapport ID</th>
+                    <th>Melding</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var report in ViewBag.Reports)
+                {
+                <tr>
+                    <td>@report.ReportId</td>
+                    <td>@report.Message</td>
+                    <td>@report.Status</td>
+                </tr>
+                }
+                </tbody>
+            </table>
         </div>
         
         <div style="margin-top: 20px;">

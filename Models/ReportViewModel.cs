@@ -1,47 +1,31 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
 namespace Kartverket.Models;
 
-[Table("Reports")]
-public sealed class ReportsModel
+public class ReportViewModel
 {
-    [Key]
     public int ReportId { get; set; }
-
-    [NotMapped]
-    public int GeodataId
-    {
-        get => ReportId;
-        set => ReportId = value;
-    }
+    public int UserId { get; set; }
 
     [Required]
-    [MinLength(5)]
+    [MinLength(5, ErrorMessage = "Meldingen må være minst 5 tegn lang.")]
     [MaxLength(256)]
-    public string Melding { get; set; }
+    public string Message { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Du må markere området på kartet.")] 
     public string GeoJsonString { get; set; }
 
-    [NotMapped]
+    public DateTime CreatedAt { get; set; }
+    public DateTime? ResolvedAt { get; set; }
+    public int Status { get; set; } = 0;
+
     public string StringKoordinaterLag
     {
         get => GeoJsonString;
         set => GeoJsonString = value;
     }
-
-    public DateTime CreatedAt { get; set; }
-    public DateTime? ResolvedAt { get; set; }
-    public int Status { get; set; }
-
-    public int UserId { get; set; }
-    public UsersModel User { get; set; }
-
-    public ICollection<MessagesModel> Messages { get; set; } = new List<MessagesModel>();
 
     public string ConvertGeoJsonStringToCoordinates()
     {

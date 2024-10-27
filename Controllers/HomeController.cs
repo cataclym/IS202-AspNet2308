@@ -57,7 +57,7 @@ public class HomeController　: Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> RegisterMapReport(MapReportsModel model)
+    public async Task<IActionResult> RegisterMapReport(ReportViewModel model)
     {
         // Logg modellens verdi
         _logger.LogInformation("Model: {Model}", @model);
@@ -66,7 +66,7 @@ public class HomeController　: Controller
         if (ModelState.IsValid)
         {
             _logger.LogInformation("ModelState er gyldig");
-            _logger.LogInformation("GeoJSON-streng: {GeoJson}", model.StringKoordinaterLag);
+            _logger.LogInformation("GeoJSON-streng: {GeoJson}", model.GeoJsonString);
 
             // Konverter GeoJSON-strengen til koordinater
             string coordinatesString = model.ConvertGeoJsonStringToCoordinates();
@@ -82,7 +82,7 @@ public class HomeController　: Controller
                 return View("MapReport", model); // Returner til view hvis koordinatene er ugyldige
             }
 
-            var mapLayers = GetGeoJson(model.StringKoordinaterLag);
+            var mapLayers = GetGeoJson(model.GeoJsonString);
             
             // Validering av GeoJSON (valgfritt, avhengig av behov)
             if (mapLayers == null)
@@ -98,23 +98,37 @@ public class HomeController　: Controller
             
             _logger.LogInformation("Legger til data i databasen");
             
-            // Konstruerer database modellen
+            
+            // Forutsetter at brukeren er autentisert
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            
+            // Konstruerer database-modellen for Reports
             var report = new Reports
             {
-                GeoJsonString = model.StringKoordinaterLag,
-                Messages = new List<Messages>()
+                UserId = int.Parse(userId), // Henter brukerens ID fra claims
+                GeoJsonString = model.GeoJsonString,
+                CreatedAt = DateTime.Now,
+                Messages = new List<Messages>() // Oppretter en tom liste for meldinger
             };
-            report.Messages.Add(new Messages
+
+            // Legg til meldingen til Messages-listen hvis det finnes en melding i modellen
+            if (!string.IsNullOrWhiteSpace(model.Message))
             {
-                Message = model.Melding
-            });
-            // Legger modellen til i database
-            // Bruker _context som er injisert i controlleren
+                report.Messages.Add(new Messages
+                {
+                    Message = model.Message,
+                    CreatedAt = DateTime.Now
+                });
+            }
+
+            // Legg til rapporten i databasen
             _context.Reports.Add(report);
 
             // Lagre endringer til databasen asynkront
             await _context.SaveChangesAsync();
             _logger.LogInformation("Data har blitt lagret i databasen");
+
+            return View("Reported", model); // Eller til et annet view for å bekrefte lagringen
 
             return View("Reported", model); // Eller til et annet view for å bekrefte lagringen
         }
@@ -151,7 +165,7 @@ public class HomeController　: Controller
     }
     
     [HttpPost]
-    public ViewResult MapReport(MapReportsModel? feilMeldingsModel)
+    public ViewResult MapReport(ReportViewModel? feilMeldingsModel)
     {
         return View("MapReport", feilMeldingsModel);
     }
@@ -178,7 +192,6 @@ public class HomeController　: Controller
                 Email = usersModelModel.Email,
                 Phone = usersModelModel.Phone,
                 IsAdmin = usersModelModel.IsAdmin,
-                MapReports = new List<Reports>()
             };
             // Legger til brukerdata i databasen
             _context.Users.Add(users);
@@ -201,10 +214,10 @@ public class HomeController　: Controller
     // GET: Viser registreringsskjemaet
     [Authorize]
     [HttpGet]
-    public async Task<IActionResult> HomePage(int? id)
+    public async Task<IActionResult> HomePage(int id = 0)
     {
         // Hvis id ikke er satt, hent det fra claims
-        if (id == null)
+        if (id == 0)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (int.TryParse(userIdClaim, out int userId))
@@ -223,28 +236,36 @@ public class HomeController　: Controller
         // Finn brukeren i databasen basert på UserId
         var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
 
-        if (user != null) return View((UsersModel)user);
+        if (user == null)
+        {
+            _logger.LogInformation("User not found for id: {id}", id);
+            return RedirectToAction("Login", "Account");
+        }
         
-        _logger.LogInformation("User not found for id: {id}", id);
-        return RedirectToAction("Login", "Account");
-
         // Returner brukerdata til viewet
-
-        // Hent rapporter for brukeren, sorter etter CreatedAt, og hent bare ReportId
-        var reportIds = await _context.Reports
+        
+        // Bruk mapper funksjonen for å konvertere `Users` til `UsersModel`
+        var userModel = UsersModel.FromUsers(user);
+        
+        // Hent rapporter for brukeren, sorter etter CreatedAt, og hent ReportId, Message og Status
+        var reports = await _context.Reports
             .Where(r => r.UserId == id)
             .OrderBy(r => r.CreatedAt)
-            .Select(r => r.ReportId)
+            .Include(r => r.Messages) // Inkluderer relasjonen til Messages
+            .Select(r => new ReportViewModel
+            {
+                ReportId = r.ReportId,
+                Message = r.Messages != null && r.Messages.Any() ? r.Messages.First().Message : "Ingen melding",
+                Status = r.Status
+            })
             .ToListAsync();
 
-        // Opprett ViewModel som kombinerer brukerdata og rapportdata
-        var viewModel = new HomePageViewModel
+        var viewModel = new HomepageViewModel
         {
-            User = (UsersModel)user,
-            ReportIds = reportIds
+            User = userModel, 
+            Reports = reports  
         };
 
-        // Returner brukerdata og rapporter til viewet
         return View(viewModel);
     }
 

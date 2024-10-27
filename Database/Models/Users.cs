@@ -18,17 +18,4 @@ public class Users
     public string? Phone { get; set; }
     public bool IsAdmin { get; set; } = false;
     public DateTime CreatedAt { get; set; }  = DateTime.Now;
-    public ICollection<Reports> MapReports { get; set; } = new List<Reports>();
-
-    // Konverterer Users til UsersModel uten problemer fordi det er samme felt
-    public static implicit operator UsersModel(Users users) => new()
-    {
-        UserId = users.UserId,
-        Email = users.Email,
-        IsAdmin = users.IsAdmin,
-        MapReports = users.MapReports,
-        Password = users.Password,
-        Username = users.Username,
-        Phone = users.Phone,
-    };
 }

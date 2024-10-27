@@ -21,17 +21,30 @@ public class UsersModel
     [EmailAddress] public string Email { get; set; }
     [Phone] public string? Phone { get; set; }
     public bool IsAdmin { get; set; } = false;
-    public ICollection<Reports> MapReports { get; set; } = new List<Reports>();
+    public ICollection<ReportViewModel> MapReports { get; set; } = new List<ReportViewModel>();
     // Konverterer Users til UsersModel uten problemer fordi det er samme felt
-    public static implicit operator Users(UsersModel users) => new()
+    public static implicit operator Users(UsersModel users) => new Users
     {
         UserId = users.UserId,
         Email = users.Email,
         IsAdmin = users.IsAdmin,
-        MapReports = users.MapReports,
         Password = users.Password,
         Username = users.Username,
         Phone = users.Phone,
     };
+    
+    public static UsersModel FromUsers(Users user)
+    {
+        return new UsersModel
+        {
+            UserId = user.UserId,
+            Username = user.Username,
+            Password = user.Password,
+            Email = user.Email,
+            Phone = user.Phone,
+            IsAdmin = user.IsAdmin,
+            // Kopiere eller tilordne andre nødvendige egenskaper her
+        };
+    }
 
 }
