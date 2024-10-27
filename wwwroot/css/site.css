@@ -52,6 +52,11 @@ body {
 .map-container {
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: calc(100vh - 100px); /* Tilpass høyden basert på navbar og footer */
+    width: 100vw;
+    margin: 0;
+    padding: 0;
 }
 
 .center-horizontal {
@@ -406,7 +411,7 @@ body, .homepage {
     display: flex;
     align-items: center; /* Vertically centers the content */
     justify-content: center; /* Horizontally centers the content */
-    margin-bottom: -100px; /* Reduce space below heading */
+    margin-bottom: -150px; /* Reduce space below heading */
 }
 
 .registration-form div {
@@ -435,7 +440,7 @@ body, .homepage {
     margin-top: 5px;
     box-sizing: border-box;
     border-radius: 10px; /* Runda hjørner */
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
 }
 
 /* CSS for login */
@@ -450,6 +455,15 @@ body, .homepage {
 
 input[type="checkbox"] {
     margin: 0; /* Remove default margin */
+}
+
+.login-form input {
+    width: 250px;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    border-radius: 10px; /* Runda hjørner */
+    border: 1px solid #000000;
 }
 
 
@@ -590,7 +604,7 @@ input[type="checkbox"] {
 }
 
 .nav-link:hover {
-    color: #038540; /* Change text color on hover */
+    color: #006F35; /* Change text color on hover */
 }
 
 .nav-link::after {
@@ -600,7 +614,7 @@ input[type="checkbox"] {
     bottom: 0; /* Position the underline at the bottom of the link */
     width: 0; /* Start with no width (hidden) */
     height: 2px; /* Thickness of the underline */
-    background-color: #1B589F; /* Blue color for underline */
+    background-color: #006F35; /* Blue color for underline */
     transition: width 0.3s ease; /* Smoothly animate the underline */
 }
 
