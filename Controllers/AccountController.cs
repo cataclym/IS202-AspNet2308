@@ -143,6 +143,69 @@ public class AccountController : Controller
     
     [Authorize]
     public IActionResult AdminReview()
+
+    [HttpPost]
+    public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword, string confirmPassword)
+    {
+        // Validate inputs and ensure newPassword matches confirmPassword
+        if (newPassword != confirmPassword)
+        {
+            ModelState.AddModelError("", "Nytt passord og bekreft passord stemmer ikke.");
+            return View("ChangePassword");
+        }
+
+        // Get the current logged-in user's ID
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        // Retrieve the user from the database
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
+
+
+        if (user == null)
+        {
+            ModelState.AddModelError("", "Brukeren ble ikke funnet.");
+            return View("ChangePassword");
+        }
+
+        // Verify if the current password is correct
+        if (!VerifyPassword(currentPassword, user.Password))
+        {
+            ModelState.AddModelError("", "Nåværende passord er feil.");
+            return View("ChangePassword");
+        }
+
+        // Hash the new password
+        user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
+
+        // Update the password in the database
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+
+        // Optionally, sign out the user and ask them to log in again, as the cookie still uses the old password
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        // Re-authenticate user
+        var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, user.Username),
+        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+    };
+
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+        var authProperties = new AuthenticationProperties
+        {
+            IsPersistent = true,  // Keeps the user logged in
+            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
+        };
+
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
+        // Redirect to the login page or any other desired page
+        return RedirectToAction("Login", "Account");
+    }
+
+public IActionResult AdminReview()
     {
         return View();
     }
