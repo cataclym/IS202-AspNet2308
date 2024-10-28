@@ -1,4 +1,4 @@
-@model ReportViewModel
+@model Kartverket.Models.ReportViewModel
 
 @{
     ViewData["Title"] = "Registrert rapport";
@@ -8,9 +8,9 @@
 <!DOCTYPE html>
 
 <div>
+    <h1>Rapport registrert</h1>
     @if (Model.Message?.Length >= 1 || Model.StringKoordinaterLag?.Length >= 1)
     {
-        <h1>Rapport registrert</h1>
         <form asp-action="RegisterMapReport" asp-controller="Home" method="post" id="mapForm"> </form>
         <div>
             <h3>Melding</h3>

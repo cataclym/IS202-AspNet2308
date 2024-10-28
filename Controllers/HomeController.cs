@@ -70,9 +70,8 @@ public class HomeController　: Controller
             _logger.LogInformation("GeoJSON-streng: {GeoJson}", model.GeoJsonString);
 
             // Konverter GeoJSON-strengen til koordinater
-            string coordinatesString = model.ConvertGeoJsonStringToCoordinates();
-            _logger.LogInformation("Konverterte koordinater: {Coordinates}", coordinatesString);
-
+            string coordinatesString = ConvertGeoJsonToString(model.GeoJsonString);
+            
             ViewBag.Coordinates = coordinatesString;
 
             // Sjekk om koordinatene er gyldige (hvis det er nødvendig)
