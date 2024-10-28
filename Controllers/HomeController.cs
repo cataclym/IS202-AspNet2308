@@ -117,7 +117,8 @@ public class HomeController　: Controller
                 report.Messages.Add(new Messages
                 {
                     Message = model.Message,
-                    CreatedAt = DateTime.Now
+                    CreatedAt = DateTime.Now,
+                    UserId = int.Parse(userId)
                 });
             }
 
@@ -127,8 +128,6 @@ public class HomeController　: Controller
             // Lagre endringer til databasen asynkront
             await _context.SaveChangesAsync();
             _logger.LogInformation("Data har blitt lagret i databasen");
-
-            return View("Reported", model); // Eller til et annet view for å bekrefte lagringen
 
             return View("Reported", model); // Eller til et annet view for å bekrefte lagringen
         }
@@ -145,6 +144,43 @@ public class HomeController　: Controller
         // Returner samme view med valideringsfeil hvis modellen ikke er gyldig
         return View("MapReport", model);
     }
+    
+    public async Task<IActionResult> ReportView(int id, ReportViewModel model)
+    {
+        _logger.LogInformation("Loading report with ID: {id}", id);
+        
+        // Fetch the report by ReportId, including any associated messages
+        var report = await _context.Reports
+            .Include(r => r.Messages) // Include related messages if any
+            .FirstOrDefaultAsync(r => r.ReportId == id);
+
+        // Handle the case where the report is not found
+        if (report == null)
+        {
+            _logger.LogWarning("Report with ID {id} not found", id);
+            return NotFound(); // Alternatively, redirect to a "not found" page or error view
+        }
+        
+
+        // Populate a view model with the necessary data
+        var viewModel = new ReportViewModel
+        {
+            ReportId = report.ReportId,
+            GeoJsonString = report.GeoJsonString,
+            CreatedAt = report.CreatedAt,
+            Message = report.Messages.FirstOrDefault()?.Message ?? "No message available",
+            Status = report.Status,
+            // Include any additional fields as needed
+        };
+        
+        _logger.LogInformation("Loaded report details successfully for ID: {id}", id);
+
+        // Pass the view model to reported.cshtml
+        return View("ReportView", viewModel);
+    }
+
+    
+    
 
     // Valideringsmetode for GeoJSON (valgfritt)
     private static MapLayersModel? GetGeoJson(string geojson)

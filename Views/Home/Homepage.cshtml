@@ -66,7 +66,7 @@
                 @foreach (var report in Model.Reports)
                 {
                     <tr>
-                        <td>@report.ReportId</td>
+                        <td><a asp-action="ReportView" asp-controller="Home" asp-route-id="@report.ReportId">@report.ReportId</a></td>
                         <td>@report.Message</td>
                         <td>@report.Status.ToString()</td>
                     </tr>
