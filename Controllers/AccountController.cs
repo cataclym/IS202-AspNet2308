@@ -140,9 +140,7 @@ public class AccountController : Controller
         Console.WriteLine(User.Identity is { IsAuthenticated: true } ? "User is authenticated" : "User is not authenticated");
         return View();
     }
-    
-    [Authorize]
-    public IActionResult AdminReview()
+
 
     [HttpPost]
     public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword, string confirmPassword)
