@@ -3,6 +3,7 @@ using Kartverket.Database;
 using Kartverket.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -139,7 +140,8 @@ public class AccountController : Controller
         Console.WriteLine(User.Identity is { IsAuthenticated: true } ? "User is authenticated" : "User is not authenticated");
         return View();
     }
-
+    
+    [Authorize]
     public IActionResult AdminReview()
     {
         return View();
