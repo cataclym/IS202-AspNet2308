@@ -408,6 +408,7 @@ private string ProcessFeature(JObject feature)
                 ReportId = r.ReportId,
                 Message = r.Messages != null && r.Messages.Any() ? r.Messages.First().Message : "No message",
                 Status = r.Status,
+                CreatedAt = r.CreatedAt
             })
             .ToListAsync();
 

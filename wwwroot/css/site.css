@@ -278,18 +278,18 @@ body, .homepage {
 }
 
 .user-information {
-    float: left;
-    margin-top: 50px;
-    width: 300px;
-    text-align: left;
-    text-decoration: none;
+    position: absolute;
+    top: 20vh;       /* Aligns the table to the top */
+    right: 5vw;     /* Aligns the table to the right */
+    border-collapse: collapse;
+    margin: 20px; /* Adds some margin for spacing */
 }
 
 .user-info-table {
-    width: 150%;
+    width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    margin-right: 70px;
+    margin-right: 0;
     background-color: black;
     padding: 10px; /* Litt plass rundt innholdet */
     border: 1px solid black; /* Grense mellom hver th */
@@ -325,10 +325,10 @@ body, .homepage {
 
     /* tabelloverskrift bakgrunnsfarge */
     .user-info-table th {
-        background-color: #1B589F !important;
-        color: white !important;
+        background-color: #d2d8c7 !important;
+        color: black !important;
         padding: 10px;
-        border: 2px solid black;
+        border: 1px solid black;
     }
 
     .user-info-table td {
@@ -346,18 +346,6 @@ body, .homepage {
     text-align: left;
 }
 
-.map-reports-table {
-    width: 150%; /* Full bredde av container */
-    border-collapse: collapse;
-    margin-top: 20px;
-    margin-right: 100px;
-    background-color: #f9f9f9;
-    border: 1px solid black; /* Legg til grense mellom cellene */
-    border-collapse: separate;
-    border-spacing: 0;
-    border-radius: 5px; /* Juster for å runde hjørner */
-    overflow: hidden; /* Innholdet overskrider ikke rammene */
-}
 
 /* Runde hjørner på map-reports tabell*/
 .reports-table-header th:first-child {
