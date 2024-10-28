@@ -363,6 +363,12 @@ body, .homepage {
     border-collapse: collapse;
 }
 
+.truncate-text {
+    max-width: 200px; /* Set your desired width */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
 .map-reports-table tr:nth-child(even) {
     background-color: #F5F5F5; /* lysegrønn bakgrunn for partalsrekker */

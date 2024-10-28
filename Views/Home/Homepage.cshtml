@@ -67,7 +67,7 @@
                 {
                     <tr>
                         <td><a asp-action="ReportView" asp-controller="Home" asp-route-id="@report.ReportId">@report.ReportId</a></td>
-                        <td>@report.Message</td>
+                        <td class="truncate-text" title="@report.Message">@report.Message</td>
                         <td>@report.Status.ToString()</td>
                     </tr>
                 }
