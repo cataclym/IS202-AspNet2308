@@ -18,6 +18,8 @@ public class ReportViewModel
     [Required(ErrorMessage = "Du må markere området på kartet.")] 
     public string GeoJsonString { get; set; }
     
+    public string Coordinates { get; set; }
+    
     public DateTime CreatedAt { get; set; }
     public DateTime? ResolvedAt { get; set; }
     public Status Status { get; set; }

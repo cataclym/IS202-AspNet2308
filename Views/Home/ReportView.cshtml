@@ -11,10 +11,11 @@
 <div>
 
     <h2>Rapport detaljer</h2>
-    <p><strong>Report ID:</strong> @Model.ReportId</p>
-    <p><strong>Message:</strong> @Model.Message</p>
+    <p><strong>Rapport ID:</strong> @Model.ReportId</p>
+    <p><strong>Beskrivelse:</strong> @Model.Message</p>
     <p><strong>Status:</strong> @Model.Status</p>
-    <p><strong>Created At:</strong> @Model.CreatedAt</p>
+    <p><strong>Oprettet:</strong> @Model.CreatedAt</p>
+    <p><strong>Koordinater:</strong> @Model.Coordinates</p>
     
     @if (Model.Message?.Length >= 1 || Model.StringKoordinaterLag?.Length >= 1)
     {
@@ -29,11 +30,6 @@
             }
         </div>
         <div id="map" style="height: 400px;"></div>
-        <!-- Sørg for å ha høyde på kartet -->
-        <div>
-            <h3>Koordinater</h3>
-            <p>Koordinater: @ViewBag.Coordinates</p>
-        </div>
     }
     else
     {
