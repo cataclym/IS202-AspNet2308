@@ -94,6 +94,15 @@ input {
     flex-direction: row; /* Plasserer knappene horisontalt */
     align-items: center; /* Sentrerer knappene vertikalt */
     justify-content: space-evenly; /* Sentrerer knappene horisontalt */
+    margin: 0 auto; /* Sentrer containeren */
+    gap: 0px; /* Økt avstand mellom knappene */
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: row; /* Plasserer knappene horisontalt */
+    align-items: center; /* Sentrerer knappene vertikalt */
+    justify-content: space-evenly; /* Sentrerer knappene horisontalt */
     width: 70%; /* Juster bredde om nødvendig */
     margin: 0 auto; /* Sentrer containeren */
     gap: 0px; /* Økt avstand mellom knappene */
