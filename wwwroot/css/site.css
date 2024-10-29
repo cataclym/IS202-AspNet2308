@@ -460,7 +460,7 @@ body, .homepage {
     border: 1px solid #000000;
 }
 
-/* CSS for login */
+/* CSS for login og endre passord */
 
 .checkbox-center {
     display: flex; /* Use flexbox layout */
@@ -481,6 +481,10 @@ input[type="checkbox"] {
     box-sizing: border-box;
     border-radius: 10px; /* Runda hjørner */
     border: 1px solid #000000;
+}
+
+.margin-auto {
+    margin: auto;
 }
 
 
