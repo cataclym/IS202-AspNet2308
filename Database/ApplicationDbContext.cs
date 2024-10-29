@@ -22,6 +22,11 @@ public class ApplicationDbContext : DbContext
             .HasIndex(u => u.Email)
             .IsUnique();
         
+        modelBuilder.Entity<Reports>()
+            .HasOne(r => r.User)
+            .WithMany(u => u.Reports)  // Assuming Users have a navigation property ICollection<Reports> Reports
+            .HasForeignKey(r => r.UserId);
+        
         modelBuilder.Entity<Messages>()
             .HasOne(m => m.User)
             .WithMany(u => u.Messages)

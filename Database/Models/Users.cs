@@ -20,4 +20,6 @@ public class Users
     public DateTime CreatedAt { get; set; }  = DateTime.Now;
     
     public ICollection<Messages> Messages { get; set; } = new List<Messages>();
+    
+    public ICollection<Reports> Reports { get; set; } = new List<Reports>();
 }

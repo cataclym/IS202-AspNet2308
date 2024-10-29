@@ -95,7 +95,7 @@ input {
     align-items: center; /* Sentrerer knappene vertikalt */
     justify-content: space-evenly; /* Sentrerer knappene horisontalt */
     margin: 0 auto; /* Sentrer containeren */
-    gap: 0px; /* Økt avstand mellom knappene */
+    gap: 0; /* Økt avstand mellom knappene */
 }
 
 .btn-container {
