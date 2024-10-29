@@ -394,23 +394,47 @@ private string ProcessFeature(JObject feature)
         {
             Username = user.Username,
             Email = user.Email,
-            Phone = user.Phone
+            Phone = user.Phone,
+            IsAdmin = user.IsAdmin
         };
         
         // Retrieve reports for the user, including ReportId, Status, and the first Message
-        var reports = await _context.Reports
-            .Where(r => r.UserId == id)
-            .OrderBy(r => r.CreatedAt)
-            .Include(r => r.Messages) // Include Messages to access related messages
-            .Select(r => new ReportViewModel
-            {
-                ReportId = r.ReportId,
-                Message = r.Messages != null && r.Messages.Any() ? r.Messages.First().Message : "No message",
-                Status = r.Status,
-                CreatedAt = r.CreatedAt
-            })
-            .ToListAsync();
-
+        List<ReportViewModel> reports;
+        if (user.IsAdmin)
+        {
+            // Admin view: retrieve all reports
+            reports = await _context.Reports
+                .OrderBy(r => r.CreatedAt)
+                .Include(r => r.Messages)
+                .Include(r => r.User) 
+                .Select(r => new ReportViewModel
+                {
+                    ReportId = r.ReportId,
+                    Message = r.Messages != null && r.Messages.Any() ? r.Messages.First().Message : "No message",
+                    Status = r.Status,
+                    CreatedAt = r.CreatedAt,
+                    Username = r.User.Username // Include the username associated with each report
+                })
+                .ToListAsync();
+        }
+        else
+        {
+            // User view: retrieve only reports associated with this user
+            reports = await _context.Reports
+                .Where(r => r.UserId == id)
+                .OrderBy(r => r.CreatedAt)
+                .Include(r => r.Messages)
+                .Include(r => r.User) 
+                .Select(r => new ReportViewModel
+                {
+                    ReportId = r.ReportId,
+                    Message = r.Messages != null && r.Messages.Any() ? r.Messages.First().Message : "No message",
+                    Status = r.Status,
+                    CreatedAt = r.CreatedAt,
+                    Username = user.Username // Only the logged-in user's username for their own reports
+                })
+                .ToListAsync();
+        }
         // Map data to HomePageModel
         var viewModel = new HomePageModel
         {

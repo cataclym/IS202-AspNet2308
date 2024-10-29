@@ -3,29 +3,38 @@
 <!DOCTYPE html>
 <html>
 <body>
+
+
+@if (Model.User.IsAdmin)
+{
+    <h1 class="header1 display-4">Administrer <span class="highlight">Rapporter</span></h1>
+}
+else
+{ 
     <h1 class="header1 display-4">Min <span class="highlight">Side</span></h1>
+}
 
-    <div class="homepage">
-        <div class="meld-kartfeil">
-            <p>Finner du feil i kartet? Trykk her:</p>
-            <div class="center-horizontal" style="text-decoration: none">
-                <form asp-action="MapReport" method="post">
-                    <button type="submit" class="btn-general btn-primary">Meld feil</button>
-                </form>
-            </div>
-
-            <div class="password-change">
-                <!-- Button to show password change form -->
-                <form asp-controller="Account" asp-action="PasswordView" method="post">
-                <button id="showPasswordFormBtn" class="btn-general btn-primary">Endre passord</button>
-                </form>
-            </div>
-            <div>
-                <form asp-controller="Account" asp-action="Logout" method="post">
-                    <button type="submit" class="btn-general btn-logout">Logg ut</button>
-                </form>
-            </div>
+<div class="homepage">
+    <div class="meld-kartfeil">
+        <p>Feil i kartet? Trykk her:</p>
+        <div class="center-horizontal" style="text-decoration: none">
+            <form asp-action="MapReport" method="post">
+                <button type="submit" class="btn-general btn-primary">Meld feil</button>
+            </form>
         </div>
+
+        <div class="password-change">
+            <!-- Button to show password change form -->
+            <form asp-controller="Account" asp-action="PasswordView" method="post">
+                <button id="showPasswordFormBtn" class="btn-general btn-primary">Endre passord</button>
+            </form>
+        </div>
+        <div>
+            <form asp-controller="Account" asp-action="Logout" method="post">
+                <button type="submit" class="btn-general btn-logout">Logg ut</button>
+            </form>
+        </div>
+    </div>
 
         
         
@@ -55,42 +64,82 @@
             }
         </div>
 
+    @if (Model.User.IsAdmin)
+    {
     <div>
         <table class="user-info-table">
-                
             <!-- Table header row for column names -->
             <thead>
             <tr>
                 <th>Rapport ID</th>
                 <th>Melding</th>
+                <th>Brukernavn</th>
                 <th>Status</th>
                 <th>Opprettet</th>
             </tr>
             </thead>
-
             <!-- Table body for reports data -->
             <tbody>
             @if (Model.Reports != null && Model.Reports.Any())
             {
-                @foreach (var report in Model.Reports)
-                {
-                    <tr>
-                        <td><a asp-action="ReportView" asp-controller="Home" asp-route-id="@report.ReportId">@report.ReportId</a></td>
-                        <td class="truncate-text" title="@report.Message">@report.Message</td>
-                        <td>@report.Status.ToString()</td>
-                        <td>@report.CreatedAt.ToString()</td>
-                    </tr>
-                }
+            @foreach (var report in Model.Reports)
+            {
+            <tr>
+                <td><a asp-action="ReportView" asp-controller="Home" asp-route-id="@report.ReportId">@report.ReportId</a></td>
+                <td class="truncate-text" title="@report.Message">@report.Message</td>
+                <td>@report.Username</td>
+                <td>@report.Status.ToString()</td>
+                <td>@report.CreatedAt.ToString()</td>
+            </tr>
+            }
             }
             else
             {
-                <tr>
-                    <td colspan="4">Ingen rapporter tilgjengelig.</td>
-                </tr>
+            <tr>
+                <td colspan="4">Ingen rapporter tilgjengelig.</td>
+            </tr>
             }
             </tbody>
         </table>
     </div>
-    </div>    
+    }
+    else
+    {
+        <div>
+            <table class="user-info-table">
+                <!-- Table header row for column names -->
+                <thead>
+                <tr>
+                    <th>Rapport ID</th>
+                    <th>Melding</th>
+                    <th>Status</th>
+                    <th>Opprettet</th>
+                </tr>
+                </thead>
+                <!-- Table body for reports data -->
+                <tbody>
+                @if (Model.Reports != null && Model.Reports.Any())
+                {
+                    @foreach (var report in Model.Reports)
+                    {
+                        <tr>
+                            <td><a asp-action="ReportView" asp-controller="Home" asp-route-id="@report.ReportId">@report.ReportId</a></td>
+                            <td class="truncate-text" title="@report.Message">@report.Message</td>
+                            <td>@report.Status.ToString()</td>
+                            <td>@report.CreatedAt.ToString()</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">Ingen rapporter tilgjengelig.</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
 </body>
 </html>
