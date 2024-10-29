@@ -267,7 +267,14 @@ body, .homepage {
 }
 
 .change-password-container {
-    align-content: center;
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    height: 100vh; /* Full viewport height to center vertically */
+}
+
+.new-password-input {
+    margin: auto;
 }
 
 

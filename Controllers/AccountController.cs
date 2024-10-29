@@ -141,6 +141,12 @@ public class AccountController : Controller
         return View();
     }
 
+    [HttpPost]
+    public IActionResult PasswordView()
+    {
+        return View("ChangePassword");
+    }
+
 
     [HttpPost]
     public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword, string confirmPassword)
@@ -200,7 +206,7 @@ public class AccountController : Controller
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
         // Redirect to the login page or any other desired page
-        return RedirectToAction("Login", "Account");
+        return RedirectToAction("HomePage", "Home");
     }
 
 public IActionResult AdminReview()

@@ -16,7 +16,9 @@
 
             <div class="password-change">
                 <!-- Button to show password change form -->
+                <form asp-controller="Account" asp-action="PasswordView" method="post">
                 <button id="showPasswordFormBtn" class="btn-general btn-primary">Endre passord</button>
+                </form>
 
                 <!-- Hidden form for changing password -->
                 <div id="passwordForm" style="display: none; margin-top: 10px;">
@@ -43,6 +45,7 @@
                     <button type="submit" class="btn-general btn-primary">Logg ut</button>
                 </form>
             </div>
+        </div>
         </div>
 
         
@@ -109,53 +112,6 @@
             </tbody>
         </table>
     </div>
-    </div>
-
     
-    <script>
-        // JavaScript to toggle password visibility
-        const passwordField = document.getElementById("passwordField");
-        const togglePasswordBtn = document.getElementById("togglePasswordBtn");
-
-        if (passwordField && togglePasswordBtn) {
-            togglePasswordBtn.addEventListener("click", function () {
-                if (passwordField.type === "password") {
-                    passwordField.type = "text";  // Show password
-                    togglePasswordBtn.textContent = "Skjul passord";  // Change button text
-                } else {
-                    passwordField.type = "password";  // Hide password
-                    togglePasswordBtn.textContent = "Vis passord";  // Reset button text
-                }
-            });
-        }
-
-            // JavaScript to toggle password form visibility
-            const showPasswordFormBtn = document.getElementById("showPasswordFormBtn");
-            const passwordForm = document.getElementById("passwordForm");
-
-            if (showPasswordFormBtn && passwordForm) {
-                showPasswordFormBtn.addEventListener("click", function () {
-                    // Toggle password form visibility
-                    passwordForm.style.display = passwordForm.style.display === "none" ? "block" : "none";
-                });
-            }
-
-              // JavaScript to toggle new password visibility
-            const newPasswordField = document.getElementById("newPassword");
-            const toggleNewPasswordBtn = document.getElementById("toggleNewPasswordBtn");
-
-            if (newPasswordField && toggleNewPasswordBtn) {
-                toggleNewPasswordBtn.addEventListener("click", function () {
-                    if (newPasswordField.type === "password") {
-                        newPasswordField.type = "text";  // Show new password
-                        toggleNewPasswordBtn.textContent = "Skjul passord";  // Change button text
-                    } else {
-                        newPasswordField.type = "password";  // Hide new password
-                        toggleNewPasswordBtn.textContent = "Vis passord";  // Reset button text
-                    }
-                });
-            }
-
-    </script>
 </body>
 </html>
