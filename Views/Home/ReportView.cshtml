@@ -9,14 +9,23 @@
 <!DOCTYPE html>
 
 <div>
-
-    <h2 class="display-4 center-horizontal">Rapport detaljer</h2>
+    @if (Model.IsAdmin)
+    {
+    <h2 class="display-4 center-horizontal">Administrer Rapport</h2>    
+    } else {
+        <h2 class="display-4 center-horizontal">Rapport detaljer</h2>
+    }
+    
     <p><strong>Rapport ID:</strong> @Model.ReportId</p>
+    @if (Model.IsAdmin)
+    {
+    <p><strong>Brukernavn:</strong> @Model.Username</p>
+    }
     <p><strong>Beskrivelse:</strong> @Model.Message</p>
     <p><strong>Status:</strong> @Model.Status</p>
     <p><strong>Oprettet:</strong> @Model.CreatedAt</p>
     <p><strong>Koordinater:</strong> @Model.Coordinates</p>
-    
+
     @if (Model.Message?.Length >= 1 || Model.StringKoordinaterLag?.Length >= 1)
     {
         <form asp-action="RegisterMapReport" asp-controller="Home" method="post" id="mapForm"> </form>

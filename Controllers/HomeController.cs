@@ -151,7 +151,8 @@ public class HomeController　: Controller
         
         // Fetch the report by ReportId, including any associated messages
         var report = await _context.Reports
-            .Include(r => r.Messages) // Include related messages if any
+            .Include(r => r.Messages)
+            .Include(reports => reports.User) 
             .FirstOrDefaultAsync(r => r.ReportId == id);
 
         // Handle the case where the report is not found
@@ -163,6 +164,11 @@ public class HomeController　: Controller
         
         // Parse the GeoJsonString into a readable format
         string normalString = ConvertGeoJsonToString(report.GeoJsonString);
+        
+        // Sjekker om brukeren er admin
+        bool isAdmin = int.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int userId) 
+                       && (await _context.Users.FindAsync(userId))?.IsAdmin == true;
+
 
         // Populate a view model with the necessary data
         var viewModel = new ReportViewModel
@@ -173,6 +179,8 @@ public class HomeController　: Controller
             CreatedAt = report.CreatedAt,
             Message = report.Messages.FirstOrDefault()?.Message ?? "No message available",
             Status = report.Status,
+            IsAdmin = isAdmin,
+            Username = report.User.Username,
             // Include any additional fields as needed
         };
         

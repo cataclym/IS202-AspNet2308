@@ -22,6 +22,8 @@ public class ReportViewModel
     public string GeoJsonString { get; set; }
     public string? Username { get; set; }
     
+    public bool IsAdmin { get; set; } = false;
+    
     
     public DateTime CreatedAt { get; set; }
     public DateTime? ResolvedAt { get; set; }
