@@ -266,16 +266,16 @@ body, .homepage {
     height: auto; /* Set height as needed, or 'auto' for default */
 }
 
-.change-password-container {
+/*.new-password-input {
     display: flex;
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
-    height: 100vh; /* Full viewport height to center vertically */
-}
-
+    align-items: center;*/ /* Center vertically */
+    /*justify-content: center;*/ /* Center horizontally */
+    /*height: 100vh;*/ /* Full viewport height to center vertically */
+/*}*/
+/*
 .new-password-input {
     margin: auto;
-}
+}*/
 
 
 .meld-kartfeil {

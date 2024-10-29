@@ -19,33 +19,12 @@
                 <form asp-controller="Account" asp-action="PasswordView" method="post">
                 <button id="showPasswordFormBtn" class="btn-general btn-primary">Endre passord</button>
                 </form>
-
-                <!-- Hidden form for changing password -->
-                <div id="passwordForm" style="display: none; margin-top: 10px;">
-                    <form asp-controller="Account" asp-action="ChangePassword" method="post">
-                        <div class="change-password-container">
-                            <label for="currentPassword">Nåværende passord:</label>
-                            <input type="password" id="currentPassword" name="currentPassword" required>
-                        </div>
-                        <div>
-                            <label for="newPassword">Nytt passord:</label>
-                            <input type="password" id="newPassword" name="newPassword" class="new-password-input" required>
-                            <button type="button" id="toggleNewPasswordBtn">Vis passord</button>
-                        </div>
-                        <div>
-                            <label for="confirmPassword">Bekreft nytt passord:</label>
-                            <input type="password" id="confirmPassword" name="confirmPassword" required>
-                        </div>
-                        <button type="submit" class="btn-general btn-primary btn-move">Lagre nytt passord</button>
-                    </form>
-                </div>
             </div>
             <div>
                 <form asp-controller="Account" asp-action="Logout" method="post">
                     <button type="submit" class="btn-general btn-primary">Logg ut</button>
                 </form>
             </div>
-        </div>
         </div>
 
         
@@ -112,6 +91,6 @@
             </tbody>
         </table>
     </div>
-    
+    </div>    
 </body>
 </html>
