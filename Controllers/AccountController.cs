@@ -113,6 +113,11 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> UserRegistration(UserRegistrationModel userRegistrationModelModel)
     {
+        if (User.Identity is { IsAuthenticated: true })
+            {
+                return RedirectToAction("HomePage", "Home");
+            }
+            
         // Sjekk om modellen er gyldig (at brukernavn og passord er fylt ut korrekt)
         if (!ModelState.IsValid)
         {

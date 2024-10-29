@@ -126,6 +126,12 @@ input {
     color: #1B589F; 
 }
 
+.btn-logout {
+    background-color: #FFFFFF;
+    border-color: #D9534F; /* Fargen på border (stroke) */
+    color: #D9534F;
+}
+
 .text-center {
     text-align: center; /* Sentraliserer teksten */
     margin-bottom: 20px; /* Avstand mellom overskrift og knapper */
