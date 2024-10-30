@@ -31,7 +31,7 @@
         <button class="close-button" onclick="closeForm()">&times;</button>
         <form asp-action="RegisterMapReport" method="post" id="mapForm">
             <div>
-                <textarea id="meldingsBoks" asp-for="Message" required minlength="5" style="width: 250px; height: 105px;" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
+                <textarea id="meldingsBoks" asp-for="FirstMessage" required minlength="5" style="width: 250px; height: 105px;" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
             </div>
             <div>
                 <input type="text" class="visually-hidden" id="Koordinater" asp-for="StringKoordinaterLag" required></input>

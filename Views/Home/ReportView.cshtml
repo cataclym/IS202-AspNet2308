@@ -25,12 +25,12 @@ else
         {
         <p><strong>Brukernavn:</strong> @Model.Username</p>
         }
-        <p><strong>Beskrivelse:</strong> @Model.Message</p>
+        <p><strong>Beskrivelse:</strong> @Model.FirstMessage</p>
         <p><strong>Status:</strong> @Model.Status</p>
         <p><strong>Oprettet:</strong> @Model.CreatedAt</p>
         <p><strong>Koordinater:</strong> @Model.Coordinates</p>
 
-        @if (Model.Message?.Length >= 1 || Model.StringKoordinaterLag?.Length >= 1)
+        @if (Model.FirstMessage?.Length >= 1 || Model.StringKoordinaterLag?.Length >= 1)
         {
         <form asp-action="RegisterMapReport" asp-controller="Home" method="post" id="mapForm"></form>
         <div>
@@ -70,16 +70,22 @@ else
         <div class="chat-history">
             <h3>Chat Historikk</h3>
             <p>Samtale startet @Model.CreatedAt</p>
-
             <div class="chat-message">
-                <p>@Model.Username</p>
-                <p>@Model.Message</p>
+                @foreach (var message in Model.Messages)
+                {
+                    <p style="font-weight: normal;">
+                        <strong>@message.Username</strong> - @message.CreatedAt
+                    </p>
+                <p id="message">@message.Message</p>
+                }
             </div>
-
-            <div class="chat-input">
-                <input type="text" placeholder="Skriv melding her..">
-                <button>➤</button>
-            </div>
+            <form asp-action="AddMessage" asp-controller="Home" method="post">
+                <div class="chat-input">
+                    <input type="hidden" name="ReportId" value="@Model.ReportId" />
+                    <input type="text" name="MessageText" placeholder="Skriv melding her..">
+                    <button>➤</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

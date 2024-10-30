@@ -112,11 +112,11 @@ public class HomeController　: Controller
             };
 
             // Legg til meldingen til Messages-listen hvis det finnes en melding i modellen
-            if (!string.IsNullOrWhiteSpace(model.Message))
+            if (!string.IsNullOrWhiteSpace(model.FirstMessage))
             {
                 report.Messages.Add(new Messages
                 {
-                    Message = model.Message,
+                    Message = model.FirstMessage,
                     CreatedAt = DateTime.Now,
                     UserId = int.Parse(userId)
                 });
@@ -152,7 +152,7 @@ public class HomeController　: Controller
         // Fetch the report by ReportId, including any associated messages
         var report = await _context.Reports
             .Include(r => r.Messages)
-            .Include(reports => reports.User) 
+            .Include(r => r.User) // Hent brukerdata for selve rapporten
             .FirstOrDefaultAsync(r => r.ReportId == id);
 
         // Handle the case where the report is not found
@@ -177,10 +177,16 @@ public class HomeController　: Controller
             Coordinates = normalString,
             GeoJsonString = report.GeoJsonString,
             CreatedAt = report.CreatedAt,
-            Message = report.Messages.FirstOrDefault()?.Message ?? "No message available",
+            FirstMessage = report.Messages.FirstOrDefault()?.Message ?? "No message available",
             Status = report.Status,
             IsAdmin = isAdmin,
             Username = report.User.Username,
+            Messages = report.Messages.Select(m => new MessagesModel
+            {
+                Message = m.Message,
+                CreatedAt = m.CreatedAt,
+                Username = m.User?.Username ?? "Unknown"
+            }).ToList()
             // Include any additional fields as needed
         };
         
@@ -188,6 +194,43 @@ public class HomeController　: Controller
 
         // Pass the view model to reported.cshtml
         return View("ReportView", viewModel);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> AddMessage(int ReportId, string MessageText)
+    {
+        // Finn rapporten ved hjelp av ReportId
+        var report = await _context.Reports
+            .Include(r => r.Messages) // Inkluder eksisterende meldinger
+            .FirstOrDefaultAsync(r => r.ReportId == ReportId);
+
+        if (report == null)
+        {
+            return NotFound();
+        }
+
+        // Hent bruker-ID fra pålogget bruker
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null || !int.TryParse(userId, out int parsedUserId))
+        {
+            return Unauthorized(); // Håndter tilfelle der brukeren ikke er logget inn
+        }
+
+        // Opprett en ny melding og legg til i rapporten
+        var newMessage = new Messages
+        {
+            Message = MessageText,
+            CreatedAt = DateTime.Now,
+            UserId = parsedUserId
+        };
+    
+        report.Messages.Add(newMessage);
+
+        // Lagre endringer i databasen
+        await _context.SaveChangesAsync();
+
+        // Omdiriger til ReportView for å vise oppdatert melding
+        return RedirectToAction("ReportView", new { id = ReportId });
     }
     
     [HttpPost]
@@ -456,7 +499,7 @@ private string ProcessFeature(JObject feature)
                 .Select(r => new ReportViewModel
                 {
                     ReportId = r.ReportId,
-                    Message = r.Messages != null && r.Messages.Any() ? r.Messages.First().Message : "No message",
+                    FirstMessage = r.Messages != null && r.Messages.Any() ? r.Messages.First().Message : "No message",
                     Status = r.Status,
                     CreatedAt = r.CreatedAt,
                     Username = r.User.Username // Include the username associated with each report
@@ -474,7 +517,7 @@ private string ProcessFeature(JObject feature)
                 .Select(r => new ReportViewModel
                 {
                     ReportId = r.ReportId,
-                    Message = r.Messages != null && r.Messages.Any() ? r.Messages.First().Message : "No message",
+                    FirstMessage = r.Messages != null && r.Messages.Any() ? r.Messages.First().Message : "No message",
                     Status = r.Status,
                     CreatedAt = r.CreatedAt,
                     Username = user.Username // Only the logged-in user's username for their own reports
