@@ -221,23 +221,6 @@ p {
     color: #008540; /* Replace this with the desired color */
 }
 
-.password-input-wrapper {
-    display: flex !important;
-}
-
-.checkbox-wrapper {
-    display: flex;
-    align-items: center; /* Sørger for at avkrysningsboksen og teksten "Vis passord" er på samme linje */
-    margin-left: 8px; /* Gir litt mellomrom mellom input-feltet og avkrysningsboksen */
-    margin-top: 3px;
-}
-
-
-.checkbox-wrapper-login {
-    display: flex; /* Flex-container for å sette checkbox og label på samme linje */
-    align-items: center;
-}
-
 
 .text-nowrap {
     white-space: nowrap; /* Sørger for at teksten "Vis passord" ikke brytes til neste linje */
@@ -288,17 +271,9 @@ body, .homepage {
     height: auto; /* Set height as needed, or 'auto' for default */
 }
 
-/*.new-password-input {
-    display: flex;
-    align-items: center;*/ /* Center vertically */
-    /*justify-content: center;*/ /* Center horizontally */
-    /*height: 100vh;*/ /* Full viewport height to center vertically */
-/*}*/
-/*
 .new-password-input {
     margin: auto;
-}*/
-
+}
 
 .meld-kartfeil {
     margin-top: -20px;
@@ -435,14 +410,6 @@ body, .homepage {
     width: 100%; /* Full width to allow centering */
 }
 
-.checkbox-wrapper {
-    margin-top: 10px; /* Add some space above the checkbox */
-    display: flex;
-    align-content: space-around;
-    gap: 1rem;
-    align-items: center; /* Vertically align the checkbox and label */
-    justify-content: center; /* Ensure checkbox and label are centered */
-}
 
 
 /*CSS for RegistrationPage*/
@@ -450,14 +417,13 @@ body, .homepage {
     display: flex;
     align-items: center; /* Vertically centers the content */
     justify-content: center; /* Horizontally centers the content */
-    margin-bottom: -150px; /* Reduce space below heading */
 }
 
 .registration-form div {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-bottom: 5px; /* Space between input groups */
+    margin-bottom: 10px; /* Space between input groups */
 }
 
 .registration-form form {
@@ -465,8 +431,7 @@ body, .homepage {
     flex-direction: column;
     align-items: center; /* Horizontal centering */
     justify-content: center; /* Vertical centering */
-    height: 100vh; /* Full height of the window */
-    width: 100%; /* Full width */
+    margin-top: 50px; /* Increase this value as needed */
 }
 
 .registration-form label {
@@ -476,24 +441,32 @@ body, .homepage {
 .registration-form input {
     width: 250px;
     padding: 8px;
-    margin-top: 5px;
+    margin-top: 20px;
     box-sizing: border-box;
     border-radius: 10px; /* Runda hjørner */
     border: 1px solid #000000;
 }
 
-/* CSS for login og endre passord */
-
-.checkbox-center {
-    display: flex; /* Use flexbox layout */
-
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 2vh;
+.registration-form button {
+    margin-top: 45px;
 }
+
+.checkbox-wrapper-registration {
+    position: absolute;
+    top: 56%;
+    left: 36%;
+}
+
+
+
+/* CSS for login og endre passord */
 
 input[type="checkbox"] {
     margin: 0; /* Remove default margin */
+}
+
+.change-password-form div {
+   margin-bottom: 40px; /* Øker avstanden mellom feltene */
 }
 
 .login-form input {
@@ -505,9 +478,32 @@ input[type="checkbox"] {
     border: 1px solid #000000;
 }
 
+.checkbox-wrapper-login {
+    position: absolute;
+    top: 37%;
+    left: 43.5%;
+    transform: translate(-50%, -50%); /* Center the container */
+}
+
+.btn-login {
+    margin-top: 55px;
+}
+
+.registration-wrapper {
+    margin-top: 60px;
+}
+
+/* css for endre passord*/
+.checkbox-wrapper-password {
+    position: absolute;
+    top: 33.5%;
+    left: 36%;
+}
+
 .margin-auto {
     margin: auto;
 }
+
 
 
 /* CSS for ReportView */
@@ -735,11 +731,9 @@ input[type="checkbox"] {
 }
 
 /* CSS for AdminReview */
-
 .user-reports {
     display: flex;
     margin-top: 4%;
-
 }
 
 .user-reports-table {
