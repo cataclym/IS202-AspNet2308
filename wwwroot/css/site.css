@@ -141,6 +141,13 @@ input {
     color: #D9534F;
 }
 
+.btn-logout:hover {
+    background-color: #D9534F; /* F.eks. rød bakgrunn på hover */
+    border: 2px solid #D9534F !important;
+    color: #FFFFFF; /* Tekstfarge på hover */
+    cursor: pointer; /* Vis en håndpeker for bedre brukeropplevelse */
+}
+
 .text-center {
     text-align: center; /* Sentraliserer teksten */
     margin-bottom: 20px; /* Avstand mellom overskrift og knapper */
@@ -503,6 +510,230 @@ input[type="checkbox"] {
 }
 
 
+/* CSS for ReportView */
+.report-container {
+    display: flex;
+    gap: 20px;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.styledMap-report {
+    border-radius: 10px !important;
+    border: 1px solid black !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+    height: 300px !important; /* Adjust height */
+    width: 70% !important;
+    overflow: hidden !important;
+    margin-bottom: 30px; !important;
+    margin-top: 30px; !important;
+}
+/* Left and right columns */
+.left-column {
+    flex: 1; /* Take up remaining space */
+}
+
+.right-column {
+    width: 400px; /* Fixed width for the right column */
+    margin-top: 50px;
+}
+/* Buttons styling */
+.status-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.status-buttons button {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
+
+.button-green {
+    background-color: #e6f4ea;
+    color: #28a745;
+    border: 1px solid #28a745;
+}
+
+.button-yellow {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #856404;
+}
+
+.button-red {
+    background-color: #f8d7da;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+/* Generell styling for chatboksen */
+.chat-history {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    width: 100%;
+    max-width: 1000px; !important;
+    margin: 0 auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.chat-history h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    font-weight: normal;
+    color: #333;
+}
+
+.chat-history p {
+    margin: 10px 0;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Styling for samtalestart-meldingen */
+.chat-history p:first-of-type {
+    font-weight: normal;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* Meldingsboblen */
+.chat-message {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: left;
+    max-width: 90%;
+    margin: 10px auto;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chat-message p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* Brukernavn-styling */
+.chat-message p:first-child {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+/* Meldingsboks nederst */
+.chat-input {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    gap: 5px;
+    padding-top: 10px;
+}
+
+.chat-input input[type="text"] {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-input button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.status-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.dropdown-btn {
+    padding: 10px;
+    width: 100%;
+    background-color: #e6f4ea;
+    color: #28a745;
+    border: 1px solid #28a745;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+}
+.dropdown-btn-a {
+    padding: 10px;
+    width: 100%;
+    background-color: #e6f4ea;
+    color: #28a745;
+    border: 1px solid #28a745;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+}
+
+.dropdown-btn:hover {
+    background-color: #d4ebdc; /* Litt mørkere grønn ved hover */
+    border-color: #1e8c34;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    width: 100%;
+    z-index: 1;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+/* Styling for knappene inni dropdown */
+.dropdown-content .dropdown-btn-a {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    background-color: #e6f4ea;
+    color: #28a745;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-bottom: 1px solid #c3e0cf; /* Lysere skillelinje */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.dropdown-content .dropdown-btn-a:last-child {
+    border-bottom: none; /* Fjerner skillelinje fra siste element */
+}
+
+/* Hover-effekt for knappene */
+.dropdown-content .dropdown-btn-a:hover {
+    background-color: #d4ebdc; /* Litt mørkere grønn ved hover */
+    color: #1e8c34;
+}
+
 /* CSS for AdminReview */
 
 .user-reports {
@@ -754,3 +985,7 @@ input[type="checkbox"] {
 .close-button:hover {
     color: red; /* Endrer fargen på krysset ved hover */
 }
+
+
+
+

@@ -190,6 +190,44 @@ public class HomeController　: Controller
         return View("ReportView", viewModel);
     }
     
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> UpdateStatus(int reportId, Status status)
+    {
+        // Finn brukeren basert på den autentiserte brukerens ID
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    
+        if (!int.TryParse(userId, out int parsedUserId))
+        {
+            return Unauthorized(); // Hvis userId ikke kan parses, returner Unauthorized
+        }
+
+        // Hent brukerdata for å sjekke om brukeren er admin
+        var user = await _context.Users.FindAsync(parsedUserId);
+
+        if (user == null || !user.IsAdmin) // Sjekk om brukeren eksisterer og er admin
+        {
+            return Forbid(); // Returner Forbid hvis brukeren ikke er admin
+        }
+        
+        var report = await _context.Reports.FindAsync(reportId);
+    
+        if (report == null)
+        {
+            return NotFound();
+        }
+
+        // Oppdater status
+        report.Status = status;
+
+        // Lagre endringene i databasen
+        await _context.SaveChangesAsync();
+
+        // Redirect tilbake til ReportView
+        return RedirectToAction("ReportView", new { id = reportId });
+    }
+
+    
     private string ConvertGeoJsonToString(string geoJsonString)
 {
     if (string.IsNullOrWhiteSpace(geoJsonString))

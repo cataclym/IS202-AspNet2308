@@ -7,43 +7,81 @@
 }
 
 <!DOCTYPE html>
+@if (Model.IsAdmin)
+{
+<h2 class="display-4 center-horizontal">Administrer Rapport</h2>
+}
+else
+{
+<h2 class="display-4 center-horizontal">Rapport detaljer</h2>
+}
+<div class="report-container">
+    <!-- Left Column: Map and Report Details -->
+    <div class="left-column">
+        <div id="map" class="styledMap-report"></div>
 
-<div>
-    @if (Model.IsAdmin)
-    {
-    <h2 class="display-4 center-horizontal">Administrer Rapport</h2>    
-    } else {
-        <h2 class="display-4 center-horizontal">Rapport detaljer</h2>
-    }
-    
-    <p><strong>Rapport ID:</strong> @Model.ReportId</p>
-    @if (Model.IsAdmin)
-    {
-    <p><strong>Brukernavn:</strong> @Model.Username</p>
-    }
-    <p><strong>Beskrivelse:</strong> @Model.Message</p>
-    <p><strong>Status:</strong> @Model.Status</p>
-    <p><strong>Oprettet:</strong> @Model.CreatedAt</p>
-    <p><strong>Koordinater:</strong> @Model.Coordinates</p>
+        <p><strong>Rapport ID:</strong> @Model.ReportId</p>
+        @if (Model.IsAdmin)
+        {
+        <p><strong>Brukernavn:</strong> @Model.Username</p>
+        }
+        <p><strong>Beskrivelse:</strong> @Model.Message</p>
+        <p><strong>Status:</strong> @Model.Status</p>
+        <p><strong>Oprettet:</strong> @Model.CreatedAt</p>
+        <p><strong>Koordinater:</strong> @Model.Coordinates</p>
 
-    @if (Model.Message?.Length >= 1 || Model.StringKoordinaterLag?.Length >= 1)
-    {
-        <form asp-action="RegisterMapReport" asp-controller="Home" method="post" id="mapForm"> </form>
+        @if (Model.Message?.Length >= 1 || Model.StringKoordinaterLag?.Length >= 1)
+        {
+        <form asp-action="RegisterMapReport" asp-controller="Home" method="post" id="mapForm"></form>
         <div>
             @if (municipalityCountyNames != null)
             {
-                <h3>Fylke</h3>
-                <p>@municipalityCountyNames.fylkesnavn</p>
-                <h3>Kommune</h3>
-                <p>@municipalityCountyNames.kommunenavn</p>
+            <h3>Fylke</h3>
+            <p>@municipalityCountyNames.fylkesnavn</p>
+            <h3>Kommune</h3>
+            <p>@municipalityCountyNames.kommunenavn</p>
             }
         </div>
-        <div id="map" style="height: 400px;"></div>
-    }
-    else
-    {
+        }
+        else
+        {
         <p>Model er null, kunne ikke vise data.</p>
-    }
+        }
+    </div>
+
+    <!-- Right Column: Status Buttons and Chat History -->
+    <div class="right-column">
+        
+        @if (Model.IsAdmin)
+        {
+            <div class="status-dropdown">
+                <form asp-action="UpdateStatus" asp-controller="Home" method="post">
+                    <input type="hidden" name="reportId" value="@Model.ReportId" />
+                    <button class="dropdown-btn" type="button" onclick="toggleDropdown()">Endre status ▼</button>
+                    <div class="dropdown-content">
+                        <button class="dropdown-btn-a" type="submit" name="status" value="Behandlet">Behandlet</button>
+                        <button class="dropdown-btn-a" type="submit" name="status" value="Under_behandling">Under behandling</button>
+                        <button class="dropdown-btn-a" type="submit" name="status" value="Ubehandlet">Ubehandlet</button>
+                    </div>
+                </form>
+            </div>
+        }
+
+        <div class="chat-history">
+            <h3>Chat Historikk</h3>
+            <p>Samtale startet @Model.CreatedAt</p>
+
+            <div class="chat-message">
+                <p>@Model.Username</p>
+                <p>@Model.Message</p>
+            </div>
+
+            <div class="chat-input">
+                <input type="text" placeholder="Skriv melding her..">
+                <button>➤</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
@@ -84,6 +122,13 @@
     } else {
         console.error("Ingen GeoJSON-data funnet");
     }
+
+    function toggleDropdown() {
+        console.log("Dropdown-knappen ble klikket"); // Legg til dette for å feilsøke
+        const dropdownMenu = document.querySelector(".dropdown-content");
+        dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+    }
     
     </script>
+
 }
