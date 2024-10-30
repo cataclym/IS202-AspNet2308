@@ -9,12 +9,12 @@
 
 <div>
     <h1>Rapport registrert</h1>
-    @if (Model.Message?.Length >= 1 || Model.StringKoordinaterLag?.Length >= 1)
+    @if (Model.FirstMessage?.Length >= 1 || Model.StringKoordinaterLag?.Length >= 1)
     {
         <form asp-action="RegisterMapReport" asp-controller="Home" method="post" id="mapForm"> </form>
         <div>
             <h3>Melding</h3>
-            <p>@Model.Message</p>
+            <p>@Model.FirstMessage</p>
             @if (municipalityCountyNames != null)
             {
                 <h3>Fylke</h3>

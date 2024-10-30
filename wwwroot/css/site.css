@@ -614,6 +614,10 @@ input[type="checkbox"] {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+#message {
+    font-weight: lighter; !important;
+}
+
 .chat-message p {
     margin: 0;
     font-size: 0.9rem;

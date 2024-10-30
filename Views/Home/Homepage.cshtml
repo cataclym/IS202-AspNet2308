@@ -86,7 +86,7 @@ else
             {
             <tr>
                 <td><a asp-action="ReportView" asp-controller="Home" asp-route-id="@report.ReportId">@report.ReportId</a></td>
-                <td class="truncate-text" title="@report.Message">@report.Message</td>
+                <td class="truncate-text" title="@report.FirstMessage">@report.FirstMessage</td>
                 <td>@report.Username</td>
                 <td>@report.Status.ToString()</td>
                 <td>@report.CreatedAt.ToString()</td>
@@ -124,7 +124,7 @@ else
                     {
                         <tr>
                             <td><a asp-action="ReportView" asp-controller="Home" asp-route-id="@report.ReportId">@report.ReportId</a></td>
-                            <td class="truncate-text" title="@report.Message">@report.Message</td>
+                            <td class="truncate-text" title="@report.FirstMessage">@report.FirstMessage</td>
                             <td>@report.Status.ToString()</td>
                             <td>@report.CreatedAt.ToString()</td>
                         </tr>
