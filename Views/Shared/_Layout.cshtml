@@ -93,10 +93,12 @@
             layers: "kd_arealdekkeflate,kd_vannkontur,kd_vannflate,kd_elver,kd_veger,kd_bygninger,kd_jernbane,kd_stedsnavn",
             format: 'image/jpeg',
             attribution: 'Kartverket',
+            tileSize: 1024,
             maxZoom: 18,
-            tileSize: 512,
+            minZoom: 8,
+            maxNativeZoom: 16,// Begrens hvor mye detaljer som lastes inn
+            minNativeZoom: 9,
             keepBuffer: 5, // Holder på fliser fra tidligere visninger
-            maxNativeZoom: 16 // Begrens hvor mye detaljer som lastes inn
         }),
 
         // WMS-lag for Sjø
@@ -105,12 +107,16 @@
             format: 'image/jpeg',
             attribution: 'Kartverket',
             maxZoom: 18,
-            tileSize: 512,
-            keepBuffer: 5, // Holder på fliser fra tidligere visninger
-            maxNativeZoom: 16 // Begrens hvor mye detaljer som lastes inn
+            minZoom: 8,
+            maxNativeZoom: 16,// Begrens hvor mye detaljer som lastes inn
+            minNativeZoom: 9,
+            tileSize: 1024,
+            keepBuffer: 5 // Holder på fliser fra tidligere visninger
+            
+            
         })
     });
-    
+        
     // Instillinger for locate 
     const locateOptions = Object.freeze({
         position: "topleft",
@@ -148,6 +154,9 @@
 
         return map;
     }
+
+
+
 
 </script>
 @await RenderSectionAsync("Scripts", false)
