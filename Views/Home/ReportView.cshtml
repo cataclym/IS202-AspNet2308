@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 @if (Model.IsAdmin)
 {
-<h2 class="display-4 center-horizontal">Administrer Rapport</h2>
+<h2 class="display-4 center-horizontal">Rapport ID: @Model.ReportId</h2>
 }
 else
 {
@@ -19,39 +19,20 @@ else
     <!-- Left Column: Map and Report Details -->
     <div class="left-column">
         <div id="map" class="styledMap-report"></div>
-
-        <p><strong>Rapport ID:</strong> @Model.ReportId</p>
+        <div class="stats-container">
         @if (Model.IsAdmin)
         {
-        <p><strong>Brukernavn:</strong> @Model.Username</p>
+        <p><strong>Sendt inn av:</strong> @Model.Username</p>
         }
         <p><strong>Beskrivelse:</strong> @Model.FirstMessage</p>
-        <p><strong>Status:</strong> @Model.Status</p>
         <p><strong>Oprettet:</strong> @Model.CreatedAt</p>
         <p><strong>Koordinater:</strong> @Model.Coordinates</p>
-
-        @if (Model.FirstMessage?.Length >= 1 || Model.StringKoordinaterLag?.Length >= 1)
-        {
-        <form asp-action="RegisterMapReport" asp-controller="Home" method="post" id="mapForm"></form>
-        <div>
-            @if (municipalityCountyNames != null)
-            {
-            <h3>Fylke</h3>
-            <p>@municipalityCountyNames.fylkesnavn</p>
-            <h3>Kommune</h3>
-            <p>@municipalityCountyNames.kommunenavn</p>
-            }
         </div>
-        }
-        else
-        {
-        <p>Model er null, kunne ikke vise data.</p>
-        }
     </div>
 
     <!-- Right Column: Status Buttons and Chat History -->
     <div class="right-column">
-        
+        <p class="center-horizontal"><strong>Status:</strong> @Model.Status</p>
         @if (Model.IsAdmin)
         {
             <div class="status-dropdown">
@@ -82,7 +63,7 @@ else
             <form asp-action="AddMessage" asp-controller="Home" method="post">
                 <div class="chat-input">
                     <input type="hidden" name="ReportId" value="@Model.ReportId" />
-                    <input type="text" name="MessageText" placeholder="Skriv melding her..">
+                    <input type="text" name="MessageText" required minlength="1" placeholder="Skriv melding her..">
                     <button>➤</button>
                 </div>
             </form>
@@ -134,7 +115,15 @@ else
         const dropdownMenu = document.querySelector(".dropdown-content");
         dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
     }
-    
+
+    const chatHistorikk = document.querySelector('.chat-message');
+
+    function scrollToBottom() {
+        chatHistorikk.scrollTop = chatHistorikk.scrollHeight;
+    }
+
+    // Kall funksjonen hver gang en ny melding legges til, eller når siden lastes
+    scrollToBottom();
     </script>
 
 }

@@ -152,6 +152,7 @@ public class HomeController　: Controller
         // Fetch the report by ReportId, including any associated messages
         var report = await _context.Reports
             .Include(r => r.Messages)
+            .ThenInclude(m => m.User)
             .Include(r => r.User) // Hent brukerdata for selve rapporten
             .FirstOrDefaultAsync(r => r.ReportId == id);
 
