@@ -13,30 +13,26 @@
 
 <body>
 
-    
-    <div class="registration-form">
-        <h1 class="registration-form h1">Registrer deg</h1>
-    <form asp-action="UserRegistration" asp-controller="Account" method="post">
-    
+    <h1 class="registration-form h1">Registrer deg</h1>
 
-        <br>
+    <div class="registration-form">
+    <form asp-action="UserRegistration" asp-controller="Account" method="post">
+   
         <div>
             <label asp-for="Username" class="registration-label">Brukernavn:</label>
             <input asp-for="Username" />
         </div>
-        <br>
+        
 
         <div>
             <label asp-for="Email">E-post:</label>
             <input asp-for="Email" required placeholder="Skriv e-postadressen din" />
         </div>
-        <br>
 
         <div>
             <label asp-for="Phone">Telefonnummer:</label>
             <input asp-for="Phone" type="tel" pattern="[0-9]*" />
         </div>
-        <br>
        
         <div>
         <label asp-for="Password">Passord:</label>   
@@ -50,7 +46,7 @@
          </div>
 
          <div>
-                <button type="submit" class="btn-general btn-secondary">Registrer deg</button>
+                <button type="submit" class="btn-general btn-primary">Registrer deg</button>
         </div>
     </form>
     </div>

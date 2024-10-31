@@ -14,31 +14,41 @@
             <label asp-for="Username">Brukernavn</label>
             <input asp-for="Username"/>
         </div>
-        <br>
+           
+        
+        <div>
         <label asp-for="Password">Passord</label>
-        <div class="password-input-wrapper">
-            <input asp-for="Password" type="password" id="Password"/>
-            <div class="checkbox-wrapper">
+        <input asp-for="Password" type="password" id="Password"/>
+        </div>
+            <div class="checkbox-wrapper-login">
                 <input type="checkbox" id="togglePassword" class="togglePassword"/>
-                <br>
-                <br>
                 <label class="text-nowrap margin-bottom-2" for="togglePassword">Vis passord</label>
             </div>
-        </div>
-        <div class="center-horizontal" style="margin-top: 15px;">
-            <button type="submit" class="btn-general btn-primary">Logg inn</button>
+        
+        <div class="center-horizontal " style="margin-top: 15px;">
+            <button type="submit" class="btn-general btn-primary btn-login">Logg inn</button>
         </div>
     </form>
     </div>
 
-
+    <div class="registration-wrapper">
     <!-- Registration-form -->
-    <br><br>
     <p>Har du ikke en bruker?</p>
     <form asp-action="UserRegistration" asp-controller="Account" method="post">
         <div class="center-horizontal">
-            <button type="submit" class="btn-general btn-secondary">Registrer deg</button>
+            <button type="submit" class="btn-general btn-primary">Registrer deg</button>
         </div>
     </form>
 </div>
+</div>
 
+<script>
+    document.getElementById('togglePassword').addEventListener('change', function () {
+        const passwordField = document.getElementById('Password');
+        if (this.checked) {
+            passwordField.type = 'text'; // Show password
+        } else {
+            passwordField.type = 'password'; // Hide password
+        }
+    });
+</script>
