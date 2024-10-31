@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using System.Linq;
 
 namespace Kartverket.Controllers;
 
@@ -448,92 +449,182 @@ private string ProcessFeature(JObject feature)
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> HomePage(int id = 0)
+{
+    ViewData["Title"] = "Min Side"; // Sett tittel
+
+    id = await GetUserIdAsync(id);
+    if (id == 0)
     {
-        ViewData["Title"] = "Min Side"; // Set the title here in the controller
-        // Your existing logic for setting up the model
-        // Fetch the user data based on the ID or claims
-        
-        // Retrieve the user ID from claims if not provided
-        if (id == 0)
-        {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (int.TryParse(userIdClaim, out int userId))
-            {
-                id = userId;
-            }
-            else
-            {
-                _logger.LogInformation("Could not retrieve user id from claims or URL.");
-                return RedirectToAction("Login", "Account");
-            }
-        }
+        return RedirectToAction("Login", "Account");
+    }
 
-        _logger.LogInformation("User id retrieved: {id}", id);
+    var user = await GetUserAsync(id);
+    if (user == null)
+    {
+        return RedirectToAction("Login", "Account");
+    }
 
-        // Retrieve user from the database based on the UserId
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
+    // Hent pinnede rapporter for brukeren
+    var pinnedReportIds = await GetPinnedReportsAsync(id);
 
-        if (user == null)
-        {
-            _logger.LogInformation("User not found for id: {id}", id);
-            return RedirectToAction("Login", "Account");
-        }
-        
-        // Map user data to UserViewModel
-        var userRegistrationModel = new UserRegistrationModel()
-        {
-            Username = user.Username,
-            Email = user.Email,
-            Phone = user.Phone,
-            IsAdmin = user.IsAdmin
-        };
-        
-        // Retrieve reports for the user, including ReportId, Status, and the first Message
-        List<ReportViewModel> reports;
+    var reports = await GetReportsAsync(user, pinnedReportIds);
+
+    var viewModel = new HomePageModel
+    {
+        Reports = reports,
+        User = MapUserToViewModel(user)
+    };
+
+    return View(viewModel);
+}
+
+private async Task<int> GetUserIdAsync(int id)
+{
+    if (id != 0) return id;
+
+    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (int.TryParse(userIdClaim, out int userId))
+    {
+        _logger.LogInformation("User id retrieved: {userId}", userId);
+        return userId;
+    }
+
+    _logger.LogInformation("Could not retrieve user id from claims or URL.");
+    return 0;
+}
+
+private async Task<Users> GetUserAsync(int id)
+{
+    var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
+    if (user == null)
+    {
+        _logger.LogInformation("User not found for id: {id}", id);
+    }
+    return user;
+}
+
+private async Task<List<int>> GetPinnedReportsAsync(int userId)
+{
+    return await _context.PinnedReports
+        .Where(pr => pr.UserID == userId)
+        .Select(pr => pr.ReportID)
+        .ToListAsync();
+}
+
+private async Task<List<ReportViewModel>> GetReportsAsync(Users user, List<int> pinnedReportIds)
+{
+    if (user == null)
+    {
+        _logger.LogError("User is null in GetReportsAsync.");
+        throw new ArgumentNullException(nameof(user));
+    }
+
+    if (pinnedReportIds == null)
+    {
+        _logger.LogWarning("pinnedReportIds is null. Initializing to empty list.");
+        pinnedReportIds = new List<int>();
+    }
+
+    try
+    {
+        IQueryable<Reports> query;
+
         if (user.IsAdmin)
         {
-            // Admin view: retrieve all reports
-            reports = await _context.Reports
-                .OrderBy(r => r.CreatedAt)
-                .Include(r => r.Messages)
-                .Include(r => r.User) 
-                .Select(r => new ReportViewModel
-                {
-                    ReportId = r.ReportId,
-                    FirstMessage = r.Messages != null && r.Messages.Any() ? r.Messages.First().Message : "No message",
-                    Status = r.Status,
-                    CreatedAt = r.CreatedAt,
-                    Username = r.User.Username // Include the username associated with each report
-                })
-                .ToListAsync();
+            query = _context.Reports
+                .AsNoTracking()
+                .OrderBy(r => r.CreatedAt);
         }
         else
         {
-            // User view: retrieve only reports associated with this user
-            reports = await _context.Reports
-                .Where(r => r.UserId == id)
-                .OrderBy(r => r.CreatedAt)
-                .Include(r => r.Messages)
-                .Include(r => r.User) 
-                .Select(r => new ReportViewModel
-                {
-                    ReportId = r.ReportId,
-                    FirstMessage = r.Messages != null && r.Messages.Any() ? r.Messages.First().Message : "No message",
-                    Status = r.Status,
-                    CreatedAt = r.CreatedAt,
-                    Username = user.Username // Only the logged-in user's username for their own reports
-                })
-                .ToListAsync();
+            query = _context.Reports
+                .AsNoTracking()
+                .Where(r => r.UserId == user.UserId)
+                .OrderBy(r => r.CreatedAt);
         }
-        // Map data to HomePageModel
-        var viewModel = new HomePageModel
-        {
-            Reports = reports,
-            User = userRegistrationModel
-        };
 
-        // Pass the model to the view
-        return View(viewModel);
+        var pinnedReportIdsSet = new HashSet<int>(pinnedReportIds);
+
+        return await query
+            .Select(r => new ReportViewModel
+            {
+                ReportId = r.ReportId,
+                FirstMessage = r.Messages
+                    .OrderBy(m => m.CreatedAt)
+                    .Select(m => m.Message)
+                    .FirstOrDefault() ?? "No message",
+                Status = r.Status,
+                CreatedAt = r.CreatedAt,
+                Username = r.User.Username,
+                IsPinned = pinnedReportIdsSet.Contains(r.ReportId) // Correct casing and optimized lookup
+            })
+            .OrderByDescending(r => r.IsPinned) // Pinned reports first
+            .ThenBy(r => r.CreatedAt) // Then by creation date
+            .ToListAsync();
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "An error occurred while fetching reports for user ID {UserId}.", user.UserId);
+        throw; // Re-throw or handle as appropriate
+    }
+}
+
+private UserRegistrationModel MapUserToViewModel(Users user)
+{
+    return new UserRegistrationModel
+    {
+        Username = user.Username,
+        Email = user.Email,
+        Phone = user.Phone,
+        IsAdmin = user.IsAdmin
+    };
+}
+
+    
+    public async Task<IActionResult> PinReport(int reportId)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if (userIdClaim == null || !int.TryParse(userIdClaim, out int userId))
+        {
+            return Unauthorized(); // Håndterer ugyldig eller manglende bruker-ID
+        }
+
+            // Sjekk om rapporten allerede er pinnet av brukeren
+            var existingPin = await _context.PinnedReports
+            .FirstOrDefaultAsync(pr => pr.UserID == userId && pr.ReportID == reportId);
+
+        if (existingPin == null)
+        {
+            var pin = new PinnedReport { UserID = userId, ReportID = reportId };
+            _context.PinnedReports.Add(pin);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction("HomePage"); // Eller hvilken side du vil at brukeren skal returneres til
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UnpinReport(int reportId)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if (userIdClaim == null || !int.TryParse(userIdClaim, out int userId))
+        {
+            return Unauthorized(); // Håndterer ugyldig eller manglende bruker-ID
+        }
+
+        var pin = await _context.PinnedReports
+            .FirstOrDefaultAsync(pr => pr.UserID == userId && pr.ReportID == reportId);
+
+        if (pin != null)
+        {
+            _context.PinnedReports.Remove(pin);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction("HomePage"); // Eller hvilken side du vil at brukeren skal returneres til
     }
     
     [HttpGet]

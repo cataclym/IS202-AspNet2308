@@ -21,6 +21,9 @@ public sealed class Reports
     // Referrer til Messages tabell
     public ICollection<Messages> Messages { get; set; } = new List<Messages>();
     
+    public ICollection<PinnedReport> PinnedReports { get; set; }
+
+    
     
 }
 

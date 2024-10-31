@@ -26,6 +26,7 @@ public class ReportViewModel
     public string? Username { get; set; }
     
     public bool IsAdmin { get; set; } = false;
+    public bool IsPinned { get; set; }
     
     
     public DateTime CreatedAt { get; set; }

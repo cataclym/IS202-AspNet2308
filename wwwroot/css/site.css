@@ -144,6 +144,12 @@ input {
     color: #D9534F;
 }
 
+.\"btn-success\" {
+    background-color: #FFFFFF;
+    border-color: #D9534F; /* Fargen på border (stroke) */
+    color: yellow;
+}
+
 .btn-logout:hover {
     background-color: #D9534F; /* F.eks. rød bakgrunn på hover */
     border: 2px solid #D9534F !important;

@@ -22,4 +22,7 @@ public class Users
     public ICollection<Messages> Messages { get; set; } = new List<Messages>();
     
     public ICollection<Reports> Reports { get; set; } = new List<Reports>();
+    
+    public ICollection<PinnedReport> PinnedReports { get; set; }
+
 }

@@ -76,6 +76,7 @@ else
                 <th>Brukernavn</th>
                 <th>Status</th>
                 <th>Opprettet</th>
+                <th>Pin</th>
             </tr>
             </thead>
             <!-- Table body for reports data -->
@@ -90,13 +91,23 @@ else
                 <td>@report.Username</td>
                 <td>@report.Status.ToString()</td>
                 <td>@report.CreatedAt.ToString()</td>
+                <td>
+                    <!-- Form for Pin/Unpin -->
+                    <form asp-controller="Home" asp-action="@(report.IsPinned ? "UnpinReport" : "PinReport")" method="post">
+                        @Html.AntiForgeryToken() <!-- Anti-forgery token -->
+                        <input type="hidden" name="reportId" value="@report.ReportId" />
+                        <button type="submit" class="btn @(report.IsPinned ? "btn-success" : "btn-primary")">
+                            @(report.IsPinned ? "Unpin" : "Pin")
+                        </button>
+                    </form>
+                </td>
             </tr>
             }
             }
             else
             {
             <tr>
-                <td colspan="4">Ingen rapporter tilgjengelig.</td>
+                <td colspan="5">Ingen rapporter tilgjengelig.</td>
             </tr>
             }
             </tbody>
@@ -114,6 +125,7 @@ else
                     <th>Melding</th>
                     <th>Status</th>
                     <th>Opprettet</th>
+                    <th>Pin</th>
                 </tr>
                 </thead>
                 <!-- Table body for reports data -->
@@ -127,13 +139,23 @@ else
                             <td class="truncate-text" title="@report.FirstMessage">@report.FirstMessage</td>
                             <td>@report.Status.ToString()</td>
                             <td>@report.CreatedAt.ToString()</td>
+                            <td>
+                                <!-- Form for Pin -->
+                                <form asp-controller="Home" asp-action="@(report.IsPinned ? "UnpinReport" : "PinReport")" method="post">
+                                    @Html.AntiForgeryToken() <!-- Anti-forgery token -->
+                                    <input type="hidden" name="reportId" value="@report.ReportId" />
+                                    <button type="submit" class="btn @(report.IsPinned ? "btn-success" : "btn-primary")">
+                                        @(report.IsPinned ? "Unpin" : "Pin")
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     }
                 }
                 else
                 {
                     <tr>
-                        <td colspan="4">Ingen rapporter tilgjengelig.</td>
+                        <td colspan="5">Ingen rapporter tilgjengelig.</td>
                     </tr>
                 }
                 </tbody>
