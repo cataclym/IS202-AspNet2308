@@ -35,21 +35,13 @@ body {
     margin-bottom: 60px;
 }
 
-
-/* Fjerner marginer og padding fra Bootstrap containere og rader */
-.container, .row {
-    margin: 0; /* Fjerner marginer fra containere og rader */
-    padding: 0; /* Fjerner padding fra containere og rader */
-}
-
 /* Stiler for kartet */
 #map {
-    height: 100vh !important; /* Fyller hele høyden av viewport */
-    width: 100vw !important; /* Fyller hele bredden av viewport */
-    margin-top: -16px;
-    margin-left: -12px;
-    margin-right: -12px;
-    border: 1px solid #a8a5a5;
+    height: 500px;
+    width: 900px;
+    border: 1px solid #a8a5a5; /* Border */
+    border-radius: 5px; /* Optional: rounds the corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 
