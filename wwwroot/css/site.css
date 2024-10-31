@@ -37,20 +37,19 @@ body {
 
 /* Stiler for kartet */
 #map {
-    height: 500px;
-    width: 900px;
     border: 1px solid #a8a5a5; /* Border */
-    border-radius: 5px; /* Optional: rounds the corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 
 .styledMap {
-    height: 100vh !important; /* Fyller hele høyden av viewport */
-    width: 100vw !important; /* Fyller hele bredden av viewport */
-    margin-top: -16px;
-    margin-left: -12px;
-    margin-right: -12px;
+    position: fixed;
+    top: 75px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    border-radius: 0 !important;
+    height: calc(100vh - 110px); /* 100px for header, 50px for footer */
+    width: 100%; /* Fyller hele bredden */
 }
 
 .map-container {
@@ -867,7 +866,7 @@ input[type="checkbox"] {
     font-family: 'Mulish', sans-serif;
     font-weight: 700;
     font-size: 20px;
-    margin-top: 0px;
+    margin-top: 0;
     padding-left: 40px;
 }
 
