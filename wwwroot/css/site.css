@@ -521,19 +521,19 @@ input[type="checkbox"] {
     border-radius: 10px !important;
     border: 1px solid black !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
-    height: 300px !important; /* Adjust height */
-    width: 90% !important;
-    overflow: hidden !important;
-    margin-bottom: 30px; !important;
-    margin-top: 30px; !important;
+    height: 300px;
+    width: 750px;
+    overflow: hidden;
+    margin-bottom: 30px;;
+    margin-top: 30px;;
 }
 
 .stats-container {
     border-radius: 10px;
     background-color: #f9e8d2;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-height: 300px;
-    width: 90%;
+    max-height: 500px;
+    max-width: 750px;
     overflow: hidden;
     margin-bottom: 30px; 
     margin-top: 30px; 
