@@ -54,10 +54,10 @@
         </div>
     </nav>
 </header>
-<div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
+<div class="@(ViewBag.UseFluidContainer == true ? "container-fluid" : "container")">
+<main role="main" class="pb-3">
+    @RenderBody()
+</main>
 </div>
 
 <footer class="border-top footer text-muted fixed-bottom bg-light">
