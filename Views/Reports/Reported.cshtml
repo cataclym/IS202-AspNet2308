@@ -13,24 +13,22 @@
     </div>
     <div class="center-horizontal">
         <div class="stats-container">
-            @if (Model.FirstMessage?.Length >= 1 || Model.StringKoordinaterLag?.Length >= 1)
+            @if (Model.FirstMessage?.Length >= 1 || Model.@Coordinates?.Length >= 1)
             {
                 <form asp-action="RegisterMapReport" asp-controller="Reports" method="post" id="mapForm"> </form>
                 <div>
                     <h3>Melding</h3>
                     <p>@Model.FirstMessage</p>
-                    @if (municipalityCountyNames != null)
-                    {
                         <h3>Fylke</h3>
-                        <p>@municipalityCountyNames.fylkesnavn</p>
+                        <p>@Model.MunicipalityInfo.fylkesnavn</p>
                         <h3>Kommune</h3>
-                        <p>@municipalityCountyNames.kommunenavn</p>
-                    }
+                        <p>@Model.MunicipalityInfo.kommunenavn</p>
+                    
                 </div>
                 <!-- Sørg for å ha høyde på kartet -->
                 <div>
                     <h3>Koordinater</h3>
-                    <p>Koordinater: @ViewBag.Coordinates</p>
+                    <p>@Model.Coordinates</p>
                 </div>
             }
             else

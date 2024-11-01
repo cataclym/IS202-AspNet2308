@@ -28,6 +28,7 @@ public class ReportViewModel
     public bool IsAdmin { get; set; } = false;
     public bool IsPinned { get; set; }
     
+    public MunicipalityCountyNames MunicipalityInfo { get; set; } // Add this line
     
     public DateTime CreatedAt { get; set; }
     public DateTime? ResolvedAt { get; set; }

@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Kartverket.Controllers;
 
+[Authorize]
 public class ReportsController : BaseController
 {
     private readonly ApplicationDbContext _context;
@@ -30,6 +31,7 @@ public class ReportsController : BaseController
         _geoJsonService = geoJsonService;
     }
     
+    [HttpGet]
     [HttpPost]
     public ViewResult MapReport(ReportViewModel? feilMeldingsModel)
     {
@@ -42,91 +44,86 @@ public class ReportsController : BaseController
         return View("MapReport");
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> RegisterMapReport(ReportViewModel model)
     {
-        var geoJsonResult = _geoJsonService.ConvertGeoJsonToString(model.GeoJsonString);
-
         // Sjekk om modellen er gyldig
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            _logger.LogInformation("ModelState er gyldig");
+            _logger.LogInformation("ModelState er ugyldig");
             _logger.LogInformation("GeoJSON-streng: {GeoJson}", model.GeoJsonString);
-
-            ViewBag.Coordinates = geoJsonResult;
-
-            // Sjekk om koordinatene er gyldige (hvis det er nødvendig)
-            if (string.IsNullOrWhiteSpace(geoJsonResult))
-            {
-                ViewData["ErrorMessage"] = "Ugyldige koordinater fra GeoJSON-strengen.";
-                _logger.LogWarning("Konverterte koordinater er ugyldige eller tomme.");
-                return View("MapReport", model); // Returner til view hvis koordinatene er ugyldige
-            }
-
-            var mapLayers = _geoJsonService.GetGeoJson(model.GeoJsonString);
-
-            // Validering av GeoJSON (valgfritt, avhengig av behov)
-            if (mapLayers == null)
-            {
-                ViewData["ErrorMessage"] = "Du må markere området på kartet.";
-                _logger.LogWarning("GeoJSON-data er ugyldig");
-                return View("MapReport", model); // Returner til view hvis GeoJSON er ugyldig
-            }
-
-            MunicipalityCountyNames? municipalityInfo =
-                await _municipalityService.GetMunicipalityFromCoordAsync(mapLayers);
-
-            ViewData["MunicipalityInfo"] = municipalityInfo;
-
-            _logger.LogInformation("Legger til data i databasen");
-
-
-            // Forutsetter at brukeren er autentisert
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            // Konstruerer database-modellen for Reports
-            var report = new Reports
-            {
-                UserId = int.Parse(userId), // Henter brukerens ID fra claims
-                GeoJsonString = model.GeoJsonString,
-                CreatedAt = DateTime.Now,
-                Messages = new List<Messages>() // Oppretter en tom liste for meldinger
-            };
-
-            // Legg til meldingen til Messages-listen hvis det finnes en melding i modellen
-            if (!string.IsNullOrWhiteSpace(model.FirstMessage))
-            {
-                report.Messages.Add(new Messages
-                {
-                    Message = model.FirstMessage,
-                    CreatedAt = DateTime.Now,
-                    UserId = int.Parse(userId)
-                });
-            }
-
-            // Legg til rapporten i databasen
-            _context.Reports.Add(report);
-
-            // Lagre endringer til databasen asynkront
-            await _context.SaveChangesAsync();
-            _logger.LogInformation("Data har blitt lagret i databasen");
-
-            return View("Reported", model); // Eller til et annet view for å bekrefte lagringen
         }
-
-        _logger.LogWarning("ModelState er ugyldig. Returnerer til view");
-        foreach (var state in ModelState)
+        
+        _logger.LogInformation("Prosseserer en gyldig mapreport");
+        var geoJsonResult = _geoJsonService.ConvertGeoJsonToString(model.GeoJsonString);
+        
+        // Sjekk om koordinatene er gyldige (hvis det er nødvendig)
+        if (string.IsNullOrWhiteSpace(geoJsonResult))
         {
-            foreach (var error in state.Value.Errors)
-            {
-                _logger.LogWarning($"Valideringsfeil for '{state.Key}': {error.ErrorMessage}");
-            }
+            ViewData["ErrorMessage"] = "Ugyldige koordinater fra GeoJSON-strengen.";
+            _logger.LogWarning("Konverterte koordinater er ugyldige eller tomme.");
+            return View("MapReport", model); // Returner til view hvis koordinatene er ugyldige
+        }
+        
+        var mapLayers = _geoJsonService.GetGeoJson(model.GeoJsonString);
+
+        // Validering av GeoJSON (valgfritt, avhengig av behov)
+        if (mapLayers == null)
+        {
+            ViewData["ErrorMessage"] = "Du må markere området på kartet.";
+            _logger.LogWarning("GeoJSON-data er ugyldig");
+            return View("MapReport", model); // Returner til view hvis GeoJSON er ugyldig
         }
 
-        // Returner samme view med valideringsfeil hvis modellen ikke er gyldig
-        return View("MapReport", model);
+        var municipalityInfo = await _municipalityService.GetMunicipalityFromCoordAsync(mapLayers);
+        var userId = GetUserId();
+        
+        if (userId == null)
+        {
+            _logger.LogWarning("User ID could not be retrieved.");
+            return Unauthorized();
+        }
+
+        // Konstruerer database-modellen for Reports
+        var report = new Reports
+        {
+            UserId = userId.Value,
+            GeoJsonString = model.GeoJsonString,
+            CreatedAt = DateTime.Now,
+            Messages = new List<Messages>() // Oppretter en tom liste for meldinger
+        };
+
+        // Legg til meldingen til Messages-listen hvis det finnes en melding i modellen
+        if (!string.IsNullOrWhiteSpace(model.FirstMessage))
+        {
+            report.Messages.Add(new Messages
+            {
+                Message = model.FirstMessage,
+                CreatedAt = DateTime.Now,
+                UserId = userId.Value
+            });
+        }
+
+        // Legg til rapporten i databasen
+        _context.Reports.Add(report);
+        // Lagre endringer til databasen asynkront
+        await _context.SaveChangesAsync();
+        _logger.LogInformation("Data har blitt lagret i databasen");
+        
+        var viewModel = new ReportViewModel
+        {
+            ReportId = report.ReportId,
+            Coordinates = geoJsonResult,
+            GeoJsonString = report.GeoJsonString,
+            CreatedAt = report.CreatedAt,
+            FirstMessage = model.FirstMessage,
+            MunicipalityInfo = municipalityInfo
+        };
+
+        return View("Reported", viewModel); // Eller til et annet view for å bekrefte lagringen
     }
-
-
+    
     private async Task SaveReportAsync(ReportViewModel model, int userId)
     {
         var report = new Reports
@@ -160,6 +157,9 @@ public class ReportsController : BaseController
             _logger.LogWarning("Report with ID {id} not found", id);
             return NotFound(); // Alternatively, redirect to a "not found" page or error view
         }
+        
+        var mapLayers = _geoJsonService.GetGeoJson(report.GeoJsonString);
+        var municipalityInfo = await _municipalityService.GetMunicipalityFromCoordAsync(mapLayers);
 
         // Parse the GeoJsonString into a readable format
         var normalString = _geoJsonService.ConvertGeoJsonToString(report.GeoJsonString);
@@ -180,6 +180,7 @@ public class ReportsController : BaseController
             Status = report.Status,
             IsAdmin = isAdmin,
             Username = report.User.Username,
+            MunicipalityInfo = municipalityInfo,
             Messages = report.Messages.Select(m => new MessagesModel
             {
                 Message = m.Message,
