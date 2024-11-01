@@ -22,6 +22,7 @@
 
 </head>
 <body>
+@Html.AntiForgeryToken()
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
@@ -55,9 +56,9 @@
     </nav>
 </header>
 <div class="@(ViewBag.UseFluidContainer == true ? "container-fluid" : "container")">
-<main role="main" class="pb-3">
-    @RenderBody()
-</main>
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
 </div>
 
 <footer class="border-top footer text-muted fixed-bottom bg-light">
@@ -89,6 +90,14 @@
     // Kartlag som kan hentes fra alle views
     const kartLag = Object.freeze({
         // WMS-lag for Land
+
+        Open: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 18,
+            minZoom: 8,
+            tileSize: 256,
+        }),
+        
         Land: L.tileLayer.wms('https://openwms.statkart.no/skwms1/wms.kartdata?', {
             layers: "kd_arealdekkeflate,kd_vannkontur,kd_vannflate,kd_elver,kd_veger,kd_bygninger,kd_jernbane,kd_stedsnavn",
             format: 'image/jpeg',
@@ -141,7 +150,7 @@
         const map = L.map('map', options).setView([59.5745, 8.1909], 14);
 
         // Setter landkart som standardkart
-        kartLag.Land.addTo(map);
+        kartLag.Open.addTo(map);
 
         // Legger til sjøkart 
         L.control.layers(kartLag).addTo(map);

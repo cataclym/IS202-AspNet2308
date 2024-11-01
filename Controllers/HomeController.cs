@@ -580,18 +580,30 @@ private UserRegistrationModel MapUserToViewModel(Users user)
     };
 }
 
-    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> PinReport(int reportId)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        
+
         if (userIdClaim == null || !int.TryParse(userIdClaim, out int userId))
         {
-            return Unauthorized(); // Håndterer ugyldig eller manglende bruker-ID
+            _logger.LogWarning("Unauthorized pin attempt by user.");
+            return Json(new { success = false, message = "Unauthorized" });
         }
 
-            // Sjekk om rapporten allerede er pinnet av brukeren
-            var existingPin = await _context.PinnedReports
+        _logger.LogInformation("User {UserId} attempting to pin Report {ReportId}", userId, reportId);
+
+        // Check if the report exists
+        var report = await _context.Reports.FindAsync(reportId);
+        if (report == null)
+        {
+            _logger.LogWarning("Report {ReportId} not found when User {UserId} attempted to pin.", reportId, userId);
+            return Json(new { success = false, message = "Report not found" });
+        }
+
+        // Check if already pinned
+        var existingPin = await _context.PinnedReports
             .FirstOrDefaultAsync(pr => pr.UserID == userId && pr.ReportID == reportId);
 
         if (existingPin == null)
@@ -599,9 +611,16 @@ private UserRegistrationModel MapUserToViewModel(Users user)
             var pin = new PinnedReport { UserID = userId, ReportID = reportId };
             _context.PinnedReports.Add(pin);
             await _context.SaveChangesAsync();
-        }
 
-        return RedirectToAction("HomePage"); // Eller hvilken side du vil at brukeren skal returneres til
+            _logger.LogInformation("User {UserId} successfully pinned Report {ReportId}", userId, reportId);
+
+            return Json(new { success = true, isPinned = true });
+        }
+        else
+        {
+            _logger.LogWarning("User {UserId} attempted to pin Report {ReportId}, but it was already pinned.", userId, reportId);
+            return Json(new { success = false, message = "Report already pinned" });
+        }
     }
     
     [HttpPost]
@@ -609,11 +628,14 @@ private UserRegistrationModel MapUserToViewModel(Users user)
     public async Task<IActionResult> UnpinReport(int reportId)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        
+
         if (userIdClaim == null || !int.TryParse(userIdClaim, out int userId))
         {
-            return Unauthorized(); // Håndterer ugyldig eller manglende bruker-ID
+            _logger.LogWarning("Unauthorized unpin attempt by user.");
+            return Json(new { success = false, message = "Unauthorized" });
         }
+
+        _logger.LogInformation("User {UserId} attempting to unpin Report {ReportId}", userId, reportId);
 
         var pin = await _context.PinnedReports
             .FirstOrDefaultAsync(pr => pr.UserID == userId && pr.ReportID == reportId);
@@ -622,9 +644,14 @@ private UserRegistrationModel MapUserToViewModel(Users user)
         {
             _context.PinnedReports.Remove(pin);
             await _context.SaveChangesAsync();
+
+            _logger.LogInformation("User {UserId} successfully unpinned Report {ReportId}", userId, reportId);
+
+            return Json(new { success = true, isPinned = false });
         }
 
-        return RedirectToAction("HomePage"); // Eller hvilken side du vil at brukeren skal returneres til
+        _logger.LogWarning("User {UserId} attempted to unpin Report {ReportId}, but it was not found.", userId, reportId);
+        return Json(new { success = false, message = "Pin not found" });
     }
     
     [HttpGet]

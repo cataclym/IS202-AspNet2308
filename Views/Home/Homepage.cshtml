@@ -1,16 +1,23 @@
 @model Kartverket.Models.HomePageModel
+@using System.Text.Json
 
 <!DOCTYPE html>
 <html>
+
+<head>
+    <!-- Include any other necessary scripts or styles -->
+    <!-- Include Bootstrap CSS and JS for Toasts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
 <body>
-
-
 @if (Model.User.IsAdmin)
 {
     <h1 class="header1 display-4">Administrer <span class="highlight">Rapporter</span></h1>
 }
 else
-{ 
+{
     <h1 class="header1 display-4">Min <span class="highlight">Side</span></h1>
 }
 
@@ -36,11 +43,11 @@ else
         </div>
     </div>
 
-        
-        
-        <div class="user-information">
-            @if (Model != null)
-            {
+
+
+    <div class="user-information">
+        @if (Model != null)
+        {
             <table class="user-info-table">
 
                 <tr class="user-table-header">
@@ -61,63 +68,64 @@ else
                     <td>@Model.User.Phone</td>
                 </tr>
             </table>
-            }
-        </div>
+        }
+    </div>
 
     @if (Model.User.IsAdmin)
     {
-    <div>
-        <table class="user-info-table">
-            <!-- Table header row for column names -->
-            <thead>
-            <tr>
-                <th>Rapport ID</th>
-                <th>Melding</th>
-                <th>Brukernavn</th>
-                <th>Status</th>
-                <th>Opprettet</th>
-                <th>Pin</th>
-            </tr>
-            </thead>
-            <!-- Table body for reports data -->
-            <tbody>
-            @if (Model.Reports != null && Model.Reports.Any())
-            {
-            @foreach (var report in Model.Reports)
-            {
-            <tr>
-                <td><a asp-action="ReportView" asp-controller="Home" asp-route-id="@report.ReportId">@report.ReportId</a></td>
-                <td class="truncate-text" title="@report.FirstMessage">@report.FirstMessage</td>
-                <td>@report.Username</td>
-                <td>@report.Status.ToString()</td>
-                <td>@report.CreatedAt.ToString()</td>
-                <td>
-                    <!-- Form for Pin/Unpin -->
-                    <form asp-controller="Home" asp-action="@(report.IsPinned ? "UnpinReport" : "PinReport")" method="post">
-                        @Html.AntiForgeryToken() <!-- Anti-forgery token -->
-                        <input type="hidden" name="reportId" value="@report.ReportId" />
-                        <button type="submit" class="btn @(report.IsPinned ? "btn-success" : "btn-primary")">
-                            @(report.IsPinned ? "Unpin" : "Pin")
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            }
-            }
-            else
-            {
-            <tr>
-                <td colspan="5">Ingen rapporter tilgjengelig.</td>
-            </tr>
-            }
-            </tbody>
-        </table>
-    </div>
+        <div>
+            <table id="admin-table" class="user-info-table">
+                <!-- Table header row for column names -->
+                <thead>
+                <tr>
+                    <th>Rapport ID</th>
+                    <th>Melding</th>
+                    <th>Brukernavn</th>
+                    <th>Status</th>
+                    <th>Opprettet</th>
+                    <th>Pin</th>
+                </tr>
+                </thead>
+                <!-- Table body for reports data -->
+                <tbody>
+                @if (Model.Reports != null && Model.Reports.Any())
+                {
+                    @foreach (var report in Model.Reports)
+                    {
+                        <tr data-report-id="@report.ReportId" data-is-pinned="@report.IsPinned.ToString().ToLower()">
+                            <td><a asp-action="ReportView" asp-controller="Home" asp-route-id="@report.ReportId">@report.ReportId</a></td>
+                            <td class="truncate-text" title="@report.FirstMessage">@report.FirstMessage</td>
+                            @if (Model.User.IsAdmin)
+                            {
+                                <td>@report.Username</td>
+                            }
+                            <td>@report.Status.ToString()</td>
+                            <td data-created-at="@report.CreatedAt.ToString("o")">@report.CreatedAt.ToString()</td>
+                            <td>
+                                <button
+                                    class="btn @(report.IsPinned ? "btn-success" : "btn-primary") pin-button"
+                                    data-report-id="@report.ReportId"
+                                    data-is-pinned="@report.IsPinned.ToString().ToLower()">
+                                    @(report.IsPinned ? "Unpin" : "Pin")
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5">Ingen rapporter tilgjengelig.</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
     }
     else
     {
         <div>
-            <table class="user-info-table">
+            <table id="user-table" class="user-info-table">
                 <!-- Table header row for column names -->
                 <thead>
                 <tr>
@@ -134,20 +142,22 @@ else
                 {
                     @foreach (var report in Model.Reports)
                     {
-                        <tr>
+                        <tr data-report-id="@report.ReportId" data-is-pinned="@report.IsPinned.ToString().ToLower()">
                             <td><a asp-action="ReportView" asp-controller="Home" asp-route-id="@report.ReportId">@report.ReportId</a></td>
                             <td class="truncate-text" title="@report.FirstMessage">@report.FirstMessage</td>
+                            @if (Model.User.IsAdmin)
+                            {
+                                <td>@report.Username</td>
+                            }
                             <td>@report.Status.ToString()</td>
-                            <td>@report.CreatedAt.ToString()</td>
+                            <td data-created-at="@report.CreatedAt.ToString("o")">@report.CreatedAt.ToString()</td>
                             <td>
-                                <!-- Form for Pin -->
-                                <form asp-controller="Home" asp-action="@(report.IsPinned ? "UnpinReport" : "PinReport")" method="post">
-                                    @Html.AntiForgeryToken() <!-- Anti-forgery token -->
-                                    <input type="hidden" name="reportId" value="@report.ReportId" />
-                                    <button type="submit" class="btn @(report.IsPinned ? "btn-success" : "btn-primary")">
-                                        @(report.IsPinned ? "Unpin" : "Pin")
-                                    </button>
-                                </form>
+                                <button
+                                    class="btn @(report.IsPinned ? "btn-success" : "btn-primary") pin-button"
+                                    data-report-id="@report.ReportId"
+                                    data-is-pinned="@report.IsPinned.ToString().ToLower()">
+                                    @(report.IsPinned ? "Unpin" : "Pin")
+                                </button>
                             </td>
                         </tr>
                     }
@@ -163,5 +173,128 @@ else
         </div>
     }
 </div>
+
+<!-- Toast Container -->
+<div aria-live="polite" aria-atomic="true" style="position: fixed; top: 20px; right: 20px; min-height: 200px;">
+    <div id="toast-container"></div>
+</div>
+
+<!-- JavaScript to handle AJAX pin/unpin -->
+<script>
+    $(document).ready(function () {
+        // Declare the URLs for PinReport and UnpinReport
+        var pinReportUrl = '@Url.Action("PinReport", "Home")';
+        var unpinReportUrl = '@Url.Action("UnpinReport", "Home")';
+
+        // Determine which table to target based on the user's role
+        var isAdmin = @Html.Raw(JsonSerializer.Serialize(Model.User.IsAdmin));
+        var tableSelector = isAdmin ? '#admin-table' : '#user-table';
+
+        console.log('isAdmin:', isAdmin);
+        console.log('tableSelector:', tableSelector);
+
+        $('.pin-button').click(function (e) {
+            e.preventDefault(); // Prevent the default button behavior
+
+            var button = $(this);
+            var reportId = button.data('report-id');
+            var isPinned = button.attr('data-is-pinned') === 'true'; // Get the current pin state
+
+            // Determine the correct URL based on the current state
+            var actionUrl = isPinned ? unpinReportUrl : pinReportUrl;
+
+            // Retrieve the anti-forgery token
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            $.ajax({
+                url: actionUrl,
+                type: 'POST',
+                data: {
+                    reportId: reportId,
+                    __RequestVerificationToken: token // Include the anti-forgery token
+                },
+                beforeSend: function () {
+                    // Disable the button to prevent multiple clicks
+                    button.prop('disabled', true).text('Processing...');
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Update the button's data attribute and appearance
+                        button.attr('data-is-pinned', response.isPinned.toString());
+                        button.text(response.isPinned ? 'Unpin' : 'Pin');
+                        button.toggleClass('btn-primary btn-success');
+
+                        // Update the table row's data attribute
+                        var row = button.closest('tr');
+                        row.attr('data-is-pinned', response.isPinned.toString());
+
+                        // Reorder the table
+                        reorderTable($(tableSelector + ' tbody'));
+
+                        // Show a toast notification
+                        showToast(response.isPinned ? 'Report pinned successfully.' : 'Report unpinned successfully.', 'success');
+                    } else {
+                        showToast(response.message || 'An error occurred.', 'error');
+                    }
+                },
+                error: function () {
+                    showToast('An error occurred while processing your request.', 'error');
+                },
+                complete: function () {
+                    // Re-enable the button after the request completes
+                    button.prop('disabled', false);
+                }
+            });
+        });
+
+        // Function to reorder the table rows
+        function reorderTable(tbody) {
+            var rows = tbody.find('tr').get();
+
+            rows.sort(function (a, b) {
+                var isPinnedA = $(a).attr('data-is-pinned') === 'true';
+                var isPinnedB = $(b).attr('data-is-pinned') === 'true';
+
+                if (isPinnedA && !isPinnedB) {
+                    return -1; // a comes before b
+                }
+                if (!isPinnedA && isPinnedB) {
+                    return 1; // b comes before a
+                }
+
+                // If both are the same in terms of pin status, sort by CreatedAt
+                var dateA = new Date($(a).find('td[data-created-at]').attr('data-created-at'));
+                var dateB = new Date($(b).find('td[data-created-at]').attr('data-created-at'));
+
+                return dateA - dateB;
+            });
+
+            // Append the sorted rows back to the tbody
+            $.each(rows, function (index, row) {
+                tbody.append(row);
+            });
+        }
+
+        // Toast Notification Function
+        function showToast(message, type) {
+            var toastHtml = `
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+                    <div class="toast-header">
+                        <strong class="mr-auto">${type === 'success' ? 'Success' : 'Error'}</strong>
+                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                </div>
+            `;
+            $('#toast-container').append(toastHtml);
+            $('#toast-container .toast').last().toast('show');
+        }
+    });
+
+</script>
 </body>
 </html>
