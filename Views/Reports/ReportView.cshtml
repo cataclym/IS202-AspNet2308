@@ -60,7 +60,7 @@ else
                 <p id="message">@message.Message</p>
                 }
             </div>
-            <form asp-action="AddMessage" asp-controller="Home" method="post">
+            <form asp-action="AddMessage" asp-controller="Reports" method="post">
                 <div class="chat-input">
                     <input type="hidden" name="ReportId" value="@Model.ReportId" />
                     <input type="text" name="MessageText" required minlength="1" placeholder="Skriv melding her..">
