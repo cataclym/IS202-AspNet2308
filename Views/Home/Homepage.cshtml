@@ -25,7 +25,7 @@ else
     <div class="meld-kartfeil">
         <p>Feil i kartet? Trykk her:</p>
         <div class="center-horizontal" style="text-decoration: none">
-            <form asp-action="MapReport" method="post">
+            <form asp-controller="Reports" asp-action="MapReport" method="post">
                 <button type="submit" class="btn-general btn-primary">Meld feil</button>
             </form>
         </div>
@@ -93,7 +93,7 @@ else
                     @foreach (var report in Model.Reports)
                     {
                         <tr data-report-id="@report.ReportId" data-is-pinned="@report.IsPinned.ToString().ToLower()">
-                            <td><a asp-action="ReportView" asp-controller="Home" asp-route-id="@report.ReportId">@report.ReportId</a></td>
+                            <td><a asp-action="ReportView" asp-controller="Reports" asp-route-id="@report.ReportId">@report.ReportId</a></td>
                             <td class="truncate-text" title="@report.FirstMessage">@report.FirstMessage</td>
                             @if (Model.User.IsAdmin)
                             {
@@ -143,7 +143,7 @@ else
                     @foreach (var report in Model.Reports)
                     {
                         <tr data-report-id="@report.ReportId" data-is-pinned="@report.IsPinned.ToString().ToLower()">
-                            <td><a asp-action="ReportView" asp-controller="Home" asp-route-id="@report.ReportId">@report.ReportId</a></td>
+                            <td><a asp-action="ReportView" asp-controller="Reports" asp-route-id="@report.ReportId">@report.ReportId</a></td>
                             <td class="truncate-text" title="@report.FirstMessage">@report.FirstMessage</td>
                             @if (Model.User.IsAdmin)
                             {
@@ -183,8 +183,8 @@ else
 <script>
     $(document).ready(function () {
         // Declare the URLs for PinReport and UnpinReport
-        var pinReportUrl = '@Url.Action("PinReport", "Home")';
-        var unpinReportUrl = '@Url.Action("UnpinReport", "Home")';
+        var pinReportUrl = '@Url.Action("PinReport", "Reports")';
+        var unpinReportUrl = '@Url.Action("UnpinReport", "Reports")';
 
         // Determine which table to target based on the user's role
         var isAdmin = @Html.Raw(JsonSerializer.Serialize(Model.User.IsAdmin));

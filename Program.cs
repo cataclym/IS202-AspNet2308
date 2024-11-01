@@ -13,6 +13,9 @@ public class Program
     public static void Main(string[] args)
     {
         Builder = WebApplication.CreateBuilder(args);
+        
+        // Registrer GeoJsonService som en tjeneste
+        Builder.Services.AddScoped<GeoJsonService>();
 
         // Legg til env variabler
         Builder.Configuration.AddEnvironmentVariables();

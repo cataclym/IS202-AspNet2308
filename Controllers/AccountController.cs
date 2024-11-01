@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Kartverket.Database;
+using Kartverket.Database.Models;
 using Kartverket.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -114,9 +115,9 @@ public class AccountController : Controller
     public async Task<IActionResult> UserRegistration(UserRegistrationModel userRegistrationModelModel)
     {
         if (User.Identity is { IsAuthenticated: true })
-            {
-                return RedirectToAction("HomePage", "Home");
-            }
+        {
+            return RedirectToAction("HomePage", "Home");
+        }
             
         // Sjekk om modellen er gyldig (at brukernavn og passord er fylt ut korrekt)
         if (!ModelState.IsValid)
@@ -144,6 +145,40 @@ public class AccountController : Controller
         // Brukeren er autentisert
         Console.WriteLine(User.Identity is { IsAuthenticated: true } ? "User is authenticated" : "User is not authenticated");
         return View();
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> RegisterUser(UserRegistrationModel userRegistrationModelModel)
+    {
+        // Sjekk om modellen er gyldig
+        if (!ModelState.IsValid) return View(userRegistrationModelModel);
+        
+        try
+        {
+            var users = new Users
+            {
+                Username = userRegistrationModelModel.Username,
+                Password = userRegistrationModelModel.Password,
+                Email = userRegistrationModelModel.Email,
+                Phone = userRegistrationModelModel.Phone,
+                IsAdmin = userRegistrationModelModel.IsAdmin,
+            };
+            // Legger til brukerdata i databasen
+            _context.Users.Add(users);
+
+            // Lagre endringer til databasen asynkront
+            await _context.SaveChangesAsync();
+
+            // Gå til en suksess- eller bekreftelsesside (eller tilbakemelding på skjema)
+            return View("Min Side", userRegistrationModelModel);
+        }   
+        catch (Exception ex)
+        {
+            // Logg feil hvis lagringen ikke fungerer
+            _logger.LogError(ex, "Feil ved lagring av brukerdata");
+            // Returner en feilmelding
+            return View("Error");
+        }
     }
 
     [HttpPost]

@@ -15,7 +15,7 @@
         <div class="stats-container">
             @if (Model.FirstMessage?.Length >= 1 || Model.StringKoordinaterLag?.Length >= 1)
             {
-                <form asp-action="RegisterMapReport" asp-controller="Home" method="post" id="mapForm"> </form>
+                <form asp-action="RegisterMapReport" asp-controller="Reports" method="post" id="mapForm"> </form>
                 <div>
                     <h3>Melding</h3>
                     <p>@Model.FirstMessage</p>

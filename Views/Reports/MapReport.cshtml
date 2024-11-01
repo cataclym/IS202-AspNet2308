@@ -31,7 +31,7 @@
 
     <div id="descriptionForm" style="height: 180px;">
         <button class="close-button" onclick="closeForm()">&times;</button>
-        <form asp-action="RegisterMapReport" method="post" id="mapForm">
+        <form asp-controller="Reports" asp-action="RegisterMapReport" method="post" id="mapForm">
             <div>
                 <textarea id="meldingsBoks" asp-for="FirstMessage" required minlength="5" style="width: 250px; height: 105px;" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
             </div>
