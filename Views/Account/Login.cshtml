@@ -1,46 +1,43 @@
 @model UserLoginModel
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Login";
     Layout = "_Layout";
 }
 
-<div class="text-center">
-    <div class="login-form">
-    <h3 class="display-4">Logg inn</h3>
-    <br/>
-    <form asp-action="Login" method="post">
-        <div>
-            <label asp-for="Username">Brukernavn</label>
-            <input asp-for="Username"/>
-        </div>
-           
-        
-        <div>
-        <label asp-for="Password">Passord</label>
-        <input asp-for="Password" type="password" id="Password"/>
-        </div>
-            <div class="checkbox-wrapper-login">
-                <input type="checkbox" id="togglePassword" class="togglePassword"/>
-                <label class="text-nowrap margin-bottom-2" for="togglePassword">Vis passord</label>
+<body class="login">
+    <div class="login-container">
+        <h3 class="login-title">Logg inn</h3>
+        <form asp-action="Login" method="post" class="login-form">
+            <div class="form-group">
+                <label asp-for="Username">Brukernavn</label>
+                <input asp-for="Username" />
             </div>
-        
-        <div class="center-horizontal " style="margin-top: 15px;">
-            <button type="submit" class="btn-general btn-primary btn-login">Logg inn</button>
-        </div>
-    </form>
-    </div>
 
-    <div class="registration-wrapper">
-    <!-- Registration-form -->
-    <p>Har du ikke en bruker?</p>
-    <form asp-action="UserRegistration" asp-controller="Account" method="post">
-        <div class="center-horizontal">
-            <button type="submit" class="btn-general btn-primary">Registrer deg</button>
+            <div class="form-group">
+                <label asp-for="Password">Passord</label>
+                <div class="password-wrapper">
+                    <input asp-for="Password" type="password" id="Password" />
+                    <label class="show-password">
+                        <input type="checkbox" id="togglePassword" />
+                        Vis passord
+                    </label>
+                </div>
+            </div>
+            
+               <div class="center-horizontal">
+               <button type="submit" class="btn-general btn-primary">Logg inn</button>
+               </div>
+        </form>
+
+        <div class="registration-section">
+            <p>Har du ikke en bruker?</p>
+            <form asp-action="UserRegistration" asp-controller="Account" method="post">
+                <button type="submit" class="btn-general btn-secondary">Registrer deg</button>
+            </form>
         </div>
-    </form>
-</div>
-</div>
+    </div>
+</body>
 
 <script>
     document.getElementById('togglePassword').addEventListener('change', function () {

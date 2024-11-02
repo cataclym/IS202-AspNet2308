@@ -7,31 +7,32 @@
 <head>
     <!-- Include any other necessary scripts or styles -->
     <!-- Include Bootstrap CSS and JS for Toasts -->
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body class="home-page">
+
 @if (Model.User.IsAdmin)
 {
-    <h1 class="header1 display-4">Administrer <span class="highlight">Rapporter</span></h1>
+<h1 class="header1 display-4">Administrer <span class="highlight">Rapporter</span></h1>
 }
 else
 {
-    <h1 class="header1 display-4">Min <span class="highlight">Side</span></h1>
+<h1 class="header1 display-4">Min <span class="highlight">Side</span></h1>
 }
 
-<div class="homepage">
-    <div class="meld-kartfeil">
+<div class="buttons-wrapper">
+    <div class="button-group">
+        <!-- Your buttons -->
         <p>Feil i kartet? Trykk her:</p>
         <div class="center-horizontal" style="text-decoration: none">
             <form asp-controller="Reports" asp-action="MapReport" method="post">
                 <button type="submit" class="btn-general btn-primary">Meld feil</button>
             </form>
         </div>
-
         <div class="password-change">
-            <!-- Button to show password change form -->
             <form asp-controller="Account" asp-action="PasswordView" method="post">
                 <button id="showPasswordFormBtn" class="btn-general btn-primary">Endre passord</button>
             </form>
@@ -42,37 +43,37 @@ else
             </form>
         </div>
     </div>
+</div>
 
-
-
-    <div class="user-information">
-        @if (Model != null)
-        {
-            <table class="user-info-table">
-
-                <tr class="user-table-header">
-
-                    <th colspan="3" style="text-align: left;" class="user-table-header">Min informasjon:</th> <!-- Overskrift for tabell -->
-                </tr>
-
-                <tr>
-                    <td><strong>Brukernavn:</strong></td>
-                    <td>@Model.User.Username</td>
-                </tr>
-                <tr>
-                    <td><strong>E-post:</strong></td>
-                    <td>@Model.User.Email</td>
-                </tr>
-                <tr>
-                    <td><strong>Telefonnummer:</strong></td>
-                    <td>@Model.User.Phone</td>
-                </tr>
-            </table>
-        }
-    </div>
-
-    @if (Model.User.IsAdmin)
+<div class="user-info-container">
+    @if (Model != null)
     {
+    <table class="user-info-table">
+        <tr class="user-table-header">
+            <th colspan="2" style="text-align: left;" class="user-table-header">Min informasjon:</th>
+        </tr>
+        <tr>
+            <td><strong>Brukernavn:</strong></td>
+            <td>@Model.User.Username</td>
+        </tr>
+        <tr>
+            <td><strong>E-post:</strong></td>
+            <td>@Model.User.Email</td>
+        </tr>
+        <tr>
+            <td><strong>Telefonnummer:</strong></td>
+            <td>@Model.User.Phone</td>
+        </tr>
+    </table>
+    }
+</div>
+
+        
+
+
+@if (Model.User.IsAdmin)
+{
+    <div class="left-column">
         <div>
             <table id="admin-table" class="user-info-table">
                 <!-- Table header row for column names -->
@@ -121,58 +122,59 @@ else
                 </tbody>
             </table>
         </div>
-    }
-    else
-    {
-        <div>
-            <table id="user-table" class="user-info-table">
-                <!-- Table header row for column names -->
-                <thead>
-                <tr>
-                    <th>Rapport ID</th>
-                    <th>Melding</th>
-                    <th>Status</th>
-                    <th>Opprettet</th>
-                    <th>Pin</th>
-                </tr>
-                </thead>
-                <!-- Table body for reports data -->
-                <tbody>
-                @if (Model.Reports != null && Model.Reports.Any())
+    </div>
+}
+else
+{
+    <div>
+        <table id="user-table" class="user-info-table">
+            <!-- Table header row for column names -->
+            <thead>
+            <tr>
+                <th>Rapport ID</th>
+                <th>Melding</th>
+                <th>Status</th>
+                <th>Opprettet</th>
+                <th>Pin</th>
+            </tr>
+            </thead>
+            <!-- Table body for reports data -->
+            <tbody>
+            @if (Model.Reports != null && Model.Reports.Any())
+            {
+                @foreach (var report in Model.Reports)
                 {
-                    @foreach (var report in Model.Reports)
-                    {
-                        <tr data-report-id="@report.ReportId" data-is-pinned="@report.IsPinned.ToString().ToLower()">
-                            <td><a asp-action="ReportView" asp-controller="Reports" asp-route-id="@report.ReportId">@report.ReportId</a></td>
-                            <td class="truncate-text" title="@report.FirstMessage">@report.FirstMessage</td>
-                            @if (Model.User.IsAdmin)
-                            {
-                                <td>@report.Username</td>
-                            }
-                            <td>@report.Status.ToString()</td>
-                            <td data-created-at="@report.CreatedAt.ToString("o")">@report.CreatedAt.ToString()</td>
-                            <td>
-                                <button
-                                    class="btn @(report.IsPinned ? "btn-success" : "btn-primary") pin-button"
-                                    data-report-id="@report.ReportId"
-                                    data-is-pinned="@report.IsPinned.ToString().ToLower()">
-                                    @(report.IsPinned ? "Unpin" : "Pin")
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="5">Ingen rapporter tilgjengelig.</td>
+                    <tr data-report-id="@report.ReportId" data-is-pinned="@report.IsPinned.ToString().ToLower()">
+                        <td><a asp-action="ReportView" asp-controller="Reports" asp-route-id="@report.ReportId">@report.ReportId</a></td>
+                        <td class="truncate-text" title="@report.FirstMessage">@report.FirstMessage</td>
+                        @if (Model.User.IsAdmin)
+                        {
+                            <td>@report.Username</td>
+                        }
+                        <td>@report.Status.ToString()</td>
+                        <td data-created-at="@report.CreatedAt.ToString("o")">@report.CreatedAt.ToString()</td>
+                        <td>
+                            <button
+                                class="btn @(report.IsPinned ? "btn-success" : "btn-primary") pin-button"
+                                data-report-id="@report.ReportId"
+                                data-is-pinned="@report.IsPinned.ToString().ToLower()">
+                                @(report.IsPinned ? "Unpin" : "Pin")
+                            </button>
+                        </td>
                     </tr>
                 }
-                </tbody>
-            </table>
-        </div>
-    }
-</div>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">Ingen rapporter tilgjengelig.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+
 
 <!-- Toast Container -->
 <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 20px; right: 20px; min-height: 200px;">

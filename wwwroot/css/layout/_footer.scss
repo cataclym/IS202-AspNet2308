@@ -1,0 +1,11 @@
+.footer-link {
+  color: #000;
+  text-decoration: none;
+  border-bottom: 2px solid #000;
+  transition: color 0.3s, border-color 0.3s;
+
+  &:hover {
+    color: #000;
+    border-bottom-color: #000;
+  }
+}

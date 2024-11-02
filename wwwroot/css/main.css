@@ -1,0 +1,791 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&display=swap");
+h1 {
+  text-align: center;
+  font-family: "Mulish", sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  margin: 40px 0;
+}
+
+p {
+  font-family: "Verdana", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.center-horizontal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+  margin-left: 4px;
+}
+
+.highlight {
+  color: #008540;
+}
+
+.truncate-text {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.font-color-primary {
+  color: #006A33;
+}
+
+.width-900 {
+  width: 900px;
+}
+
+.border-radius-5 {
+  border-radius: 5px;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+  font-size: 18px;
+  font-family: "Mulish", sans-serif !important;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+body {
+  font-family: "Mulish", sans-serif !important;
+  margin-bottom: 60px;
+  min-height: 100vh;
+}
+
+.btn:focus,
+.btn:active:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #008540;
+}
+
+.center-horizontal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+  margin-left: 4px;
+}
+
+.highlight {
+  color: #008540;
+}
+
+.truncate-text {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.font-color-primary {
+  color: #006A33;
+}
+
+.width-900 {
+  width: 900px;
+}
+
+.border-radius-5 {
+  border-radius: 5px;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+  font-size: 18px;
+  font-family: "Mulish", sans-serif !important;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+body {
+  font-family: "Mulish", sans-serif !important;
+  margin-bottom: 60px;
+  min-height: 100vh;
+}
+
+.btn:focus,
+.btn:active:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #008540;
+}
+
+.navbar {
+  display: flex;
+  background-color: #F7F7F7 !important;
+  font-family: "Mulish", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  margin-top: 0;
+  padding-left: 40px;
+}
+
+.nav-link {
+  font-family: "Mulish", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s;
+  margin-left: 70px;
+}
+.nav-link:hover {
+  color: #006F35;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: #006F35;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+.nav-link.active {
+  font-weight: 700;
+  color: #1B589F;
+}
+
+.footer-link {
+  color: #000;
+  text-decoration: none;
+  border-bottom: 2px solid #000;
+  transition: color 0.3s, border-color 0.3s;
+}
+.footer-link:hover {
+  color: #000;
+  border-bottom-color: #000;
+}
+
+.list-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: stretch;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-primary {
+  background-color: #006F35;
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background-color: #1B589F;
+  color: #ffffff;
+}
+
+.btn-general {
+  background-color: #038540;
+  color: white;
+  display: inline-block;
+  margin: 0 auto; /* Sentrerer knappen */
+  width: 145px;
+  height: 45px;
+  font-size: 16px;
+  border: 2px solid !important; /* Angi bredde og stil, men ikke farge */
+  border-radius: 10px;
+  cursor: pointer; /* Håndmus ved hover */
+  align-items: center; /* Sentrerer innholdet vertikalt */
+  justify-content: center; /* Sentrerer innholdet horisontalt */
+  text-decoration: none; /* Ingen understreking på tekst */
+  box-sizing: border-box; /* Inkluderer padding og border i bredden/høyden */
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: row; /* Plasserer knappene horisontalt */
+  align-items: center; /* Sentrerer knappene vertikalt */
+  justify-content: space-evenly; /* Sentrerer knappene horisontalt */
+  width: 70%; /* Juster bredde om nødvendig */
+  margin: 0 auto; /* Sentrer containeren */
+  gap: 0px; /* Økt avstand mellom knappene */
+}
+
+.btn-index {
+  width: 273px;
+  height: 85px;
+  font-size: 32px;
+  border: 2px solid !important; /* Angi bredde og stil, men ikke farge */
+  border-radius: 10px;
+  cursor: pointer; /* Håndmus ved hover */
+  display: flex; /* Gjør knappen til en flex-container */
+  align-items: center; /* Sentrerer innholdet vertikalt */
+  justify-content: center; /* Sentrerer innholdet horisontalt */
+  text-decoration: none; /* Ingen understreking på tekst */
+  box-sizing: border-box; /* Inkluderer padding og border i bredden/høyden */
+}
+
+.btn-primary {
+  background-color: #FFFFFF; /* Egen bakgrunnsfarge for primærknapp */
+  border-color: #006F35; /* Fargen på border (stroke) */
+  color: #006F35; /* Grønn tekstfarge */
+}
+
+.btn-secondary {
+  background-color: #FFFFFF;
+  border-color: #1B589F; /* Fargen på border (stroke) */
+  color: #1B589F;
+}
+
+.btn-logout {
+  background-color: #FFFFFF;
+  border-color: #D9534F; /* Fargen på border (stroke) */
+  color: #D9534F;
+}
+
+.btn-logout:hover {
+  background-color: #D9534F; /* F.eks. rød bakgrunn på hover */
+  border: 2px solid #D9534F !important;
+  color: #FFFFFF; /* Tekstfarge på hover */
+  cursor: pointer; /* Vis en håndpeker for bedre brukeropplevelse */
+}
+
+.btn-move {
+  margin-block: 1%;
+  padding: 10px 20px; /* Adjust padding to increase button size */
+  font-size: 1px; /* Increase font size for larger text */
+  width: auto; /* Set width as needed, or 'auto' for default */
+  height: auto; /* Set height as needed, or 'auto' for default */
+}
+
+.btn:focus,
+.btn:active:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #008540;
+}
+
+.dropdown-btn,
+.dropdown-btn-a {
+  padding: 10px;
+  width: 100%;
+  background-color: #e6f4ea;
+  color: #28a745;
+  border: 1px solid #28a745;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+}
+.dropdown-btn:hover,
+.dropdown-btn-a:hover {
+  background-color: #d4ebdc;
+  border-color: #1e8c34;
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    margin: 20px;
+    padding: 15px;
+  }
+  .btn {
+    font-size: 14px;
+  }
+}
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+input[type=checkbox] {
+  width: auto; /* Standard bredde for checkboxes */
+  padding: 0;
+  margin: 0;
+}
+
+.password-wrapper {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.password-wrapper input[type=password] {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.show-password {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.show-password input[type=checkbox] {
+  margin-right: 5px;
+}
+
+.list-item,
+.stats-container {
+  background-color: #f9e8d2;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px;
+  flex: 1;
+}
+
+.list-item {
+  display: flex;
+  flex-direction: column;
+  max-width: 430px;
+}
+
+.stats-container {
+  max-height: 500px;
+  max-width: 750px;
+  overflow: hidden;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.styledMap-report {
+  border-radius: 10px;
+  border: 1px solid black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  height: 300px;
+  width: 750px;
+}
+
+.styledMap {
+  position: fixed;
+  top: 75px;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  height: calc(100vh - 110px);
+  width: 100%;
+}
+
+.map-container {
+  display: flex;
+  justify-content: center;
+}
+
+.home-page {
+  position: relative; /* Needed for absolute positioning of child elements */
+  text-align: center;
+  width: 100%;
+  /* tabelloverskrift bakgrunnsfarge */
+}
+.home-page .header1 {
+  text-align: center;
+}
+.home-page html, .home-page body {
+  height: 100%;
+  margin: 0;
+}
+.home-page .main-container {
+  display: flex;
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers content vertically */
+  height: 100%;
+}
+.home-page .content-wrapper {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.home-page .button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.home-page .button-group button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.home-page .user-info-container {
+  position: absolute;
+  top: 220px; /* Adjust to match your header's height */
+  right: 90px; /* Adjust as needed */
+  /* Optional: Set a width */
+  width: 300px; /* Adjust as needed */
+}
+.home-page .user-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-right: 0;
+  background-color: black;
+  padding: 10px; /* Litt plass rundt innholdet */
+  border: 1px solid black; /* Grense mellom hver th */
+  text-align: center;
+  border-radius: 5px; /* Rounds the corners of the entire table */
+  border-spacing: 0; /* Remove space between cells */
+  overflow: hidden; /* Ensure content doesn’t overflow beyond the corners */
+}
+.home-page .user-info-table th:first-child {
+  border-top-left-radius: 5px; /* Topp-venstre hjørne av tabellen */
+}
+.home-page .user-info-table th:last-child {
+  border-top-right-radius: 5px; /* Topp-høyre hjørne */
+}
+.home-page .user-info-table tr:last-child td:first-child {
+  border-bottom-left-radius: 5px; /* Bunn-venstre hjørne */
+}
+.home-page .user-info-table tr:last-child td:last-child {
+  border-bottom-right-radius: 5px; /* Bunn-høyre hjørne */
+}
+.home-page .user-info-table tr:nth-child(even) {
+  background-color: #F5F5F5; /* Lysegrønn bakgunnsfarge for partallsrekker */
+}
+.home-page .user-info-table tr:nth-child(odd) {
+  background-color: #ffffff; /* Hvit bakgrunn for oddetallsrekker */
+}
+.home-page .user-info-table th {
+  background-color: #d2d8c7 !important;
+  color: black !important;
+  padding: 10px;
+  border: 1px solid black;
+}
+.home-page .user-info-table td {
+  padding: 10px;
+  border: 1px solid black;
+  color: #333; /* Mørk tekstfarge */
+}
+
+.my-list {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: auto;
+  font-size: 20px;
+}
+.my-list li {
+  margin-bottom: 10px;
+}
+
+.login .login-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.login .login-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.login .login-form .form-group {
+  margin-bottom: 15px;
+}
+.login .login-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.login .login-form input[type=text],
+.login .login-form input[type=password] {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.login .registration-section {
+  text-align: center;
+  margin-top: 20px;
+}
+.login .registration-section p {
+  margin-bottom: 10px;
+}
+
+.user-registration .register-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.user-registration .register-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.user-registration .register-form .form-group {
+  margin-bottom: 15px;
+}
+.user-registration .register-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.user-registration .register-form input[type=text],
+.user-registration .register-form input[type=password],
+.user-registration input[type=email],
+.user-registration input[type=tel] {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.user-registration .register-section {
+  text-align: center;
+  margin-top: 20px;
+}
+.user-registration .register-section p {
+  margin-bottom: 10px;
+}
+
+#descriptionForm {
+  display: none; /* Skjuler tekstboksen og knappen til polygon er tegnet */
+  position: fixed; /* Gjør at boksen er fast plassert i forhold til vinduet */
+  top: 50%; /* Plasserer den 50% ned på siden */
+  left: 50%; /* Plasserer den 50% til høyre på siden */
+  transform: translate(-50%, -50%); /* Flytter den tilbake til midten ved å forskyve med 50% */
+  background-color: #f9f9f9; /* Lys bakgrunnsfarge */
+  padding: 20px; /* Gir litt luft rundt elementene inni boksen */
+  border: 1px solid #ccc; /* Gir en tynn grå ramme */
+  border-radius: 8px; /* Runder hjørnene på boksen */
+  width: 300px; /* Setter bredden på boksen */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Gir en lett skygge for å heve boksen litt visuelt */
+  z-index: 9999;
+}
+
+.report-view {
+  /* Generell styling for chatboksen */
+  /* Styling for samtalestart-meldingen */
+  /* Meldingsboblen */
+  /* Brukernavn-styling */
+  /* Meldingsboks nederst */
+  /* Styling for knappene inni dropdown */
+  /* Hover-effekt for knappene */
+}
+.report-view .left-column {
+  flex: 1;
+  display: flex; /* Enable Flexbox */
+  align-items: flex-start;
+  flex-direction: column; /* Stack children vertically */
+  gap: 20px; /* Optional: Add space between the elements */
+}
+.report-view .right-column {
+  width: 400px;
+  margin-top: 50px;
+}
+.report-view .report-container {
+  display: flex;
+  gap: 20px;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.report-view .reportstats-container {
+  background-color: #f9e8d2;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 750px;
+  flex: 1;
+}
+.report-view .chat-history {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  width: 100%;
+  max-width: 1000px !important;
+  margin: 0 auto;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+.report-view .chat-history h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  font-weight: normal;
+  color: #333;
+}
+.report-view .chat-history p {
+  margin: 10px 0;
+  color: #333;
+  font-weight: bold;
+}
+.report-view .chat-history p:first-of-type {
+  font-weight: normal;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 15px;
+}
+.report-view .chat-message {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: left;
+  max-width: 90%;
+  margin: 10px auto;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  height: 250px;
+  overflow-y: scroll;
+}
+.report-view #message {
+  font-weight: lighter !important;
+}
+.report-view .chat-message p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+.report-view .chat-message p:first-child {
+  font-weight: bold;
+  color: #666;
+  margin-bottom: 5px;
+}
+.report-view .chat-input {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  gap: 5px;
+  padding-top: 10px;
+}
+.report-view .chat-input input[type=text] {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+.report-view .chat-input button {
+  padding: 8px 12px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.report-view .status-dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.report-view .dropdown-btn {
+  padding: 10px;
+  width: 100%;
+  background-color: #e6f4ea;
+  color: #28a745;
+  border: 1px solid #28a745;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+}
+.report-view .dropdown-btn-a {
+  padding: 10px;
+  width: 100%;
+  background-color: #e6f4ea;
+  color: #28a745;
+  border: 1px solid #28a745;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+}
+.report-view .dropdown-btn:hover {
+  background-color: #d4ebdc; /* Litt mørkere grønn ved hover */
+  border-color: #1e8c34;
+}
+.report-view .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  width: 100%;
+  z-index: 1;
+  margin-top: 5px;
+  overflow: hidden;
+}
+.report-view .dropdown-content .dropdown-btn-a {
+  display: block;
+  width: 100%;
+  padding: 12px 0;
+  background-color: #e6f4ea;
+  color: #28a745;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-bottom: 1px solid #c3e0cf; /* Lysere skillelinje */
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+.report-view .dropdown-content .dropdown-btn-a:last-child {
+  border-bottom: none; /* Fjerner skillelinje fra siste element */
+}
+.report-view .dropdown-content .dropdown-btn-a:hover {
+  background-color: #d4ebdc; /* Litt mørkere grønn ved hover */
+  color: #1e8c34;
+}
+
+/*# sourceMappingURL=main.css.map */

@@ -7,6 +7,7 @@
 }
 
 <!DOCTYPE html>
+<body class="report-view">
 @if (Model.IsAdmin)
 {
 <h2 class="display-4 center-horizontal">Rapport ID: @Model.ReportId</h2>
@@ -19,16 +20,16 @@ else
     <!-- Left Column: Map and Report Details -->
     <div class="left-column">
         <div id="map" class="styledMap-report"></div>
-        <div class="stats-container">
-        @if (Model.IsAdmin)
-        {
-        <p><strong>Sendt inn av:</strong> @Model.Username</p>
-        }
-        <p><strong>Beskrivelse:</strong> @Model.FirstMessage</p>
-        <p><strong>Oprettet:</strong> @Model.CreatedAt</p>
-        <p><strong>Fylke:</strong> @Model.MunicipalityInfo?.fylkesnavn</p>
-        <p><strong>Kommune:</strong> @Model.MunicipalityInfo?.kommunenavn</p>
-        <p><strong>Koordinater:</strong> @Model.Coordinates</p>
+        <div class="reportstats-container">
+            @if (Model.IsAdmin)
+            {
+                <p><strong>Sendt inn av:</strong> @Model.Username</p>
+            }
+            <p><strong>Beskrivelse:</strong> @Model.FirstMessage</p>
+            <p><strong>Oprettet:</strong> @Model.CreatedAt</p>
+            <p><strong>Fylke:</strong> @Model.MunicipalityInfo?.fylkesnavn</p>
+            <p><strong>Kommune:</strong> @Model.MunicipalityInfo?.kommunenavn</p>
+            <p><strong>Koordinater:</strong> @Model.Coordinates</p>
         </div>
     </div>
 
@@ -38,7 +39,7 @@ else
         @if (Model.IsAdmin)
         {
             <div class="status-dropdown">
-                <form asp-action="UpdateStatus" asp-controller="Home" method="post">
+                <form asp-action="UpdateStatus" asp-controller="Reports" method="post">
                     <input type="hidden" name="reportId" value="@Model.ReportId" />
                     <button class="dropdown-btn" type="button" onclick="toggleDropdown()">Endre status ▼</button>
                     <div class="dropdown-content">
@@ -59,7 +60,7 @@ else
                     <p style="font-weight: normal;">
                         <strong>@message.Username</strong> - @message.CreatedAt
                     </p>
-                <p id="message">@message.Message</p>
+                    <p id="message">@message.Message</p>
                 }
             </div>
             <form asp-action="AddMessage" asp-controller="Reports" method="post">
@@ -72,6 +73,8 @@ else
         </div>
     </div>
 </div>
+</body>
+
 
 @section Scripts {
     <script>
