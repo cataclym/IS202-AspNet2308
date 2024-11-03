@@ -63,19 +63,17 @@ else
             @if (Model.User.IsAdmin)
             {
                 <!-- Sorting options for admin -->
-                <a href="#" onclick="sortTable(4)">Nyeste</a>
-                <a href="#" onclick="sortTable(4)">Eldste</a>
+                <a href="#" onclick="sortTable(4)">Dato</a>
                 <a href="#" onclick="sortTable(2)">Brukernavn</a>
             }
             else
             {
                 <!-- Sorting options for user -->
-                <a href="#" onclick="sortTable(3)">Nyeste</a>
-                <a href="#" onclick="sortTable(3)">Eldste</a>
+                <a href="#" onclick="sortTable(3)">Dato</a>
             }
         </div>
     </div>
-    <!-- Date filtering -->
+    <!-- Dato filtrering -->
     <label for="dateFilter">Filter etter dato:</label>
     <input type="date" id="dateFilter" onchange="filterByDate(this.value)"/>
 </div>
@@ -231,13 +229,13 @@ else
                 const dateA = new Date(rowA.getAttribute('data-date'));
                 const dateB = new Date(rowB.getAttribute('data-date'));
                 comparison = dateA - dateB;
-            } else if (columnIndex === 2 && isAdmin === 'true') { // If sorting by "Brukernavn" column
-                const cellA = rowA.cells[columnIndex].innerText.trim().toLowerCase();
-                const cellB = rowB.cells[columnIndex].innerText.trim().toLowerCase();
-                comparison = cellA.localeCompare(cellB);
-            }
-
-            // Adjust comparison based on sort order
+            } else {
+            // General text sorting (for columns like "Brukernavn")
+            const cellA = rowA.cells[columnIndex].innerText.trim().toLowerCase();
+            const cellB = rowB.cells[columnIndex].innerText.trim().toLowerCase();
+            comparison = cellA.localeCompare(cellB);
+        }
+                 // Adjust comparison based on sort order
             return currentSortOrder.order === 'asc' ? comparison : -comparison;
         });
 
@@ -247,6 +245,7 @@ else
         // Append sorted rows to the table
         rows.forEach(row => table.appendChild(row));
     }
+
 
     // Filter by status
     function filterByStatus(status) {
