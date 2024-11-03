@@ -7,11 +7,14 @@ namespace Kartverket;
 
 public class Program
 {
+    
+    
     private static WebApplication App { get; set; }
     private static WebApplicationBuilder Builder { get; set; }
 
     public static void Main(string[] args)
     {
+        
         Builder = WebApplication.CreateBuilder(args);
         
         // Registrer GeoJsonService som en tjeneste
@@ -25,7 +28,16 @@ public class Program
         Builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseMySql(Builder.Configuration.GetConnectionString("DefaultConnection"),
                 new MySqlServerVersion(new Version(8, 0, 39)))); // Bytt til vår versjon av MySQL
+        
+        // Registrer IUserService og UserService
+        Builder.Services.AddScoped<IUserService, UserService>();
 
+        // Registrer IHttpContextAccessor
+        Builder.Services.AddHttpContextAccessor();
+
+        // Add services to the container.
+        Builder.Services.AddControllersWithViews();
+        
         // Add services to the container.
         Builder.Services.AddControllersWithViews();
         AddCookies();

@@ -1,4 +1,4 @@
-@model Kartverket.Models.HomePageModel
+@model Kartverket.Models.ReportOverviewModel
 
 <!DOCTYPE html>
 <html>
@@ -10,6 +10,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
 </head>
 <body class="home-page">
 
@@ -24,35 +26,15 @@
 }
 else
 {
-    <h1 class="header1 display-4">Min <span class="highlight">Side</span></h1>
+    <h1 class="header1 display-4">Dine <span class="highlight">Rapporter</span></h1>
 }
-
-<div class="buttons-wrapper">
-    <div class="button-group">
-        <!-- Your buttons -->
-        <p>Feil i kartet? Trykk her:</p>
-        <div class="center-horizontal" style="text-decoration: none">
-            <form asp-controller="Reports" asp-action="MapReport" method="post">
-                <button type="submit" class="btn-general btn-primary">Meld feil</button>
-            </form>
-        </div>
-        <div class="password-change">
-            <form asp-controller="Account" asp-action="PasswordView" method="post">
-                <button id="showPasswordFormBtn" class="btn-general btn-primary">Endre passord</button>
-            </form>
-        </div>
-        <div>
-            <form asp-controller="Account" asp-action="Logout" method="post">
-                <button type="submit" class="btn-general btn-logout">Logg ut</button>
-            </form>
-        </div>
-    </div>
-</div>
 
 <!-- Dropdown and Date Filter -->
 <div class="table-container">
     <div class="dropdown">
-        <button onclick="myFunction()" class="dropbtn">Sorter</button>
+        <button onclick="myFunction()" class="dropbtn">
+            <i class="bi bi-sort-alpha-down"></i> Sorter
+        </button>
         <div id="myDropdown" class="dropdown-content">
             <!-- View all reports -->
             <a href="#" onclick="showAllReports()">Alle rapporter</a>
@@ -77,29 +59,6 @@ else
     <label for="dateFilter">Filter etter dato:</label>
     <input type="date" id="dateFilter" onchange="filterByDate(this.value)"/> -->
 </div> 
-
-<div class="user-info-container">
-    @if (Model != null)
-    {
-    <table class="user-info-table">
-        <tr class="user-table-header">
-            <th colspan="2" style="text-align: left;" class="user-table-header">Min informasjon:</th>
-        </tr>
-        <tr>
-            <td><strong>Brukernavn:</strong></td>
-            <td>@Model.User.Username</td>
-        </tr>
-        <tr>
-            <td><strong>E-post:</strong></td>
-            <td>@Model.User.Email</td>
-        </tr>
-        <tr>
-            <td><strong>Telefonnummer:</strong></td>
-            <td>@Model.User.Phone</td>
-        </tr>
-    </table>
-    }
-</div>
 
 <!-- Reports Table -->
 <div>
@@ -148,10 +107,10 @@ else
                     </td>
                     <td>
                         <button
-                            class="btn @(report.IsPinned ? "btn-success" : "btn-primary") pin-button"
+                            class="btn @(report.IsPinned ? "btn-pinned" : "btn-pin") pin-button"
                             data-report-id="@report.ReportId"
                             data-is-pinned="@report.IsPinned.ToString().ToLower()">
-                            @(report.IsPinned ? "Unpin" : "Pin")
+                            <i class="bi @(report.IsPinned ? "bi-pin-fill" : "bi-pin")"></i>
                         </button>
                     </td>
                 </tr>
@@ -315,9 +274,11 @@ else
             success: function(response) {
                 if(response.success){
                     // Toggle button classes
-                    button.toggleClass('btn-success btn-primary');
+                    button.toggleClass('btn-pinned btn-pin');
                     // Update button text
-                    button.text(response.isPinned ? 'Unpin' : 'Pin');
+                    button.html(response.isPinned
+                        ? '<i class="bi bi-pin-fill"></i>'  // Unpin ikon
+                        : '<i class="bi bi-pin"></i>');      // Pin ikon
                     // Update data attribute
                     button.data('is-pinned', response.isPinned);
 

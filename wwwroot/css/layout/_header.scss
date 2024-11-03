@@ -2,10 +2,14 @@
   display: flex;
   background-color: #F7F7F7 !important;
   font-family: $font-family;
-  font-weight: 700;
-  font-size: 20px;
+  font-weight: 500;
+  font-size: 15px;
   margin-top: 0;
-  padding-left: 40px;
+  padding-left: 0;
+}
+
+.navbar-brand {
+  padding-right: 30px;
 }
 
 .nav-link {
@@ -15,7 +19,12 @@
   text-decoration: none;
   position: relative;
   transition: color 0.3s;
-  margin-left: 70px;
+  margin-right: 60px;
+  margin-top: 10px;
+  
+  .nav-logout {
+    margin-right: 1000px;
+  }
 
   &:hover {
     color: #006F35;
@@ -39,5 +48,19 @@
   &.active {
     font-weight: 700;
     color: #1B589F;
+  }
+
+  /* Custom styling for the logout link */
+  .logout-link {
+    /* Example Styles */
+    font-weight: 600;         /* Makes the text bolder */
+    font-size: 100px !important;          /* Adjusts the font size */
+    color: #dc3545;           /* Changes the text color to Bootstrap's danger color */
+    /* Add any other desired styles */
+  }
+
+  .logout-link:hover {
+    color: #a71d2a;           /* Darker shade on hover */
+    text-decoration: underline; /* Underlines the text on hover */
   }
 }

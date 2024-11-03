@@ -84,12 +84,15 @@
     cursor: pointer; /* Vis en håndpeker for bedre brukeropplevelse */
 }
 
-.btn-move {
-    margin-block: 1%;
-    padding: 10px 20px; /* Adjust padding to increase button size */
-    font-size: 1px; /* Increase font size for larger text */
-    width: auto; /* Set width as needed, or 'auto' for default */
-    height: auto; /* Set height as needed, or 'auto' for default */
+.btn-pin {
+    color: #2E7D32;
+    font-size: 24px;
+   
+}
+
+.btn-pinned {
+    color: #2E7D32;
+    font-size: 24px;
 }
 
 .btn:focus,

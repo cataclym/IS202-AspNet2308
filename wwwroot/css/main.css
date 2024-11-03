@@ -142,10 +142,14 @@ body {
   display: flex;
   background-color: #F7F7F7 !important;
   font-family: "Mulish", sans-serif;
-  font-weight: 700;
-  font-size: 20px;
+  font-weight: 500;
+  font-size: 15px;
   margin-top: 0;
-  padding-left: 40px;
+  padding-left: 0;
+}
+
+.navbar-brand {
+  padding-right: 30px;
 }
 
 .nav-link {
@@ -155,7 +159,12 @@ body {
   text-decoration: none;
   position: relative;
   transition: color 0.3s;
-  margin-left: 70px;
+  margin-right: 60px;
+  margin-top: 10px;
+  /* Custom styling for the logout link */
+}
+.nav-link .nav-logout {
+  margin-right: 1000px;
 }
 .nav-link:hover {
   color: #006F35;
@@ -176,6 +185,17 @@ body {
 .nav-link.active {
   font-weight: 700;
   color: #1B589F;
+}
+.nav-link .logout-link {
+  /* Example Styles */
+  font-weight: 600; /* Makes the text bolder */
+  font-size: 100px !important; /* Adjusts the font size */
+  color: #dc3545; /* Changes the text color to Bootstrap's danger color */
+  /* Add any other desired styles */
+}
+.nav-link .logout-link:hover {
+  color: #a71d2a; /* Darker shade on hover */
+  text-decoration: underline; /* Underlines the text on hover */
 }
 
 .footer-link {
@@ -283,12 +303,14 @@ body {
   cursor: pointer; /* Vis en håndpeker for bedre brukeropplevelse */
 }
 
-.btn-move {
-  margin-block: 1%;
-  padding: 10px 20px; /* Adjust padding to increase button size */
-  font-size: 1px; /* Increase font size for larger text */
-  width: auto; /* Set width as needed, or 'auto' for default */
-  height: auto; /* Set height as needed, or 'auto' for default */
+.btn-pin {
+  color: #2E7D32;
+  font-size: 24px;
+}
+
+.btn-pinned {
+  color: #2E7D32;
+  font-size: 24px;
 }
 
 .btn:focus,
@@ -830,6 +852,74 @@ input[type=checkbox] {
 .report-view .dropdown-content .dropdown-btn-a:hover {
   background-color: #d4ebdc; /* Litt mørkere grønn ved hover */
   color: #1e8c34;
+}
+
+.MyPage {
+  /* Main button */
+}
+.MyPage main {
+  text-align: center;
+  margin-top: 30px;
+}
+.MyPage .meld-feil-btn {
+  width: 470px;
+  height: 120px;
+  padding: 15px 40px;
+  border: 3px solid #006F35;
+  background-color: #FFFFFF;
+  font-size: 35px;
+  align-items: center; /* Sentrerer innholdet vertikalt */
+  justify-content: center; /* Sentrerer innholdet horisontalt */
+  border-radius: 20px;
+  display: inline-flex;
+  gap: 10px;
+  color: #006F35;
+  transition: all 0.3s ease;
+  margin-bottom: 35px;
+}
+.MyPage .meld-feil-btn:hover {
+  background-color: #006F35;
+  color: #fff;
+}
+.MyPage .info-box {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #FFF5E1;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 210px;
+  width: 470px;
+  text-align: left;
+}
+.MyPage .info-box h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+.MyPage .info-box p {
+  font-size: 16px;
+  line-height: 1.4;
+  margin: 20px;
+}
+.MyPage .button-group {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  align-items: center; /* Sentrerer innholdet vertikalt */
+  justify-content: center; /* Sentrerer innholdet horisontalt */
+}
+.MyPage .button-group .btn {
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 8px;
+  color: #006F35;
+  border: 2px solid #006F35;
+  transition: background-color 0.3s;
+  height: 70px;
+  width: 220px;
+}
+.MyPage .button-group .btn:hover {
+  background-color: #006F35;
+  color: #fff;
 }
 
 /*# sourceMappingURL=main.css.map */

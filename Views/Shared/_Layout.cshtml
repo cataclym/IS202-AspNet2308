@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Kartverket</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
-    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
           crossorigin=""/>
@@ -19,6 +18,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css"/>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
+    <link href="~/css/main.css" rel="stylesheet">
 
 </head>
 <body>
@@ -26,31 +26,46 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
+            <!-- Brand Logo -->
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                <img src="~/Logo.svg" width="140" class="d-inline-block align-top" alt=""/>
+                <img src="~/Logo.svg" width="140" class="d-inline-block align-top" alt="Logo"/>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+
+            <!-- Toggler for Mobile View -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1"/>
-                <li class="nav-item">
-                    <a class="nav-link text-dark @(view == "Index" ? "active" : "")"
-                       asp-area="" asp-controller="Home" asp-action="Index">Hjem</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark @(view == "HomePage" ? "active" : "")"
-                       asp-area="" asp-controller="Home" asp-action="HomePage">Min Side</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark @(view == "Help" ? "active" : "")"
-                       asp-area="" asp-controller="Home" asp-action="Help">Hjelp</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark @(view == "Privacy" ? "active" : "")"
-                       asp-area="" asp-controller="Home" asp-action="Privacy">Personvern</a>
-                </li>
+
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Left-Aligned Links -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark @(view == "Index" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="Index">Hjem</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark @(view == "MyPage" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="MyPage">Min Side</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark @(view == "Help" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="Help">Hjelp</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark @(view == "Privacy" ? "active" : "")"
+                           asp-area="" asp-controller="Home" asp-action="Privacy">Personvern</a>
+                    </li>
+                </ul>
+
+                <!-- Right-Aligned Logout Link -->
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark logout-link @(view == "Logg ut" ? "active" : "")"
+                           asp-area="" asp-controller="Account" asp-action="Logout">Logg ut</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Kartverket.Services;
+
 
 namespace Kartverket.Controllers;
 
@@ -32,7 +34,7 @@ public class AccountController : Controller
             _logger.LogInformation("User is authenticated");
             
             _logger.LogInformation("User is authenticated, Name: {UserName}", User.Identity.Name);
-            return RedirectToAction("HomePage", "Home");
+            return RedirectToAction("MyPage", "Home");
         }
         else
         {
@@ -52,7 +54,7 @@ public class AccountController : Controller
     {
         if (User.Identity is { IsAuthenticated: true })
         {
-            return RedirectToAction("HomePage", "Home");
+            return RedirectToAction("MyPage", "Home");
         }
         Console.WriteLine(ModelState.IsValid);
         if (!ModelState.IsValid) return View("Login", userLoginModel);
@@ -84,7 +86,7 @@ public class AccountController : Controller
             // Logg inn brukeren ved hjelp av cookies
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
             // Logg inn brukeren og omdiriger til ønsket side (for eksempel forsiden)
-            return RedirectToAction("HomePage", "Home", new { id = user.UserId });
+            return RedirectToAction("MyPage", "Home", new { id = user.UserId });
         }
 
         // Feilhåndtering hvis brukernavn eller passord er feil
@@ -116,7 +118,7 @@ public class AccountController : Controller
     {
         if (User.Identity is { IsAuthenticated: true })
         {
-            return RedirectToAction("HomePage", "Home");
+            return RedirectToAction("MyPage", "Home");
         }
             
         // Sjekk om modellen er gyldig (at brukernavn og passord er fylt ut korrekt)
@@ -134,7 +136,7 @@ public class AccountController : Controller
         await _context.SaveChangesAsync(); // Lagrer endringene i databasen
 
         // Returner til en side for å bekrefte at registreringen er vellykket
-        return RedirectToAction("HomePage", "Home", new { id = userRegistrationModelModel.UserId }); // Omdirigerer til brukerens profilside, for eksempel
+        return RedirectToAction("MyPage", "Home", new { id = userRegistrationModelModel.UserId }); // Omdirigerer til brukerens profilside, for eksempel
     }
 
 // GET: Viser registreringsskjemaet
@@ -246,7 +248,7 @@ public class AccountController : Controller
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
         // Redirect to the login page or any other desired page
-        return RedirectToAction("HomePage", "Home");
+        return RedirectToAction("MyPage", "Home");
     }
 
 public IActionResult AdminReview()

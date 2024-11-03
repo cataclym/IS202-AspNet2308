@@ -1,0 +1,58 @@
+@model Kartverket.Models.MyPageModel
+@{
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>MinSide</title>
+</head>
+<body class="MyPage">
+<div>
+    <h1 class="header1 display-4">Min <span class="highlight">Side</span></h1>
+</div>
+
+<!-- Your buttons -->
+<div>
+    <form asp-controller="Reports" asp-action="MapReport" method="post">
+        <button type="submit" class="meld-feil-btn">Meld feil</button>
+    </form>
+</div>
+
+<div class="center-horizontal">
+    <div class="info-box">
+        <h3>Min Informasjon:</h3>
+        
+        <p>Brukernavn: @Model.Username</p>
+
+        <p>E-post: @Model.Email</p>
+
+        <p>Telefonnummer: @Model.Phone</p>
+    </div>
+</div>
+
+<div class="button-group">
+<div class="password-change">
+    <form asp-controller="Account" asp-action="PasswordView" method="post">
+        <button id="showPasswordFormBtn" class="btn">Endre passord</button>
+    </form>
+</div>
+
+<div>
+    <form asp-controller="Reports" asp-action="ReportOverview" method="get">
+        <button class="btn">Alle rapporter</button>
+    </form>
+</div>
+</div>
+
+
+       
+    
+
+
+        
+ 
+
+</body>
+</html>
