@@ -59,12 +59,25 @@
                     </li>
                 </ul>
 
-                <!-- Right-Aligned Logout Link -->
                 <ul class="navbar-nav ms-auto">
+                    @if (User.Identity.IsAuthenticated)
+                    {
                     <li class="nav-item">
                         <a class="nav-link text-dark logout-link @(view == "Logg ut" ? "active" : "")"
                            asp-area="" asp-controller="Account" asp-action="Logout">Logg ut</a>
                     </li>
+                    }
+                    else
+                    {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark @(view == "Login" ? "active" : "")"
+                           asp-area="" asp-controller="Account" asp-action="Login">Logg inn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark @(view == "UserRegistration" ? "active" : "")"
+                           asp-area="" asp-controller="Account" asp-action="UserRegistration">Registrer</a>
+                    </li>
+                    }
                 </ul>
             </div>
         </div>
