@@ -512,12 +512,18 @@ input[type=checkbox] {
 }
 .home-page .dropbtn {
   display: flex;
-  background-color: #006F35;
-  color: white;
+  background-color: #FFFFFF;
+  color: black;
   padding: 16px;
   font-size: 18px;
-  border: none;
+  border: 2px solid #006F35;
+  border-radius: 10px;
+  align-items: center; /* Sentrerer innholdet vertikalt */
+  justify-content: center; /* Sentrerer innholdet horisontalt */
   cursor: pointer;
+  width: 145px;
+  height: 45px;
+  color: #006F35;
 }
 .home-page .dropdown {
   position: relative;
