@@ -1,5 +1,4 @@
 @model Kartverket.Models.HomePageModel
-@using System.Text.Json
 
 <!DOCTYPE html>
 <html>
@@ -7,7 +6,7 @@
 <head>
     <!-- Include any other necessary scripts or styles -->
     <!-- Include Bootstrap CSS and JS for Toasts -->
-    
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -16,11 +15,11 @@
 
 @if (Model.User.IsAdmin)
 {
-<h1 class="header1 display-4">Administrer <span class="highlight">Rapporter</span></h1>
+    <h1 class="header1 display-4">Administrer <span class="highlight">Rapporter</span></h1>
 }
 else
 {
-<h1 class="header1 display-4">Min <span class="highlight">Side</span></h1>
+    <h1 class="header1 display-4">Min <span class="highlight">Side</span></h1>
 }
 
 <div class="buttons-wrapper">
@@ -28,7 +27,7 @@ else
         <!-- Your buttons -->
         <p>Feil i kartet? Trykk her:</p>
         <div class="center-horizontal" style="text-decoration: none">
-            <form asp-controller="Reports" asp-action="MapReport" method="post">
+            <form asp-action="MapReport" method="post">
                 <button type="submit" class="btn-general btn-primary">Meld feil</button>
             </form>
         </div>
@@ -45,114 +44,106 @@ else
     </div>
 </div>
 
-<div class="user-info-container">
+<!-- Dropdown and Date Filter -->
+<div class="table-container">
+    <div class="dropdown">
+        <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+        <div id="myDropdown" class="dropdown-content">
+            <!-- View all reports -->
+            <a href="#" onclick="showAllReports()">Alle rapporter</a>
+            <!-- Filter options by status -->
+            <a href="#" onclick="filterByStatus('ubehandlet')">Ubehandlet</a>
+            <a href="#" onclick="filterByStatus('behandlet')">Behandlet</a>
+            <a href="#" onclick="filterByStatus('under_behandling')">Under behandling</a>
+            @if (Model.User.IsAdmin)
+            {
+                <!-- Sorting options for admin -->
+                <a href="#" onclick="sortTable(4)">Nyeste</a>
+                <a href="#" onclick="sortTable(4)">Eldste</a>
+                <a href="#" onclick="sortTable(2)">Brukernavn</a>
+            }
+            else
+            {
+                <!-- Sorting options for user -->
+                <a href="#" onclick="sortTable(3)">Nyeste</a>
+                <a href="#" onclick="sortTable(3)">Eldste</a>
+            }
+        </div>
+    </div>
+    <!-- Date filtering -->
+    <label for="dateFilter">Filter etter dato:</label>
+    <input type="date" id="dateFilter" onchange="filterByDate(this.value)" />
+</div>
+
+<!-- User Information -->
+<div class="user-information">
     @if (Model != null)
     {
-    <table class="user-info-table">
-        <tr class="user-table-header">
-            <th colspan="2" style="text-align: left;" class="user-table-header">Min informasjon:</th>
-        </tr>
-        <tr>
-            <td><strong>Brukernavn:</strong></td>
-            <td>@Model.User.Username</td>
-        </tr>
-        <tr>
-            <td><strong>E-post:</strong></td>
-            <td>@Model.User.Email</td>
-        </tr>
-        <tr>
-            <td><strong>Telefonnummer:</strong></td>
-            <td>@Model.User.Phone</td>
-        </tr>
-    </table>
+        <table class="user-info-table">
+            <tr class="user-table-header">
+                <th colspan="2" style="text-align: left;" class="user-table-header">Min informasjon:</th>
+            </tr>
+            <tr>
+                <td><strong>Brukernavn:</strong></td>
+                <td>@Model.User.Username</td>
+            </tr>
+            <tr>
+                <td><strong>E-post:</strong></td>
+                <td>@Model.User.Email</td>
+            </tr>
+            <tr>
+                <td><strong>Telefonnummer:</strong></td>
+                <td>@Model.User.Phone</td>
+            </tr>
+        </table>
     }
 </div>
 
-        
-
-
-@if (Model.User.IsAdmin)
-{
-    <div class="left-column">
-        <div>
-            <table id="admin-table" class="user-info-table">
-                <!-- Table header row for column names -->
-                <thead>
-                <tr>
-                    <th>Rapport ID</th>
-                    <th>Melding</th>
-                    <th>Brukernavn</th>
-                    <th>Status</th>
-                    <th>Opprettet</th>
-                    <th>Pin</th>
-                </tr>
-                </thead>
-                <!-- Table body for reports data -->
-                <tbody>
-                @if (Model.Reports != null && Model.Reports.Any())
-                {
-                    @foreach (var report in Model.Reports)
-                    {
-                        <tr data-report-id="@report.ReportId" data-is-pinned="@report.IsPinned.ToString().ToLower()">
-                            <td><a asp-action="ReportView" asp-controller="Reports" asp-route-id="@report.ReportId">@report.ReportId</a></td>
-                            <td class="truncate-text" title="@report.FirstMessage">@report.FirstMessage</td>
-                            @if (Model.User.IsAdmin)
-                            {
-                                <td>@report.Username</td>
-                            }
-                            <td>@report.Status.ToString()</td>
-                            <td data-created-at="@report.CreatedAt.ToString("o")">@report.CreatedAt.ToString()</td>
-                            <td>
-                                <button
-                                    class="btn @(report.IsPinned ? "btn-success" : "btn-primary") pin-button"
-                                    data-report-id="@report.ReportId"
-                                    data-is-pinned="@report.IsPinned.ToString().ToLower()">
-                                    @(report.IsPinned ? "Unpin" : "Pin")
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="5">Ingen rapporter tilgjengelig.</td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-        </div>
-    </div>
-}
-else
-{
-    <div>
-        <table id="user-table" class="user-info-table">
-            <!-- Table header row for column names -->
-            <thead>
+<!-- Reports Table -->
+<div>
+    <table id="@(Model.User.IsAdmin ? "admin-table" : "user-table")" class="user-info-table">
+        <!-- Table header row for column names -->
+        <thead>
             <tr>
                 <th>Rapport ID</th>
                 <th>Melding</th>
+                @if (Model.User.IsAdmin)
+                {
+                    <th>Brukernavn</th>
+                }
                 <th>Status</th>
                 <th>Opprettet</th>
                 <th>Pin</th>
             </tr>
-            </thead>
-            <!-- Table body for reports data -->
-            <tbody>
+        </thead>
+        <!-- Table body for reports data -->
+        <tbody>
             @if (Model.Reports != null && Model.Reports.Any())
             {
                 @foreach (var report in Model.Reports)
                 {
-                    <tr data-report-id="@report.ReportId" data-is-pinned="@report.IsPinned.ToString().ToLower()">
-                        <td><a asp-action="ReportView" asp-controller="Reports" asp-route-id="@report.ReportId">@report.ReportId</a></td>
-                        <td class="truncate-text" title="@report.FirstMessage">@report.FirstMessage</td>
+                    <tr data-report-id="@report.ReportId"
+                        data-is-pinned="@report.IsPinned.ToString().ToLower()"
+                        data-status="@report.Status.ToString().ToLower()"
+                        data-date="@report.CreatedAt.ToString("yyyy-MM-dd")">
+                        <td>
+                            <a asp-action="ReportView"
+                               asp-controller="Reports"
+                               asp-route-id="@report.ReportId">
+                                @report.ReportId
+                            </a>
+                        </td>
+                        <td class="truncate-text" title="@report.FirstMessage">
+                            @report.FirstMessage
+                        </td>
                         @if (Model.User.IsAdmin)
                         {
                             <td>@report.Username</td>
                         }
                         <td>@report.Status.ToString()</td>
-                        <td data-created-at="@report.CreatedAt.ToString("o")">@report.CreatedAt.ToString()</td>
+                        <td data-created-at="@report.CreatedAt.ToString("o")">
+                            @report.CreatedAt.ToString("yyyy-MM-dd")
+                        </td>
                         <td>
                             <button
                                 class="btn @(report.IsPinned ? "btn-success" : "btn-primary") pin-button"
@@ -167,136 +158,169 @@ else
             else
             {
                 <tr>
-                    <td colspan="5">Ingen rapporter tilgjengelig.</td>
+                    <td colspan="@(Model.User.IsAdmin ? "6" : "5")">Ingen rapporter tilgjengelig.</td>
                 </tr>
             }
-            </tbody>
-        </table>
-    </div>
-}
-
-
-<!-- Toast Container -->
-<div aria-live="polite" aria-atomic="true" style="position: fixed; top: 20px; right: 20px; min-height: 200px;">
-    <div id="toast-container"></div>
+        </tbody>
+    </table>
 </div>
 
-<!-- JavaScript to handle AJAX pin/unpin -->
+<!-- JavaScript Functions -->
 <script>
-    $(document).ready(function () {
-        // Declare the URLs for PinReport and UnpinReport
-        var pinReportUrl = '@Url.Action("PinReport", "Reports")';
-        var unpinReportUrl = '@Url.Action("UnpinReport", "Reports")';
+    // Function to show/hide dropdown
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
 
-        // Determine which table to target based on the user's role
-        var isAdmin = @Html.Raw(JsonSerializer.Serialize(Model.User.IsAdmin));
-        var tableSelector = isAdmin ? '#admin-table' : '#user-table';
-
-        console.log('isAdmin:', isAdmin);
-        console.log('tableSelector:', tableSelector);
-
-        $('.pin-button').click(function (e) {
-            e.preventDefault(); // Prevent the default button behavior
-
-            var button = $(this);
-            var reportId = button.data('report-id');
-            var isPinned = button.attr('data-is-pinned') === 'true'; // Get the current pin state
-
-            // Determine the correct URL based on the current state
-            var actionUrl = isPinned ? unpinReportUrl : pinReportUrl;
-
-            // Retrieve the anti-forgery token
-            var token = $('input[name="__RequestVerificationToken"]').val();
-
-            $.ajax({
-                url: actionUrl,
-                type: 'POST',
-                data: {
-                    reportId: reportId,
-                    __RequestVerificationToken: token // Include the anti-forgery token
-                },
-                beforeSend: function () {
-                    // Disable the button to prevent multiple clicks
-                    button.prop('disabled', true).text('Processing...');
-                },
-                success: function (response) {
-                    if (response.success) {
-                        // Update the button's data attribute and appearance
-                        button.attr('data-is-pinned', response.isPinned.toString());
-                        button.text(response.isPinned ? 'Unpin' : 'Pin');
-                        button.toggleClass('btn-primary btn-success');
-
-                        // Update the table row's data attribute
-                        var row = button.closest('tr');
-                        row.attr('data-is-pinned', response.isPinned.toString());
-
-                        // Reorder the table
-                        reorderTable($(tableSelector + ' tbody'));
-
-                        // Show a toast notification
-                        showToast(response.isPinned ? 'Report pinned successfully.' : 'Report unpinned successfully.', 'success');
-                    } else {
-                        showToast(response.message || 'An error occurred.', 'error');
-                    }
-                },
-                error: function () {
-                    showToast('An error occurred while processing your request.', 'error');
-                },
-                complete: function () {
-                    // Re-enable the button after the request completes
-                    button.prop('disabled', false);
+    // Close dropdown if user clicks outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn') && !event.target.closest('.dropdown-content')) {
+            const dropdowns = document.getElementsByClassName("dropdown-content");
+            for (let i = 0; i < dropdowns.length; i++) {
+                const openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
                 }
-            });
+            }
+        }
+    };
+
+    // Show all reports
+    function showAllReports() {
+        const table = document.querySelector('#admin-table tbody') || document.querySelector('#user-table tbody');
+        if (!table) return;
+
+        const rows = table.querySelectorAll('tr');
+        rows.forEach(row => {
+            row.style.display = '';
+        });
+        document.getElementById('dateFilter').value = '';
+    }
+
+    // Sort table by a specific column
+    let currentSortOrder = {
+        column: -1,
+        order: 'asc'
+    };
+
+    function sortTable(columnIndex) {
+        const isAdmin = @Model.User.IsAdmin.ToString().ToLower(); // Check if user is admin
+        const table = isAdmin ? document.querySelector('#admin-table tbody') : document.querySelector('#user-table tbody');
+        if (!table) return;
+
+        // Toggle sort order if same column is clicked
+        if (currentSortOrder.column === columnIndex) {
+            currentSortOrder.order = currentSortOrder.order === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSortOrder.column = columnIndex;
+            currentSortOrder.order = 'asc';
+        }
+
+        const rows = Array.from(table.rows);
+
+        rows.sort((rowA, rowB) => {
+            let comparison = 0;
+
+            // Handling for date
+            const dateColumnIndex = isAdmin ? 4 : 3; // Use column 4 for admin, 3 for user
+            if (columnIndex === dateColumnIndex) {
+                const dateA = new Date(rowA.getAttribute('data-date'));
+                const dateB = new Date(rowB.getAttribute('data-date'));
+                comparison = dateA - dateB;
+            } else if (columnIndex === 2 && isAdmin === 'true') { // If sorting by "Brukernavn" column
+                const cellA = rowA.cells[columnIndex].innerText.trim().toLowerCase();
+                const cellB = rowB.cells[columnIndex].innerText.trim().toLowerCase();
+                comparison = cellA.localeCompare(cellB);
+            }
+
+            // Adjust comparison based on sort order
+            return currentSortOrder.order === 'asc' ? comparison : -comparison;
         });
 
-        // Function to reorder the table rows
-        function reorderTable(tbody) {
-            var rows = tbody.find('tr').get();
+        // Clear the table before adding sorted rows
+        table.innerHTML = '';
 
-            rows.sort(function (a, b) {
-                var isPinnedA = $(a).attr('data-is-pinned') === 'true';
-                var isPinnedB = $(b).attr('data-is-pinned') === 'true';
+        // Append sorted rows to the table
+        rows.forEach(row => table.appendChild(row));
+    }
 
-                if (isPinnedA && !isPinnedB) {
-                    return -1; // a comes before b
-                }
-                if (!isPinnedA && isPinnedB) {
-                    return 1; // b comes before a
-                }
+    // Filter by status
+    function filterByStatus(status) {
+        const table = document.querySelector('#admin-table tbody') || document.querySelector('#user-table tbody');
+        if (!table) return;
 
-                // If both are the same in terms of pin status, sort by CreatedAt
-                var dateA = new Date($(a).find('td[data-created-at]').attr('data-created-at'));
-                var dateB = new Date($(b).find('td[data-created-at]').attr('data-created-at'));
+        const rows = table.querySelectorAll('tr');
+        rows.forEach(row => {
+            row.style.display = row.dataset.status === status ? '' : 'none';
+        });
 
-                return dateA - dateB;
+        // Keep dropdown open after selection
+        const dropdown = document.getElementById("myDropdown");
+        dropdown.classList.add("show");
+    }
+
+    // Filter by selected date
+    function filterByDate(selectedDate) {
+        const table = document.querySelector('#admin-table tbody') || document.querySelector('#user-table tbody');
+        if (!table) return;
+
+        const rows = table.querySelectorAll('tr');
+        rows.forEach(row => {
+            const rowDate = row.getAttribute('data-date');
+            row.style.display = rowDate === selectedDate ? '' : 'none';
+        });
+
+        // Keep dropdown open after selection
+        const dropdown = document.getElementById("myDropdown");
+        dropdown.classList.add("show");
+    }
+
+    // Pin/Unpin functionality using AJAX
+    document.addEventListener('DOMContentLoaded', function() {
+        const pinButtons = document.querySelectorAll('.pin-button');
+
+        pinButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+
+                const reportId = this.getAttribute('data-report-id');
+                const isPinned = this.getAttribute('data-is-pinned') === 'true';
+
+                // Determine the action URL
+                const actionUrl = isPinned ? '/Home/UnpinReport' : '/Home/PinReport';
+
+                // Make AJAX request
+                fetch(actionUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken'
+                    },
+                    body: JSON.stringify({ reportId: reportId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Toggle the button state
+                        this.classList.toggle('btn-success');
+                        this.classList.toggle('btn-primary');
+                        this.textContent = isPinned ? 'Pin' : 'Unpin';
+                        this.setAttribute('data-is-pinned', (!isPinned).toString());
+
+                        // Optionally update the row's data attribute
+                        this.closest('tr').setAttribute('data-is-pinned', (!isPinned).toString());
+                    } else {
+                        // Handle error
+                        alert('En feil oppstod under oppdatering av pin-status.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             });
-
-            // Append the sorted rows back to the tbody
-            $.each(rows, function (index, row) {
-                tbody.append(row);
-            });
-        }
-
-        // Toast Notification Function
-        function showToast(message, type) {
-            var toastHtml = `
-                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
-                    <div class="toast-header">
-                        <strong class="mr-auto">${type === 'success' ? 'Success' : 'Error'}</strong>
-                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="toast-body">
-                        ${message}
-                    </div>
-                </div>
-            `;
-            $('#toast-container').append(toastHtml);
-            $('#toast-container .toast').last().toast('show');
-        }
+        });
     });
-
 </script>
+
 </body>
 </html>
