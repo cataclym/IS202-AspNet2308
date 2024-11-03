@@ -235,7 +235,7 @@ private UserRegistrationModel MapUserToViewModel(Users user)
             MunicipalityInfo = municipalityInfo
         };
 
-        return View("Reported", viewModel); // Eller til et annet view for å bekrefte lagringen
+        return View("ReportSuccess", viewModel); // Eller til et annet view for å bekrefte lagringen
     }
     
     private async Task SaveReportAsync(ReportViewModel model, int userId)
