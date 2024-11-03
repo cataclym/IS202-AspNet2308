@@ -419,6 +419,9 @@ input[type=checkbox] {
   text-align: center;
   width: 100%;
   /* tabelloverskrift bakgrunnsfarge */
+  /* Dropdown Button */
+  /* The container <div> - needed to position the dropdown content */
+  /* Links inside the dropdown */
 }
 .home-page .header1 {
   text-align: center;
@@ -501,6 +504,41 @@ input[type=checkbox] {
   padding: 10px;
   border: 1px solid black;
   color: #333; /* Mørk tekstfarge */
+}
+.home-page .table-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Justerer innholdet til venstre */
+}
+.home-page .dropbtn {
+  display: flex;
+  background-color: #006F35;
+  color: white;
+  padding: 16px;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+}
+.home-page .dropdown {
+  position: relative;
+  display: inline-block;
+}
+.home-page .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #F5F5F5;
+  width: 230px;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+.home-page .dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.home-page .show {
+  display: block;
 }
 
 .my-list {

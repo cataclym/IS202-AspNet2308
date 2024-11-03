@@ -1,106 +1,146 @@
 .home-page {
-  position: relative; /* Needed for absolute positioning of child elements */
-  text-align: center;
-  width: 100%;
-  
-  .header1 {
+    position: relative; /* Needed for absolute positioning of child elements */
     text-align: center;
-  }
-
-  html, body {
-    height: 100%;
-    margin: 0;
-  }
-  
-  .main-container {
-    display: flex;
-    justify-content: center; /* Centers content horizontally */
-    align-items: center;     /* Centers content vertically */
-    height: 100%;
-  }
-
-  .content-wrapper {
-    display: grid;
-    grid-template-columns: auto auto;
-    gap: 20px;
-    align-items: center; 
-    justify-content: center;
-  }
-
-  .button-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .button-group button {
-    padding: 10px 15px;
-    font-size: 16px;
-    border: 1px solid;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  .user-info-container {
-    position: absolute;
-    top: 220px;    /* Adjust to match your header's height */
-    right: 90px;  /* Adjust as needed */
-    /* Optional: Set a width */
-    width: 300px; /* Adjust as needed */
-  }
-
-  .user-info-table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    margin-right: 0;
-    background-color: black;
-    padding: 10px; /* Litt plass rundt innholdet */
-    border: 1px solid black; /* Grense mellom hver th */
-    text-align: center;
-    border-radius: 5px; /* Rounds the corners of the entire table */
-    border-spacing: 0; /* Remove space between cells */
-    overflow: hidden; /* Ensure content doesn’t overflow beyond the corners */
-  }
 
-  .user-info-table th:first-child {
-    border-top-left-radius: 5px; /* Topp-venstre hjørne av tabellen */
-  }
+    .header1 {
+        text-align: center;
+    }
 
-  .user-info-table th:last-child {
-    border-top-right-radius: 5px; /* Topp-høyre hjørne */
-  }
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
 
-  .user-info-table tr:last-child td:first-child {
-    border-bottom-left-radius: 5px; /* Bunn-venstre hjørne */
-  }
+    .main-container {
+        display: flex;
+        justify-content: center; /* Centers content horizontally */
+        align-items: center; /* Centers content vertically */
+        height: 100%;
+    }
 
-  .user-info-table tr:last-child td:last-child {
-    border-bottom-right-radius: 5px; /* Bunn-høyre hjørne */
-  }
+    .content-wrapper {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 20px;
+        align-items: center;
+        justify-content: center;
+    }
 
-  .user-info-table tr:nth-child(even) {
-    background-color: #F5F5F5; /* Lysegrønn bakgunnsfarge for partallsrekker */
-  }
+    .button-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
 
-  .user-info-table tr:nth-child(odd) {
-    background-color: #ffffff; /* Hvit bakgrunn for oddetallsrekker */
-  }
+    .button-group button {
+        padding: 10px 15px;
+        font-size: 16px;
+        border: 1px solid;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 
-  /* tabelloverskrift bakgrunnsfarge */
-  .user-info-table th {
-    background-color: #d2d8c7 !important;
-    color: black !important;
-    padding: 10px;
-    border: 1px solid black;
-  }
+    .user-info-container {
+        position: absolute;
+        top: 220px; /* Adjust to match your header's height */
+        right: 90px; /* Adjust as needed */
+        /* Optional: Set a width */
+        width: 300px; /* Adjust as needed */
+    }
 
-  .user-info-table td {
-    padding: 10px;
-    border: 1px solid black;
-    color: #333; /* Mørk tekstfarge */
-  }
+    .user-info-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        margin-right: 0;
+        background-color: black;
+        padding: 10px; /* Litt plass rundt innholdet */
+        border: 1px solid black; /* Grense mellom hver th */
+        text-align: center;
+        border-radius: 5px; /* Rounds the corners of the entire table */
+        border-spacing: 0; /* Remove space between cells */
+        overflow: hidden; /* Ensure content doesn’t overflow beyond the corners */
+    }
+
+    .user-info-table th:first-child {
+        border-top-left-radius: 5px; /* Topp-venstre hjørne av tabellen */
+    }
+
+    .user-info-table th:last-child {
+        border-top-right-radius: 5px; /* Topp-høyre hjørne */
+    }
+
+    .user-info-table tr:last-child td:first-child {
+        border-bottom-left-radius: 5px; /* Bunn-venstre hjørne */
+    }
+
+    .user-info-table tr:last-child td:last-child {
+        border-bottom-right-radius: 5px; /* Bunn-høyre hjørne */
+    }
+
+    .user-info-table tr:nth-child(even) {
+        background-color: #F5F5F5; /* Lysegrønn bakgunnsfarge for partallsrekker */
+    }
+
+    .user-info-table tr:nth-child(odd) {
+        background-color: #ffffff; /* Hvit bakgrunn for oddetallsrekker */
+    }
+    /* tabelloverskrift bakgrunnsfarge */
+    .user-info-table th {
+        background-color: #d2d8c7 !important;
+        color: black !important;
+        padding: 10px;
+        border: 1px solid black;
+    }
+
+    .user-info-table td {
+        padding: 10px;
+        border: 1px solid black;
+        color: #333; /* Mørk tekstfarge */
+    }
+    /* Dropdown Button */
+    .table-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Justerer innholdet til venstre */
+    }
+
+    .dropbtn {
+        display: flex;
+        background-color: #006F35;
+        color: white;
+        padding: 16px;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+    }
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #F5F5F5;
+        width: 230px;
+        border: 1px solid #ddd;
+        z-index: 1;
+    }
+    /* Links inside the dropdown */
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .show {
+        display: block;
+    }
 }
     .my-list {
       list-style-type: disc;
@@ -117,5 +157,7 @@
         margin-bottom: 10px;
       }
     }
-  
+
+
+
 

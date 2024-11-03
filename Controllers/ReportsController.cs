@@ -274,6 +274,8 @@ public class ReportsController : BaseController
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> PinReport(int reportId)
     {
+        _logger.LogInformation("PinReport action invoked with ReportId: {ReportId}", reportId);
+
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (userIdClaim == null || !int.TryParse(userIdClaim, out int userId))
