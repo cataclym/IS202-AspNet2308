@@ -1,0 +1,43 @@
+.navbar {
+  display: flex;
+  background-color: #F7F7F7 !important;
+  font-family: $font-family;
+  font-weight: 700;
+  font-size: 20px;
+  margin-top: 0;
+  padding-left: 40px;
+}
+
+.nav-link {
+  font-family: $font-family;
+  font-weight: 400;
+  font-size: 20px;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s;
+  margin-left: 70px;
+
+  &:hover {
+    color: #006F35;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: #006F35;
+    transition: width 0.3s ease;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+
+  &.active {
+    font-weight: 700;
+    color: #1B589F;
+  }
+}

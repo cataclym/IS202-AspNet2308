@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "build": "postcss wwwroot/css/site.css -o wwwroot/css/site.min.css",
+    "sass": "sass --watch wwwroot/css/main.scss:wwwroot/css/main.css"
+  },
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^6.0.0",
+    "postcss-cli": "^11.0.0",
+    "sass": "^1.80.6"
+  }
+}

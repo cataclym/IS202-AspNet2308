@@ -1,0 +1,23 @@
+.list-item,
+.stats-container {
+  background-color: #f9e8d2;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px;
+  flex: 1;
+}
+
+.list-item {
+  display: flex;
+  flex-direction: column;
+  max-width: 430px;
+}
+
+.stats-container {
+  max-height: 500px;
+  max-width: 750px;
+  overflow: hidden;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}

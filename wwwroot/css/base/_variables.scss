@@ -1,0 +1,67 @@
+// Variables
+$primary: #006A33;
+$secondary: #154785;
+$font-family: 'Mulish', sans-serif;
+
+// Utility Classes
+   .center-horizontal {
+       display: flex;
+       justify-content: center;
+       align-items: center;
+   }
+
+.text-center {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.text-nowrap {
+    white-space: nowrap;
+    margin-left: 4px;
+}
+
+.highlight {
+    color: #008540;
+}
+
+.truncate-text {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.font-color-primary {
+    color: $primary;
+}
+
+.width-900 {
+    width: 900px;
+}
+
+.border-radius-5 {
+    border-radius: 5px;
+}
+
+// Global Styles
+   html {
+       position: relative;
+       min-height: 100%;
+       font-size: 18px;
+       font-family: $font-family !important;
+
+       @media (min-width: 768px) {
+           font-size: 16px;
+       }
+   }
+
+body {
+    font-family: $font-family !important;
+    margin-bottom: 60px;
+    min-height: 100vh;
+}
+
+.btn:focus,
+.btn:active:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #008540;
+}

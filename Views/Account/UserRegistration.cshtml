@@ -11,47 +11,46 @@
     <title>Registreringsskjema</title>
 </head>
 
-<body>
-
-    <h1 class="registration-form h1">Registrer deg</h1>
-
-    <div class="registration-form">
-    <form asp-action="UserRegistration" asp-controller="Account" method="post">
-   
-        <div>
-            <label asp-for="Username" class="registration-label">Brukernavn:</label>
-            <input asp-for="Username" />
-        </div>
-        
-
-        <div>
-            <label asp-for="Email">E-post:</label>
-            <input asp-for="Email" required placeholder="Skriv e-postadressen din" />
-        </div>
-
-        <div>
-            <label asp-for="Phone">Telefonnummer:</label>
-            <input asp-for="Phone" type="tel" pattern="[0-9]*" />
-        </div>
-       
-        <div>
-        <label asp-for="Password">Passord:</label>   
-        <div class="password-input-wrapper">
-        <input asp-for="Password" type="password" id="Password" />
-            <div class="checkbox-wrapper-registration">
-                <input type="checkbox" id="togglePassword" class="togglePassword flex-grow-0 " />
-                <label class="text-nowrap flex-grow-0 margin-bottom-2" for="togglePassword">Vis passord</label>
+<body class="user-registration">
+<div class="register-container">
+    <h3 class="register-title">Registrer deg</h3>
+    
+        <form asp-action="UserRegistration" method="post" class="register-form">
+            <div class="form-group register-form">
+                <label asp-for="Username" class="registration-label">Brukernavn:</label>
+                <input asp-for="Username" />
             </div>
-         </div>
-         </div>
+            
+            <div class="form-group">
+                <label asp-for="Email">E-post:</label>
+                <input asp-for="Email" class="register-form" required placeholder="Skriv e-postadressen din" />
+            </div>
 
-         <div>
+            <div class="form-group">
+                <label asp-for="Phone">Telefonnummer:</label>
+                <input asp-for="Phone" class="register-form" type="tel" pattern="[0-9]*" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password">Passord:</label>
+                <div class="password-wrapper">
+                    <input asp-for="Password" type="password" id="Password" />
+                    <div class="show-password">
+                        <input type="checkbox" id="togglePassword" />
+                        <label for="togglePassword">Vis passord</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="center-horizontal">
                 <button type="submit" class="btn-general btn-primary">Registrer deg</button>
-        </div>
-    </form>
-    </div>
+            </div>
+        </form>
 
-    <script>
+</div>
+</body>
+
+<script>
         document.getElementById('togglePassword').addEventListener('change', function () {
             const passwordField = document.getElementById('Password');
             if (this.checked) {
@@ -61,5 +60,4 @@
             }
         });
     </script>
-</body>
 </html>
