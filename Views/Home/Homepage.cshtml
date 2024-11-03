@@ -32,7 +32,7 @@ else
         <!-- Your buttons -->
         <p>Feil i kartet? Trykk her:</p>
         <div class="center-horizontal" style="text-decoration: none">
-            <form asp-action="MapReport" method="post">
+            <form asp-controller="Reports" asp-action="MapReport" method="post">
                 <button type="submit" class="btn-general btn-primary">Meld feil</button>
             </form>
         </div>
@@ -52,7 +52,7 @@ else
 <!-- Dropdown and Date Filter -->
 <div class="table-container">
     <div class="dropdown">
-        <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+        <button onclick="myFunction()" class="dropbtn">Sorter</button>
         <div id="myDropdown" class="dropdown-content">
             <!-- View all reports -->
             <a href="#" onclick="showAllReports()">Alle rapporter</a>
@@ -73,10 +73,10 @@ else
             }
         </div>
     </div>
-    <!-- Dato filtrering -->
+    <!-- Dato filtrering 
     <label for="dateFilter">Filter etter dato:</label>
-    <input type="date" id="dateFilter" onchange="filterByDate(this.value)"/>
-</div>
+    <input type="date" id="dateFilter" onchange="filterByDate(this.value)"/> -->
+</div> 
 
 <div class="user-info-container">
     @if (Model != null)
@@ -127,7 +127,7 @@ else
                 <tr data-report-id="@report.ReportId"
                     data-is-pinned="@report.IsPinned.ToString().ToLower()"
                     data-status="@report.Status.ToString().ToLower()"
-                    data-date="@report.CreatedAt.ToString("yyyy-MM-dd")">
+                    data-date="@report.CreatedAt.ToString("yyyy-MM-ddTHH:mm:ss")">
                     <td>
                         <a asp-action="ReportView"
                            asp-controller="Reports"
@@ -144,7 +144,7 @@ else
                     }
                     <td>@report.Status.ToString()</td>
                     <td data-created-at="@report.CreatedAt.ToString("o")">
-                        @report.CreatedAt.ToString("yyyy-MM-dd")
+                        @report.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")
                     </td>
                     <td>
                         <button
@@ -221,21 +221,33 @@ else
         const rows = Array.from(table.rows);
 
         rows.sort((rowA, rowB) => {
+            const isPinnedA = rowA.getAttribute('data-is-pinned') === 'true';
+            const isPinnedB = rowB.getAttribute('data-is-pinned') === 'true';
+
+            if (isPinnedA && !isPinnedB) {
+                return -1; // A comes before B
+            }
+            if (!isPinnedA && isPinnedB) {
+                return 1; // B comes before A
+            }
+
+            // If both are pinned or both are unpinned, sort by the selected column
             let comparison = 0;
 
-            // Handling for date
             const dateColumnIndex = isAdmin ? 4 : 3; // Use column 4 for admin, 3 for user
+
             if (columnIndex === dateColumnIndex) {
                 const dateA = new Date(rowA.getAttribute('data-date'));
                 const dateB = new Date(rowB.getAttribute('data-date'));
                 comparison = dateA - dateB;
             } else {
-            // General text sorting (for columns like "Brukernavn")
-            const cellA = rowA.cells[columnIndex].innerText.trim().toLowerCase();
-            const cellB = rowB.cells[columnIndex].innerText.trim().toLowerCase();
-            comparison = cellA.localeCompare(cellB);
-        }
-                 // Adjust comparison based on sort order
+                // General text sorting (for columns like "Brukernavn")
+                const cellA = rowA.cells[columnIndex].innerText.trim().toLowerCase();
+                const cellB = rowB.cells[columnIndex].innerText.trim().toLowerCase();
+                comparison = cellA.localeCompare(cellB);
+            }
+
+            // Adjust comparison based on sort order
             return currentSortOrder.order === 'asc' ? comparison : -comparison;
         });
 
