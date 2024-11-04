@@ -639,6 +639,32 @@ input[type=checkbox] {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+.login .password-wrapper {
+  position: relative;
+  display: flex;
+}
+.login .password-wrapper input[type=password],
+.login .password-wrapper input[type=text] {
+  width: 100%;
+  padding-right: 2.5em;
+}
+.login .password-wrapper .password-toggle {
+  position: absolute;
+  right: 30px !important;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  font-size: 18px;
+}
+.login .password-wrapper #eyeOpen,
+.login .password-wrapper #eyeClosed {
+  font-size: 18px;
+}
+.login .center-horizontal {
+  display: flex;
+  justify-content: center;
+}
 .login .registration-section {
   text-align: center;
   margin-top: 20px;
