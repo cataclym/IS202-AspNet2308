@@ -1,5 +1,5 @@
 .login {
-
+  
   .login-container {
     width: 100%;
     max-width: 400px;
@@ -33,6 +33,37 @@
     border-radius: 4px;
   }
 
+  .password-wrapper {
+    position: relative;
+    display: flex;
+
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      padding-right: 2.5em; // Lager plass til ikonet
+    }
+
+    .password-toggle { 
+      position: absolute;
+      right: 30px; !important;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #666;
+      font-size: 18px;
+    }
+
+    #eyeOpen,
+    #eyeClosed {
+      font-size: 18px;
+    }
+  }
+
+  .center-horizontal {
+    display: flex;
+    justify-content: center;
+  }
+
   .registration-section {
     text-align: center;
     margin-top: 20px;
@@ -41,5 +72,4 @@
       margin-bottom: 10px;
     }
   }
-
 }

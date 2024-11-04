@@ -3,63 +3,72 @@
     Layout = "~/Views/Shared/_Layout.cshtml"; // Sørger for at layouten brukes.
 }
 
-
 <!DOCTYPE html>
-
 <html>
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Registreringsskjema</title>
 </head>
 
 <body class="user-registration">
 <div class="register-container">
     <h3 class="register-title">Registrer deg</h3>
-    
-        <form asp-action="UserRegistration" method="post" class="register-form">
-            <div class="form-group register-form">
-                <label asp-for="Username" class="registration-label">Brukernavn:</label>
-                <input asp-for="Username" />
-            </div>
-            <div class="form-group">
-            
-                <label asp-for="Email">E-post:</label>
-                <input asp-for="Email" class="register-form" required placeholder="Skriv e-postadressen din" />
-            </div>
 
-            <div class="form-group">
-                <label asp-for="Phone">Telefonnummer:</label>
-                <input asp-for="Phone" class="register-form" type="tel" pattern="[0-9]*" />
-            </div>
+    <form asp-action="UserRegistration" method="post" class="register-form">
+        <div class="form-group register-form">
+            <label asp-for="Username" class="registration-label">Brukernavn:</label>
+            <input asp-for="Username"/>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="Email">E-post:</label>
+            <input asp-for="Email" class="register-form" required placeholder="Skriv e-postadressen din"/>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="Password">Passord:</label>
-                <div class="password-wrapper">
-                    <input asp-for="Password" type="password" id="Password" />
-                    <div class="show-password">
-                        <input type="checkbox" id="togglePassword" />
-                        <label for="togglePassword">Vis passord</label>
-                    </div>
-                </div>
-            </div>
+        <div class="form-group">
+            <label asp-for="Phone">Telefonnummer:</label>
+            <input asp-for="Phone" class="register-form" type="tel" pattern="[0-9]*"/>
+        </div>
 
-            <div class="center-horizontal">
-                <button type="submit" class="btn-general btn-secondary">Registrer deg
-                    <i class="bi bi-pencil-square"></i>
-                    </button>
+        <div class="form-group">
+            <label asp-for="Password">Passord:</label>
+            <div class="password-wrapper">
+                <input asp-for="Password" type="password" id="Password"/>
+                <span id="togglePassword" class="password-toggle">
+                    <i class="fas fa-eye" id="eyeOpen" style="display: none;"></i>
+                    <i class="fas fa-eye-slash" id="eyeClosed"></i>
+                </span>
             </div>
-        </form>
+        </div>
 
+        <div class="center-horizontal">
+            <button type="submit" class="btn-general btn-secondary">Registrer deg
+                <i class="bi bi-pencil-square"></i>
+            </button>
+        </div>
+    </form>
 </div>
 </body>
 
 <script>
-        document.getElementById('togglePassword').addEventListener('change', function () {
-            const passwordField = document.getElementById('Password');
-            if (this.checked) {
-                passwordField.type = 'text'; // Show password
-            } else {
-                passwordField.type = 'password'; // Hide password
-            }
+    document.addEventListener("DOMContentLoaded", function () {
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordField = document.getElementById("Password");
+        const eyeOpen = document.getElementById("eyeOpen");
+        const eyeClosed = document.getElementById("eyeClosed");
+
+        // Initial visning: skjul "åpen øye" ikon
+        eyeOpen.style.display = "none";
+        eyeClosed.style.display = "inline";
+
+        togglePassword.addEventListener("click", function () {
+            const isPasswordHidden = passwordField.getAttribute("type") === "password";
+            passwordField.setAttribute("type", isPasswordHidden ? "text" : "password");
+
+            // Bytt mellom ikoner
+            eyeOpen.style.display = isPasswordHidden ? "inline" : "none";
+            eyeClosed.style.display = isPasswordHidden ? "none" : "inline";
         });
-    </script>
+    });
+</script>
 </html>
