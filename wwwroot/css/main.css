@@ -671,18 +671,85 @@ input[type=checkbox] {
 }
 
 #descriptionForm {
-  display: none; /* Skjuler tekstboksen og knappen til polygon er tegnet */
-  position: fixed; /* Gjør at boksen er fast plassert i forhold til vinduet */
-  top: 50%; /* Plasserer den 50% ned på siden */
-  left: 50%; /* Plasserer den 50% til høyre på siden */
-  transform: translate(-50%, -50%); /* Flytter den tilbake til midten ved å forskyve med 50% */
-  background-color: #f9f9f9; /* Lys bakgrunnsfarge */
-  padding: 20px; /* Gir litt luft rundt elementene inni boksen */
-  border: 1px solid #ccc; /* Gir en tynn grå ramme */
-  border-radius: 8px; /* Runder hjørnene på boksen */
-  width: 300px; /* Setter bredden på boksen */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Gir en lett skygge for å heve boksen litt visuelt */
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 30px 25px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   z-index: 9999;
+  font-family: Arial, sans-serif;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 23px;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #006F35;
+}
+
+/* Tekstboks styling */
+.description-textarea {
+  width: 100%;
+  height: 100px;
+  padding: 12px;
+  margin-top: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  resize: none;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.description-textarea:focus {
+  border-color: #006F35;
+  outline: none;
+}
+
+/* Send-inn-knappen */
+.submit-btn {
+  width: 100%;
+  padding: 12px 0;
+  margin-top: 20px;
+  background-color: #006F35;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #004d26;
+}
+
+.description-textarea:focus {
+  border-color: #006F35;
+  background-color: #f0f8f0; /* Svakt grønnaktig bakgrunn */
+  outline: none;
+}
+
+/* Skjult felt for koordinater */
+.visually-hidden {
+  display: none;
 }
 
 .report-view {
@@ -868,6 +935,7 @@ input[type=checkbox] {
 
 .MyPage {
   /* Main button */
+  /* Fjern linje fra siste element */
 }
 .MyPage main {
   text-align: center;
@@ -899,19 +967,32 @@ input[type=checkbox] {
   background-color: #FFF5E1;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 210px;
+  height: 235px;
   width: 470px;
   text-align: left;
-  margin-bottom: 45px;
+  margin-bottom: 35px;
 }
-.MyPage .info-box h2 {
-  font-size: 18px;
+.MyPage .info-box h3 {
+  font-size: 24px;
   margin-bottom: 10px;
+  font-weight: bold;
+  font-style: italic;
+  color: #333;
 }
 .MyPage .info-box p {
   font-size: 16px;
   line-height: 1.4;
   margin: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+.MyPage .info-box p:last-child {
+  border-bottom: none;
+}
+.MyPage .info-box i {
+  margin-right: 12px; /* Øker avstanden mellom ikonet og teksten */
+  color: #006F35;
+  font-size: 20px; /* Setter en normal størrelse på ikonene */
 }
 .MyPage .button-group {
   display: flex;

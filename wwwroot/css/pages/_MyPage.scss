@@ -34,21 +34,37 @@
     background-color: #FFF5E1;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    height: 210px;
+    height: 235px;
     width: 470px;
     text-align: left;
-    margin-bottom: 45px;
+    margin-bottom: 35px;
   }
 
-  .info-box h2 {
-    font-size: 18px;
+  .info-box h3 {
+    font-size: 24px;
     margin-bottom: 10px;
+    font-weight: bold;
+    font-style: italic;
+    color: #333;
   }
 
   .info-box p {
     font-size: 16px;
     line-height: 1.4;
     margin: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  /* Fjern linje fra siste element */
+  .info-box p:last-child {
+    border-bottom: none;
+  }
+
+  .info-box i {
+    margin-right: 12px; /* Øker avstanden mellom ikonet og teksten */
+    color: #006F35;
+    font-size: 20px; /* Setter en normal størrelse på ikonene */
   }
 
   .button-group {

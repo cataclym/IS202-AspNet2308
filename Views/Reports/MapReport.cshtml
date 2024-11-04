@@ -30,16 +30,16 @@
     }
 
     <div id="descriptionForm">
-        <button class="close-button" onclick="closeForm()">&times;</button>
+        <button class="close-btn" onclick="closeForm()">&times;</button>
         <form asp-controller="Reports" asp-action="RegisterMapReport" method="post" id="mapForm">
             <div>
-                <textarea id="meldingsBoks" asp-for="FirstMessage" required minlength="5" style="width: 250px; height: 105px;" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
+                <textarea id="meldingsBoks" class="description-textarea" asp-for="FirstMessage" required minlength="5" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
             </div>
             <div>
                 <input type="text" class="visually-hidden" id="Koordinater" asp-for="StringKoordinaterLag" required></input>
             </div>
             <div class="center-horizontal">
-                <button class="btn-general btn-primary" onclick="submitForm()">Send inn</button>
+                <button class="submit-btn" onclick="submitForm()">Send inn <i class="bi bi-send"></i></button>
             </div>
         </form>
     </div>
