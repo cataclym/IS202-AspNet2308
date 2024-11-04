@@ -1,0 +1,70 @@
+
+@{
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>MinSide</title>
+</head>
+<body class="AdminDash">
+<div>
+    <h1 class="header1 display-4">Saks<span class="highlight">panel</span></h1>
+</div>
+
+<!-- Your buttons -->
+<div>
+<form asp-controller="Reports" asp-action="ReportOverview" method="get">
+    <button type="submit" class="meld-feil-btn">Behandle rapporter
+        <i class="bi bi-journal-text"></i>
+    </button>
+</form>
+</div>
+<div class="stats-info-container">
+<div class="center-horizontal">
+    <div class="info-box">
+        <h3>Statistikk:</h3>
+
+        <p><i class="bi bi-exclamation-circle-fill"></i><strong>Ubehandlede rapporter: @Model.UnprocessedReportsCount</strong> </p>
+
+        <p><i class="bi bi-file-earmark-plus-fill"></i><strong>Nye rapporter i dag: @Model.ReportsTodayCount</strong> </p>
+
+        <p><i class="bi bi-check-circle-fill"></i><strong>Behandlede rapporter: @Model.ProcessedReportsCount</strong> </p>
+
+        <p><i class="bi bi-hourglass-split"></i><strong>Under behandling: @Model.ReportsUnderTreatmentCount</strong> </p>
+    </div>
+</div>
+
+<div class="center-horizontal">
+    <div class="info-box">
+        <h3>Min Informasjon:</h3>
+
+        <p><i class="bi bi-person-fill"></i><strong>Brukernavn: @Model.Username</strong> </p>
+
+        <p><i class="bi bi-envelope-fill"></i><strong>E-post: @Model.Email</strong> </p>
+
+        <p><i class="bi bi-telephone-fill"></i><strong>Telefonnummer: @Model.Phone</strong> </p>
+    </div>
+</div>
+</div>
+<div class="button-group">
+    <div class="password-change">
+        <form asp-controller="Account" asp-action="PasswordView" method="post">
+            <button id="showPasswordFormBtn" class="btn">Endre passord
+                <i class="bi bi-key"></i>
+            </button>
+        </form>
+    </div>
+
+    <div>
+        <form asp-controller="Reports" asp-action="MapReport" method="post">
+            <button class="btn">Meld feil
+                <i class="bi bi-map"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

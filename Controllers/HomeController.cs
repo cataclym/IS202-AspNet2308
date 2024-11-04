@@ -95,6 +95,46 @@ public class HomeController　: Controller
         // Sender modellen til viewet
         return View(model);
     }
+
+    public async Task<IActionResult> AdminDashboard()
+    {
+        // Finner dagens dato ved midnatt
+        DateTime today = DateTime.Today;
+        
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier); // Henter bruker-ID som string
+        if (!int.TryParse(userIdString, out int userId))
+        {
+            // Håndter feilen hvis userId ikke kan konverteres til int (kan returnere en feilmelding eller omdirigere)
+            return BadRequest("Ugyldig bruker-ID.");
+        }
+        
+        var user = await _context.Users.FindAsync(userId);
+        
+        var viewModel = new AdminDashboardModel
+        {
+            UnprocessedReportsCount = await _context.Reports
+                .Where(r => r.Status == Status.Ubehandlet) // Bruk enum-verdi direkte
+                .CountAsync(),
+            
+            ReportsTodayCount = await _context.Reports
+            .Where(r => r.CreatedAt >= today) // Henter rapporter meldt inn fra dagens start
+            .CountAsync(),
+            
+            ProcessedReportsCount = await _context.Reports
+                .Where(r => r.Status == Status.Behandlet)
+                .CountAsync(),
+
+            ReportsUnderTreatmentCount = await _context.Reports
+                .Where(r => r.Status == Status.Under_Behandling)
+                .CountAsync(),
+            
+            Username = user?.Username,
+            Email = user?.Email,
+            Phone = user?.Phone
+        };
+
+        return View(viewModel);
+    }
     
     [HttpGet]
     public ViewResult About()

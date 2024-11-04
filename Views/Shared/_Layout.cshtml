@@ -47,10 +47,18 @@
                         <a class="nav-link text-dark @(view == "Index" ? "active" : "")"
                            asp-area="" asp-controller="Home" asp-action="Index">Hjem</a>
                     </li>
+                    
+                    @if (User.IsInRole("Admin")) {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark @(view == "AdminDashboard" ? "active" : "")"
+                               asp-area="" asp-controller="Home" asp-action="AdminDashboard">Sakspanel</a>
+                        </li> 
+                    }  else {
                     <li class="nav-item">
                         <a class="nav-link text-dark @(view == "MyPage" ? "active" : "")"
                            asp-area="" asp-controller="Home" asp-action="MyPage">Min Side</a>
-                    </li>
+                    </li>       
+                    }   
                     <li class="nav-item">
                         <a class="nav-link text-dark @(view == "Help" ? "active" : "")"
                            asp-area="" asp-controller="Home" asp-action="Help">Hjelp</a>

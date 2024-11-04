@@ -1,9 +1,9 @@
-.MyPage {
+.AdminDash {
   main {
     text-align: center;
     margin-top: 30px;
   }
-  
+
   /* Main button */
   .meld-feil-btn {
     width: 470px;
@@ -20,8 +20,6 @@
     gap: 10px;
     color: #006F35;
     transition: all 0.3s ease;
-    margin-bottom: 45px;
-    
   }
 
   .meld-feil-btn:hover {
@@ -29,15 +27,24 @@
     color: #fff;
   }
 
+  .stats-info-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  
   .info-box {
     padding: 20px;
     background-color: #FFF5E1;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-height: 290px;
-    width: 470px;
+    height: 290px;
+    width: 400px;
+    flex: 1 1 45%;
     text-align: left;
-    margin-bottom: 35px;
   }
 
   .info-box h3 {
@@ -55,7 +62,7 @@
     border-bottom: 1px solid #ddd;
     padding-bottom: 10px;
   }
-  
+
   /* Fjern linje fra siste element */
   .info-box p:last-child {
     border-bottom: none;
@@ -70,7 +77,6 @@
   .button-group {
     display: flex;
     gap: 20px;
-    margin-top: 20px;
     align-items: center; /* Sentrerer innholdet vertikalt */
     justify-content: center; /* Sentrerer innholdet horisontalt */
   }
@@ -91,9 +97,9 @@
     background-color: #006F35;
     color: #fff;
   }
-  
-  
-  
-  
-  
+
+
+
+
+
 }

@@ -16,83 +16,106 @@ public class AccountController : Controller
 {
     private readonly ApplicationDbContext _context; //tilgang til database
     private readonly ILogger<AccountController> _logger;
+    private readonly IUserService _userService;
     
-    public AccountController(ApplicationDbContext context, ILogger<AccountController> logger) //constructor
+    public AccountController(ApplicationDbContext context, ILogger<AccountController> logger, IUserService userService) //constructor
     {
         _context = context;
         _logger = logger;
+        _userService = userService;
     }
     
     // GET: Viser innloggingsskjemaet
     [HttpGet]
     public IActionResult Login(string returnUrl = null)
     {
-        _logger.LogInformation("Checking authentication status");
-        
-        if (User.Identity is { IsAuthenticated: true })
+        if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            _logger.LogInformation("User is authenticated");
-            
-            _logger.LogInformation("User is authenticated, Name: {UserName}", User.Identity.Name);
-            return RedirectToAction("MyPage", "Home");
-        }
-        else
-        {
-            _logger.LogInformation("User is NOT authenticated, redirecting to login");
-            // Her omdirigeres brukeren til login-siden
-            // eller en annen side der autentisering kreves
+            // Hent brukerinformasjon hvis nødvendig
+            var isAdmin = User.IsInRole("Admin");
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (isAdmin)
+            {
+                return RedirectToAction("AdminDashboard", "Home");
+            }
+            else if (!string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("MyPage", "Home", new { id = userId });
+            }
         }
 
-        // Hvis brukeren ikke er autentisert, vis innloggingssiden
         ViewData["ReturnUrl"] = returnUrl;
         return View();
     }
     
     // POST: Behandler innlogging
-    [HttpPost]
-    public async Task<IActionResult> Login(UserLoginModel userLoginModel, string returnUrl = null)
+// POST: Behandler innlogging
+[HttpPost]
+public async Task<IActionResult> Login(UserLoginModel userLoginModel, string returnUrl = null)
+{
+    // Sjekk om modellen er gyldig
+    if (!ModelState.IsValid)
     {
-        if (User.Identity is { IsAuthenticated: true })
-        {
-            return RedirectToAction("MyPage", "Home");
-        }
-        Console.WriteLine(ModelState.IsValid);
-        if (!ModelState.IsValid) return View("Login", userLoginModel);
-        
-        // Finn brukeren i databasen basert på brukernavn
-        var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Username == userLoginModel.Username);
-
-
-        // Sjekk om brukeren finnes og verifiser passordet
-        if (user != null && VerifyPassword(userLoginModel.Password, user.Password))
-        {
-            // Opprett en liste over påstander (claims) som identifiserer brukeren
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
-            };
-
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            // Opprett en autentiseringsbillett (authentication ticket)
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = true, // Husk brukeren mellom økter
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30) // Sett varigheten for innlogging
-            };
-
-            // Logg inn brukeren ved hjelp av cookies
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-            // Logg inn brukeren og omdiriger til ønsket side (for eksempel forsiden)
-            return RedirectToAction("MyPage", "Home", new { id = user.UserId });
-        }
-
-        // Feilhåndtering hvis brukernavn eller passord er feil
-        ViewBag.ErrorMessage = "Feil brukernavn eller passord.";
         return View("Login", userLoginModel);
     }
+
+    // Bruk UserService for konsistens og eventuelle ekstra logikk
+    var user = await _userService.GetUserByUsernameAsync(userLoginModel.Username);
+
+    // Sjekk om brukeren finnes og verifiser passordet
+    if (user != null && VerifyPassword(userLoginModel.Password, user.Password))
+    {
+        // Opprett en liste over påstander (claims) som identifiserer brukeren
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.Username),
+            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+        };
+
+        // Legg til rollekrav hvis brukeren er admin
+        if (user.IsAdmin)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+        }
+
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+        // Opprett autentiseringsbillett (authentication ticket)
+        var authProperties = new AuthenticationProperties
+        {
+            IsPersistent = true, // Husk brukeren mellom økter
+            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30) // Sett varigheten for innlogging
+        };
+
+        // Logg inn brukeren ved hjelp av cookies
+        await HttpContext.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            new ClaimsPrincipal(claimsIdentity),
+            authProperties
+        );
+
+        // Omdiriger basert på rollen eller ReturnUrl
+        if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+        {
+            return Redirect(returnUrl);
+        }
+
+        if (user.IsAdmin)
+        {
+            return RedirectToAction("AdminDashboard", "Home");
+        }
+        else
+        {
+            return RedirectToAction("MyPage", "Home", new { id = user.UserId });
+        }
+    }
+
+    // Feilhåndtering hvis brukernavn eller passord er feil
+    ModelState.AddModelError(string.Empty, "Ugyldig brukernavn eller passord.");
+    return View("Login", userLoginModel);
+}
+
     
     //Funksjon for å logge ut brukeren
     public async Task<IActionResult> Logout()

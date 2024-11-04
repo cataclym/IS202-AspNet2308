@@ -8,5 +8,7 @@ public interface IUserService
 {
     Task<int> GetUserIdAsync(int id);
     Task<Users> GetUserAsync(int id);
+    Task<Users> GetUserByUsernameAsync(string username);
+    
 
 }
