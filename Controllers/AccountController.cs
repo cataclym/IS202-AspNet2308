@@ -135,6 +135,28 @@ public async Task<IActionResult> Login(UserLoginModel userLoginModel, string ret
         return BCrypt.Net.BCrypt.Verify(inputPassword, storedPasswordHash);
     }
 
+    [HttpGet]
+    public IActionResult UserRegistration(string returnUrl = null)
+    {
+        if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            // Hent brukerinformasjon hvis nødvendig
+            var isAdmin = User.IsInRole("Admin");
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (isAdmin)
+            {
+                return RedirectToAction("AdminDashboard", "Home");
+            }
+            else if (!string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("MyPage", "Home", new { id = userId });
+            }
+        }
+
+        ViewData["ReturnUrl"] = returnUrl;
+        return View();
+    }
     
     [HttpPost]
     public async Task<IActionResult> UserRegistration(UserRegistrationModel userRegistrationModelModel)
@@ -160,16 +182,6 @@ public async Task<IActionResult> Login(UserLoginModel userLoginModel, string ret
 
         // Returner til en side for å bekrefte at registreringen er vellykket
         return RedirectToAction("MyPage", "Home", new { id = userRegistrationModelModel.UserId }); // Omdirigerer til brukerens profilside, for eksempel
-    }
-
-// GET: Viser registreringsskjemaet
-    [HttpGet]
-    public IActionResult UserRegistration()
-    {
-        // Brukeren er ikke autentisert
-        // Brukeren er autentisert
-        Console.WriteLine(User.Identity is { IsAuthenticated: true } ? "User is authenticated" : "User is not authenticated");
-        return View();
     }
     
     [HttpPost]
