@@ -301,6 +301,13 @@ body {
   color: #D9534F;
 }
 
+.btn-changepassword {
+  background-color: #FFFFFF;
+  border-color: #1B589F; /* Fargen på border (stroke) */
+  color: #1B589F;
+  width: 175px;
+}
+
 .btn-logout:hover {
   background-color: #D9534F; /* F.eks. rød bakgrunn på hover */
   border: 2px solid #D9534F !important;
