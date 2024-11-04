@@ -45,10 +45,10 @@
 }
 
 .btn-index {
-    width: 273px;
-    height: 85px;
-    font-size: 32px;
-    border: 2px solid !important; /* Angi bredde og stil, men ikke farge */
+    width: 320px;
+    height: 125px;
+    font-size: 35px;
+    border: 3px solid !important; /* Angi bredde og stil, men ikke farge */
     border-radius: 10px;
     cursor: pointer; /* Håndmus ved hover */
     display: flex; /* Gjør knappen til en flex-container */
@@ -56,6 +56,11 @@
     justify-content: center; /* Sentrerer innholdet horisontalt */
     text-decoration: none; /* Ingen understreking på tekst */
     box-sizing: border-box; /* Inkluderer padding og border i bredden/høyden */
+}
+
+.btn-container-index {
+    margin-top: 85px;
+    margin-bottom: 65px;
 }
 
 .btn-primary {

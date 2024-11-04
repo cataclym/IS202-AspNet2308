@@ -15,19 +15,22 @@
 <body>
 
 <div class="text-center">
-    <div class="text-center">
-        <h1 class="display-4"><b>Meld inn feil til</b> <span class="highlight"><b>Kartverket</b></span></h1>
-    </div>
+    <h1 class="display-4"><b>Meld inn feil til</b> <span class="highlight"><b>Kartverket</b></span></h1>
+</div>
+
+<div class="btn-container-index">
     <div class="btn-container">
         <form asp-action="Login" asp-controller="Account" method="post" class="flex-grow-1">
-            <button type="submit" class="btn-index btn-primary m-auto">Logg inn</button>
-            <p class="highlight">Logg inn for å melde inn feil</p>
+            <button type="submit" class="btn-index btn-primary m-auto">Logg inn
+                <i class="bi bi-box-arrow-in-right"></i>
+            </button>
         </form>
 
         <!-- Registration-form -->
         <form asp-action="UserRegistration" asp-controller="Account" method="post" class="flex-grow-1">
-            <button type="submit" class="btn-index btn-primary m-auto">Registrer deg</button>
-            <p class="highlight">Registrer deg for å få tilgang</p>
+            <button type="submit" class="btn-index btn-primary m-auto">Registrer deg
+                <i class="bi bi-pencil-square"></i>
+            </button>
         </form>
     </div>
 </div>

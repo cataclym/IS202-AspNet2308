@@ -9,9 +9,10 @@
     width: 470px;
     height: 120px;
     padding: 15px 40px;
-    border: 3px solid #006F35;
+    border: 4px solid #006F35;
     background-color: #FFFFFF;
     font-size: 35px;
+    font-weight: 500;
     align-items: center; /* Sentrerer innholdet vertikalt */
     justify-content: center; /* Sentrerer innholdet horisontalt */
     border-radius: 20px;
@@ -19,7 +20,7 @@
     gap: 10px;
     color: #006F35;
     transition: all 0.3s ease;
-    margin-bottom: 35px;
+    margin-bottom: 45px;
     
   }
 
@@ -29,7 +30,6 @@
   }
 
   .info-box {
-    margin: 20px 0;
     padding: 20px;
     background-color: #FFF5E1;
     border-radius: 8px;
@@ -37,6 +37,7 @@
     height: 210px;
     width: 470px;
     text-align: left;
+    margin-bottom: 45px;
   }
 
   .info-box h2 {
@@ -60,7 +61,8 @@
 
   .button-group .btn {
     padding: 10px 20px;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 500;
     border-radius: 8px;
     color: #006F35;
     border: 2px solid #006F35;

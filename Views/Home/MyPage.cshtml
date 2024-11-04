@@ -16,7 +16,9 @@
 <!-- Your buttons -->
 <div>
     <form asp-controller="Reports" asp-action="MapReport" method="post">
-        <button type="submit" class="meld-feil-btn">Meld feil</button>
+        <button type="submit" class="meld-feil-btn">Meld feil
+            <i class="bi bi-map"></i> 
+        </button>
     </form>
 </div>
 
@@ -35,24 +37,20 @@
 <div class="button-group">
 <div class="password-change">
     <form asp-controller="Account" asp-action="PasswordView" method="post">
-        <button id="showPasswordFormBtn" class="btn">Endre passord</button>
+        <button id="showPasswordFormBtn" class="btn">Endre passord
+            <i class="bi bi-key"></i>
+            </button>
     </form>
 </div>
 
 <div>
     <form asp-controller="Reports" asp-action="ReportOverview" method="get">
-        <button class="btn">Alle rapporter</button>
+        <button class="btn">Alle rapporter
+            <i class="bi bi-journal-text"></i>
+            </button>
     </form>
 </div>
 </div>
-
-
-       
-    
-
-
-        
- 
 
 </body>
 </html>
