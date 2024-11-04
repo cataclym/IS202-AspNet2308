@@ -301,18 +301,33 @@ body {
   color: #D9534F;
 }
 
-.btn-changepassword {
-  background-color: #FFFFFF;
-  border-color: #1B589F; /* Fargen på border (stroke) */
-  color: #1B589F;
-  width: 175px;
-}
-
 .btn-logout:hover {
   background-color: #D9534F; /* F.eks. rød bakgrunn på hover */
   border: 2px solid #D9534F !important;
   color: #FFFFFF; /* Tekstfarge på hover */
   cursor: pointer; /* Vis en håndpeker for bedre brukeropplevelse */
+}
+
+.btn-changepassword {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Sentraliserer tekst og ikon */
+  gap: 6px; /* Mellomrom mellom ikonet og teksten */
+  padding: 8px 12px; /* Redusert padding for mer kompakt utseende */
+  font-size: 14px; /* Mindre font for bedre proporsjoner */
+  line-height: 1; /* Reduser linjehøyden */
+  border: 2px solid #1A5DAB;
+  border-radius: 8px;
+  color: #1A5DAB;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #FFFFFF;
+  width: 180px;
+}
+
+.btn-changepassword:hover {
+  background-color: #1A5DAB;
+  color: white;
 }
 
 .btn-pin {

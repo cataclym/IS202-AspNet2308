@@ -26,14 +26,17 @@
             </div>
             
                <div class="center-horizontal">
-               <button type="submit" class="btn-general btn-primary">Logg inn</button>
+                   <button type="submit" class="btn-general btn-primary">Logg inn
+                       <i class="bi bi-box-arrow-in-right"></i></button>
                </div>
         </form>
 
         <div class="registration-section">
             <p>Har du ikke en bruker?</p>
             <form asp-action="UserRegistration" asp-controller="Account" method="post">
-                <button type="submit" class="btn-general btn-secondary">Registrer deg</button>
+                <button type="submit" class="btn-general btn-secondary">Registrer deg
+                    <i class="bi bi-pencil-square"></i>
+                    </button>
             </form>
         </div>
     </div>
