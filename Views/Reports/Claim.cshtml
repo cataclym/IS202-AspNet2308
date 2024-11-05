@@ -17,8 +17,9 @@
     <form asp-action="ClaimConfirmed" method="post">
         @Html.AntiForgeryToken()
         <input type="hidden" name="id" value="@Model.ReportId" />
-        <button type="submit" class="claimed-btn">Confirm Claim</button>
-        <a asp-action="ReportView" asp-route-id="@Model.ReportId" class="cancel-btn">Cancel</a>
+        <button type="submit" class="claimed-btn">Bekreft overtakelse <i class="bi-check-circle"></i></button>
+        <a asp-action="ReportView" asp-route-id="@Model.ReportId" class="cancel-btn">Kanseller
+            <i class="bi-x-circle"></i></a>
     </form>
 </div>
 </body>

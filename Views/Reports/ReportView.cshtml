@@ -26,7 +26,8 @@ else if (Model.IsAdmin)
 {
     <!-- Display the Claim button -->
     <div class="center-horizontal">
-    <a asp-action="Claim" asp-route-id="@Model.ReportId" class="claim-btn">Ta Rapport</a>
+        <a asp-action="Claim" asp-route-id="@Model.ReportId" class="claim-btn">Ta Rapport
+            <i class="bi bi-box-arrow-in-down"></i></a>
     </div>
 }
 
