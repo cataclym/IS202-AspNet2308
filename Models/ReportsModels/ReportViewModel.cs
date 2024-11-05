@@ -26,6 +26,10 @@ public class ReportViewModel
     public string? Username { get; set; }
     
     public bool IsAdmin { get; set; } = false;
+    
+    public int? AssignedAdminId { get; set; }
+    public string AssignedAdminUsername { get; set; }
+
     public bool IsPinned { get; set; }
     
     public MunicipalityCountyNames MunicipalityInfo { get; set; } // Add this line

@@ -34,6 +34,11 @@ public class Program
 
         // Registrer IHttpContextAccessor
         Builder.Services.AddHttpContextAccessor();
+        
+        Builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+        });
 
         // Add services to the container.
         Builder.Services.AddControllersWithViews();

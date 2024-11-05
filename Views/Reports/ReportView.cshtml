@@ -16,6 +16,21 @@ else
 {
 <h2 class="display-4 center-horizontal">Rapport detaljer</h2>
 }
+
+@if (Model.AssignedAdminId != null)
+{
+    <p><strong>Saksbehandler:</strong> @Model.AssignedAdminUsername</p>
+    <p><strong>Saksbehandler ID:</strong> @Model.AssignedAdminId</p>
+}
+else if (Model.IsAdmin)
+{
+    <!-- Display the Claim button -->
+    <div class="center-horizontal">
+        <a asp-action="Claim" asp-route-id="@Model.ReportId" class="claim-btn">Ta Rapport
+            <i class="bi bi-box-arrow-in-down"></i></a>
+    </div>
+}
+
 <div class="report-container">
     <!-- Left Column: Map and Report Details -->
     <div class="left-column">

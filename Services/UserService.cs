@@ -49,6 +49,31 @@ public class UserService : IUserService
         }
         return user;
     }
+    
+    public async Task<Users> GetUserByUsernameAsync(string username)
+    {
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            _logger.LogWarning("GetUserByUsernameAsync: Empty or null username provided.");
+            return null;
+        }
+
+        var lowerUsername = username.ToLower();
+
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Username.ToLower() == lowerUsername);
+
+        if (user == null)
+        {
+            _logger.LogInformation("User not found with username: {username}", username);
+        }
+        else
+        {
+            _logger.LogInformation("User found: {username}", username);
+        }
+
+        return user;
+    }
 }
     
     

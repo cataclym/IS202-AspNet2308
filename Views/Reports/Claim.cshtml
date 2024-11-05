@@ -1,0 +1,26 @@
+
+
+@{
+    
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+    <link rel="stylesheet" href="~/css/main.css" />
+
+</head>
+<body>
+<div class="d-flex justify-content-center align-items-center">
+    <form asp-action="ClaimConfirmed" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.ReportId" />
+        <button type="submit" class="claimed-btn">Bekreft overtakelse <i class="bi-check-circle"></i></button>
+        <a asp-action="ReportView" asp-route-id="@Model.ReportId" class="cancel-btn">Kanseller
+            <i class="bi-x-circle"></i></a>
+    </form>
+</div>
+</body>
+</html>
