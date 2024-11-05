@@ -145,6 +145,76 @@
     }
 }
 
+.claim-btn {
+    display: flex;
+    width: 300px;
+    height: 90px;
+    padding: 15px 40px;
+    border: 4px solid #006F35;
+    background-color: #FFFFFF;
+    font-size: 35px;
+    font-weight: 500;
+    align-items: center; /* Sentrerer innholdet vertikalt */
+    justify-content: center; /* Sentrerer innholdet horisontalt */
+    border-radius: 20px;
+    gap: 10px;
+    color: #006F35;
+    transition: all 0.1s ease;
+    margin-top: 50px;
+    text-decoration: none;
+}
+
+.claim-btn:hover {
+    background-color: #006F35;
+    color: #fff;
+}
+
+.claimed-btn {
+    display: flex;
+    width: 470px;
+    height: 120px;
+    padding: 15px 40px;
+    border: 4px solid #006F35;
+    background-color: #FFFFFF;
+    font-size: 35px;
+    font-weight: 500;
+    align-items: center; /* Sentrerer innholdet vertikalt */
+    justify-content: center; /* Sentrerer innholdet horisontalt */
+    border-radius: 20px;
+    gap: 10px;
+    color: #006F35;
+    transition: all 0.3s ease;
+    margin-top: 150px;
+}
+
+.claimed-btn:hover {
+    background-color: #006F35;
+    color: #fff;
+}
+
+.cancel-btn {
+    display: flex;
+    height: 90px;
+    padding: 15px 40px;
+    border: 4px solid #D9534F;
+    background-color: #FFFFFF;
+    font-size: 25px;
+    font-weight: 500;
+    align-items: center; /* Sentrerer innholdet vertikalt */
+    justify-content: center; /* Sentrerer innholdet horisontalt */
+    border-radius: 20px;
+    gap: 10px;
+    color: #D9534F;
+    transition: all 0.1s ease;
+    text-decoration: none;
+    margin-top: 50px;
+}
+
+.cancel-btn:hover {
+    background-color: #D9534F;
+    color: #fff;
+}
+
 
 @media (max-width: 480px) {
     .login-container {

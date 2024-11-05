@@ -25,14 +25,13 @@
 <div class="center-horizontal">
     <div class="info-box">
         <h3>Statistikk:</h3>
+        <p><i class="bi bi-file-earmark-plus-fill"></i><strong>Nye rapporter i dag: <strong class="highlight">@Model.ReportsTodayCount</strong></strong> </p>
 
-        <p><i class="bi bi-exclamation-circle-fill"></i><strong>Ubehandlede rapporter: @Model.UnprocessedReportsCount</strong> </p>
+        <p><i class="bi bi-exclamation-circle-fill"></i><strong>Ubehandlede rapporter: <strong class="highlight">@Model.UnprocessedReportsCount</strong></strong> </p>
+        
+        <p><i class="bi bi-hourglass-split"></i><strong>Under behandling: <strong class="highlight">@Model.ReportsUnderTreatmentCount</strong></strong> </p>
 
-        <p><i class="bi bi-file-earmark-plus-fill"></i><strong>Nye rapporter i dag: @Model.ReportsTodayCount</strong> </p>
-
-        <p><i class="bi bi-check-circle-fill"></i><strong>Behandlede rapporter: @Model.ProcessedReportsCount</strong> </p>
-
-        <p><i class="bi bi-hourglass-split"></i><strong>Under behandling: @Model.ReportsUnderTreatmentCount</strong> </p>
+        <p><i class="bi bi-check-circle-fill"></i><strong>Behandlede rapporter: <strong class="highlight">@Model.ProcessedReportsCount</strong></strong> </p>
     </div>
 </div>
 

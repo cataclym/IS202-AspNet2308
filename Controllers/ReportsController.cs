@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Kartverket.Services;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 
 namespace Kartverket.Controllers;
@@ -121,7 +122,8 @@ private async Task<List<ReportViewModel>> GetReportsAsync(Users user, List<int> 
                 Status = r.Status,
                 CreatedAt = r.CreatedAt,
                 Username = r.User.Username,
-                IsPinned = pinnedReportIdsSet.Contains(r.ReportId) // Correct casing and optimized lookup
+                IsPinned = pinnedReportIdsSet.Contains(r.ReportId), // Correct casing and optimized lookup
+
             })
             .OrderByDescending(r => r.IsPinned) // Pinned reports first
             .ThenBy(r => r.CreatedAt) // Then by creation date
@@ -263,6 +265,7 @@ private UserRegistrationModel MapUserToViewModel(Users user)
             .Include(r => r.Messages)
             .ThenInclude(m => m.User)
             .Include(r => r.User) // Hent brukerdata for selve rapporten
+            .Include(r => r.AssignedAdmin) // Include the assigned admin
             .FirstOrDefaultAsync(r => r.ReportId == id);
 
         // Handle the case where the report is not found
@@ -295,6 +298,8 @@ private UserRegistrationModel MapUserToViewModel(Users user)
             IsAdmin = isAdmin,
             Username = report.User.Username,
             MunicipalityInfo = municipalityInfo,
+            AssignedAdminId = report.AssignedAdminId,
+            AssignedAdminUsername = report.AssignedAdmin?.Username,
             Messages = report.Messages.Select(m => new MessagesModel
             {
                 Message = m.Message,
@@ -461,5 +466,91 @@ private UserRegistrationModel MapUserToViewModel(Users user)
             reportId);
         return Json(new { success = false, message = "Pin not found" });
     }
+    
+   
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Claim(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
 
+        var report = await _context.Reports
+            .Include(r => r.AssignedAdmin)
+            .Include(r => r.Messages)
+            .FirstOrDefaultAsync(r => r.ReportId == id);
+
+        if (report == null)
+        {
+            return NotFound();
+        }
+
+        if (report.AssignedAdminId != null)
+        {
+            return BadRequest("Report has already been claimed.");
+        }
+
+        // Map Report to ReportViewModel
+        var viewModel = new ReportViewModel
+        {
+            ReportId = report.ReportId,
+            FirstMessage = report.Messages
+                .OrderBy(m => m.CreatedAt)
+                .Select(m => m.Message)
+                .FirstOrDefault() ?? "No message",
+        };
+        
+        return View(viewModel);
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> ClaimConfirmed(int id)
+    {
+        var report = await _context.Reports.FindAsync(id);
+        if (report == null)
+        {
+            return NotFound();
+        }
+
+        if (report.AssignedAdminId != null)
+        {
+            return BadRequest("Report has already been claimed.");
+        }
+
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (!int.TryParse(userIdClaim, out int currentUserId))
+        {
+            return Unauthorized();
+        }
+        
+        var adminUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == currentUserId);
+
+        if (adminUser == null || !adminUser.IsAdmin)
+        {
+            return Unauthorized();
+        }
+
+        // Assign the report to the current admin
+        report.AssignedAdminId = adminUser.UserId;
+
+        try
+        {
+            _context.Update(report);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Report successfully claimed.";
+        }
+        catch (Exception ex)
+        {
+            // Log the error (not shown)
+            TempData["ErrorMessage"] = "An error occurred while claiming the report.";
+        }
+
+        return RedirectToAction("ReportView", new { id = report.ReportId });
+    }
 }
+
+
