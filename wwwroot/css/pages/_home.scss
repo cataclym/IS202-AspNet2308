@@ -107,6 +107,7 @@
         align-items: flex-start; /* Justerer innholdet til venstre */
     }
 
+
     .dropbtn {
         display: flex;
         background-color: #FFFFFF;
@@ -135,13 +136,23 @@
         width: 230px;
         border: 1px solid #ddd;
         z-index: 1;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Gir dropdownen en skygge */
+        padding: 10px; /* Gir litt ekstra plass rundt innholdet */
+        border-radius: 8px; /* Runde kanter */
     }
     /* Links inside the dropdown */
     .dropdown-content a {
         color: black;
         padding: 12px 16px;
+        padding-right: 20px;
         text-decoration: none;
         display: block;
+    }
+
+    .checkmark-icon {
+        position: absolute;
+        right: 5px; /* Posisjonerer ikonet på høyre side */
+        color: green; /* Kan endres for ønsket farge */
     }
 
     .show {
