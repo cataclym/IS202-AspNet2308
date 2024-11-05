@@ -20,10 +20,16 @@ public sealed class Reports
     public DateTime? ResolvedAt { get; set; }
     // Referrer til Messages tabell
     public ICollection<Messages> Messages { get; set; } = new List<Messages>();
-    
     public ICollection<PinnedReport> PinnedReports { get; set; }
-
     
+    
+    
+    
+    [ForeignKey("AssignedAdmin")]
+    public int? AssignedAdminId { get; set; }
+
+    // Navigation property to the assigned admin
+    public Users AssignedAdmin { get; set; }
     
 }
 

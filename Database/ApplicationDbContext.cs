@@ -24,9 +24,10 @@ public class ApplicationDbContext : DbContext
             .IsUnique();
         
         modelBuilder.Entity<Reports>()
-            .HasOne(r => r.User)
-            .WithMany(u => u.Reports)  // Assuming Users have a navigation property ICollection<Reports> Reports
-            .HasForeignKey(r => r.UserId);
+            .HasOne(r => r.AssignedAdmin)
+            .WithMany(u => u.AssignedReports) // You need to add AssignedReports to Users
+            .HasForeignKey(r => r.AssignedAdminId)
+            .OnDelete(DeleteBehavior.Restrict);
         
         modelBuilder.Entity<Messages>()
             .HasOne(m => m.User)

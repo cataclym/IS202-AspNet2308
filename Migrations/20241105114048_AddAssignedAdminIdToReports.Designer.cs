@@ -4,6 +4,7 @@ using Kartverket.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kartverket.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241105114048_AddAssignedAdminIdToReports")]
+    partial class AddAssignedAdminIdToReports
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -188,9 +191,8 @@ namespace Kartverket.Migrations
             modelBuilder.Entity("Kartverket.Database.Models.Reports", b =>
                 {
                     b.HasOne("Kartverket.Database.Models.Users", "AssignedAdmin")
-                        .WithMany("AssignedReports")
-                        .HasForeignKey("AssignedAdminId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany()
+                        .HasForeignKey("AssignedAdminId");
 
                     b.HasOne("Kartverket.Database.Models.Users", "User")
                         .WithMany("Reports")
@@ -212,8 +214,6 @@ namespace Kartverket.Migrations
 
             modelBuilder.Entity("Kartverket.Database.Models.Users", b =>
                 {
-                    b.Navigation("AssignedReports");
-
                     b.Navigation("Messages");
 
                     b.Navigation("PinnedReports");

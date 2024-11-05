@@ -363,6 +363,76 @@ body {
   border-color: #1e8c34;
 }
 
+.claim-btn {
+  display: flex;
+  width: 300px;
+  height: 90px;
+  padding: 15px 40px;
+  border: 4px solid #006F35;
+  background-color: #FFFFFF;
+  font-size: 35px;
+  font-weight: 500;
+  align-items: center; /* Sentrerer innholdet vertikalt */
+  justify-content: center; /* Sentrerer innholdet horisontalt */
+  border-radius: 20px;
+  gap: 10px;
+  color: #006F35;
+  transition: all 0.1s ease;
+  margin-top: 50px;
+  text-decoration: none;
+}
+
+.claim-btn:hover {
+  background-color: #006F35;
+  color: #fff;
+}
+
+.claimed-btn {
+  display: flex;
+  width: 470px;
+  height: 120px;
+  padding: 15px 40px;
+  border: 4px solid #006F35;
+  background-color: #FFFFFF;
+  font-size: 35px;
+  font-weight: 500;
+  align-items: center; /* Sentrerer innholdet vertikalt */
+  justify-content: center; /* Sentrerer innholdet horisontalt */
+  border-radius: 20px;
+  gap: 10px;
+  color: #006F35;
+  transition: all 0.3s ease;
+  margin-top: 150px;
+}
+
+.claimed-btn:hover {
+  background-color: #006F35;
+  color: #fff;
+}
+
+.cancel-btn {
+  display: flex;
+  height: 90px;
+  padding: 15px 40px;
+  border: 4px solid #D9534F;
+  background-color: #FFFFFF;
+  font-size: 25px;
+  font-weight: 500;
+  align-items: center; /* Sentrerer innholdet vertikalt */
+  justify-content: center; /* Sentrerer innholdet horisontalt */
+  border-radius: 20px;
+  gap: 10px;
+  color: #D9534F;
+  transition: all 0.1s ease;
+  text-decoration: none;
+  margin-top: 50px;
+}
+
+.cancel-btn:hover {
+  background-color: #D9534F;
+  color: #fff;
+}
+
 @media (max-width: 480px) {
   .login-container {
     margin: 20px;
@@ -638,6 +708,32 @@ input[type=checkbox] {
   padding: 8px 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+.login .password-wrapper {
+  position: relative;
+  display: flex;
+}
+.login .password-wrapper input[type=password],
+.login .password-wrapper input[type=text] {
+  width: 100%;
+  padding-right: 2.5em;
+}
+.login .password-wrapper .password-toggle {
+  position: absolute;
+  right: 30px !important;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  font-size: 18px;
+}
+.login .password-wrapper #eyeOpen,
+.login .password-wrapper #eyeClosed {
+  font-size: 18px;
+}
+.login .center-horizontal {
+  display: flex;
+  justify-content: center;
 }
 .login .registration-section {
   text-align: center;
@@ -982,7 +1078,7 @@ input[type=checkbox] {
   background-color: #FFF5E1;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 235px;
+  max-height: 290px;
   width: 470px;
   text-align: left;
   margin-bottom: 35px;
@@ -1028,6 +1124,95 @@ input[type=checkbox] {
   width: 220px;
 }
 .MyPage .button-group .btn:hover {
+  background-color: #006F35;
+  color: #fff;
+}
+
+.AdminDash {
+  /* Fjern linje fra siste element */
+}
+.AdminDash main {
+  text-align: center;
+  margin-top: 30px;
+}
+.AdminDash .meld-feil-btn {
+  width: 470px;
+  height: 120px;
+  padding: 15px 40px;
+  border: 4px solid #006F35;
+  background-color: #FFFFFF;
+  font-size: 35px;
+  font-weight: 500;
+  align-items: center; /* Sentrerer innholdet vertikalt */
+  justify-content: center; /* Sentrerer innholdet horisontalt */
+  border-radius: 20px;
+  display: inline-flex;
+  gap: 10px;
+  color: #006F35;
+  transition: all 0.3s ease;
+}
+.AdminDash .meld-feil-btn:hover {
+  background-color: #006F35;
+  color: #fff;
+}
+.AdminDash .stats-info-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.AdminDash .info-box {
+  padding: 20px;
+  background-color: #FFF5E1;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 290px;
+  width: 400px;
+  flex: 1 1 45%;
+  text-align: left;
+}
+.AdminDash .info-box h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-style: italic;
+  color: #333;
+}
+.AdminDash .info-box p {
+  font-size: 16px;
+  line-height: 1.4;
+  margin: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+.AdminDash .info-box p:last-child {
+  border-bottom: none;
+}
+.AdminDash .info-box i {
+  margin-right: 12px; /* Øker avstanden mellom ikonet og teksten */
+  color: #006F35;
+  font-size: 20px; /* Setter en normal størrelse på ikonene */
+}
+.AdminDash .button-group {
+  display: flex;
+  gap: 20px;
+  align-items: center; /* Sentrerer innholdet vertikalt */
+  justify-content: center; /* Sentrerer innholdet horisontalt */
+}
+.AdminDash .button-group .btn {
+  padding: 10px 20px;
+  font-size: 20px;
+  font-weight: 500;
+  border-radius: 8px;
+  color: #006F35;
+  border: 2px solid #006F35;
+  transition: background-color 0.3s;
+  height: 70px;
+  width: 220px;
+}
+.AdminDash .button-group .btn:hover {
   background-color: #006F35;
   color: #fff;
 }
