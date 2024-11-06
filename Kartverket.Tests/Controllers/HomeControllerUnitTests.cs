@@ -1,14 +1,13 @@
 using Kartverket.Controllers;
 using Kartverket.Database;
 using Kartverket.Models;
-using Kartverket.Services;
+using Kartverket.Services;  
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using Xunit;
 
-namespace Kartverket.Kartverket.Tests.Controllers;
+namespace Kartverket.Tests.Controllers;
 
 public class HomeControllerUnitTests
 {
@@ -49,8 +48,8 @@ public class HomeControllerUnitTests
 
     private HomeController GetUnitUnderTest()
     {
-        var context = Substitute.For<ApplicationDbContext>();
         var logger = Substitute.For<ILogger<HomeController>>();
+        var context = Substitute.For<ApplicationDbContext>();
         var municipalityService = Substitute.For<MunicipalityService>();
         var userService = Substitute.For<UserService>();
         

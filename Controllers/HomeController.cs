@@ -16,7 +16,7 @@ using Kartverket.Services;
 
 namespace Kartverket.Controllers;
 
-public class HomeController　: Controller
+public class HomeController: Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<HomeController> _logger;
