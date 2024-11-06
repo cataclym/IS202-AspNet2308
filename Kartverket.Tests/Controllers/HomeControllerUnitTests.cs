@@ -1,9 +1,12 @@
+using System.Net;
 using Kartverket.Controllers;
 using Kartverket.Database;
+using Kartverket.Database.Models;
 using Kartverket.Models;
 using Kartverket.Services;  
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
@@ -16,12 +19,11 @@ public class HomeControllerUnitTests
     public void Index_ReturnsViewResult_WithHomeViewModel()
     {
         // Act
-        var result = GetUnitUnderTest().Login();
+        var result = GetUnitUnderTest().Index();
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsType<UserLoginModel>(viewResult.Model);
-        Assert.Empty(model.Username);
+        Assert.Null(viewResult.Model);
     }
 
     [Fact]
@@ -45,16 +47,32 @@ public class HomeControllerUnitTests
         var model = Assert.IsType<ErrorViewModel>(viewResult.Model);
         Assert.NotNull(model.RequestId);
     }
-
+    
     private HomeController GetUnitUnderTest()
     {
-        var logger = Substitute.For<ILogger<HomeController>>();
-        var context = Substitute.For<ApplicationDbContext>();
-        var municipalityService = Substitute.For<MunicipalityService>();
-        var userService = Substitute.For<UserService>();
+        // Substitutt for logger
+        var mockLogger = Substitute.For<ILogger<HomeController>>();
+        var mockLoggerMs = Substitute.For<ILogger<MunicipalityService>>();
+        var mockLoggerUs = Substitute.For<ILogger<UserService>>();
         
-        var controller =  new HomeController(context, logger, municipalityService, userService);
-        controller.ControllerContext.HttpContext = new DefaultHttpContext();
-        return controller;
+        // Substitutt for database kontext
+        var dbContextOptions = Substitute.For<DbContextOptions>();
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseMemoryCache(null)
+            .Options;
+        var mockContext = Substitute.For<ApplicationDbContext>(options);
+        
+        // Substitutt for KommuneService
+        var mockHttpClient = Substitute.For<HttpClient>();
+        var mockMunicipalityService = Substitute.For<MunicipalityService>(mockHttpClient, mockLoggerMs);
+        
+        // Substitutt for BrukerService
+        var mockHttpContextAccessor = Substitute.For<IHttpContextAccessor>();
+        var mockUserService = Substitute.For<UserService>(mockContext, mockLoggerUs, mockHttpContextAccessor);
+        
+        // Returner homecontroller med substituerte parametere i konstruktøren
+        var homeController =  new HomeController(mockContext, mockLogger, mockMunicipalityService, mockUserService);
+        homeController.ControllerContext.HttpContext = new DefaultHttpContext();
+        return homeController;
     }
 }

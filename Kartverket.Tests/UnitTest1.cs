@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace Kartverket.Kartverket.Tests
 {
     public class UnitTest1
