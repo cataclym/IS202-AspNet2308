@@ -1,7 +1,8 @@
 @model ReportViewModel
 
 @{
-    ViewData["Title"] = "Registrer ny rapport";
+    bool isEdit = Model.ReportId != 0;
+    ViewData["Title"] = isEdit ? "Rediger rapport" : "Registrer ny rapport";
     ViewBag.UseFluidContainer = true; // If using conditional container
     // Or Layout = "~/Views/Shared/_FluidLayout.cshtml"; if using separate layout
 }
@@ -12,7 +13,7 @@
 <head>
     <style>
         body {
-            overflow: hidden; /* Forhindrer scrolling på siden */
+            overflow: hidden; /* Prevents scrolling on the page */
         }
     </style>
 </head>
@@ -22,98 +23,123 @@
     <div class="map-container">
         <div id="map" class="styledMap"></div>
     </div>
+
     @if (ViewData["ErrorMessage"] != null)
     {
-        <div class="alert-danger m-auto mt-1 mb-1 width-900 p-1 border-danger border-1 border-black border-radius-5">
-            <p class="mb-0">@ViewData["ErrorMessage"]</p>
-        </div>
+    <div class="alert-danger m-auto mt-1 mb-1 p-1 border-radius-5">
+        <p class="mb-0">@ViewData["ErrorMessage"]</p>
+    </div>
     }
 
     <div id="descriptionForm">
-        <button class="close-btn" onclick="closeForm()">&times;</button>
-        <form asp-controller="Reports" asp-action="RegisterMapReport" method="post" id="mapForm">
+        <button type="button" class="close-btn" onclick="closeForm()">&times;</button>
+        <form asp-controller="Reports" asp-action="@(isEdit ? "EditMapReport" : "RegisterMapReport")"
+              method="post"
+              id="mapForm">
+            @if (isEdit)
+            {
+            <input type="hidden" asp-for="ReportId" />
+            }
+            
             <div>
-                <textarea id="meldingsBoks" class="description-textarea" asp-for="FirstMessage" required minlength="5" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
+                <textarea id="meldingsBoks" class="description-textarea" asp-for="FirstMessage"
+                 required minlength="5" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
             </div>
+            
             <div>
-                <input type="text" class="visually-hidden" id="Koordinater" asp-for="StringKoordinaterLag" required></input>
+                <input type="hidden" id="Koordinater" asp-for="GeoJsonString" required/>
             </div>
+            
             <div class="center-horizontal">
-                <button class="submit-btn" onclick="submitForm()">Send inn <i class="bi bi-send"></i></button>
+                <button type="button" class="submit-btn" onclick="submitForm()">Send inn <i class="bi bi-send"></i></button>
             </div>
+            
         </form>
+
     </div>
 </div>
 
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const overlay = document.getElementById('modal-overlay')
-            const modal = document.getElementById('modal-content')
-            
-            if (overlay) overlay.style.display = 'none'
-            if (modal) modal.style.display = 'none';            
-        });
-    
-    const map = lagKart();
-    // Skrur av forskjellige tegnekontroller
-    map.pm.addControls({
-        position: 'topleft',
-        rotateMode: false,
-        drawMarker: true,
-        drawPolygon: true,
-        drawCircleMarker: false,
-        drawPolyline: false,
-        drawCircle: false,
-        drawText: false
-    });
-        
-    // Leverer kartdata til home-kontrolleren
-    function submitForm() {
-            
-        // Henter alle lag fra kartet
-        const layers = L.PM.Utils.findLayers(map).filter(layer => layer._drawnByGeoman)
-        
-        // Oppretter et GeoJSON-objekt for kartdata
-        const geojson = {
-            type: "FeatureCollection",
-            features: []
-        };
+            const overlay = document.getElementById('modal-overlay');
+            const modal = document.getElementById('modal-content');
 
-        layers.forEach(layer => {
-            // Konverterer hvert lag til GeoJSON-format og legger det til 'features'
-            const geojsonFeature = layer.toGeoJSON();
-            geojson.features.push(geojsonFeature);
+            if (overlay) overlay.style.display = 'none';
+            if (modal) modal.style.display = 'none';
         });
 
-        // Finner input-feltet der GeoJSON skal lagres
-        const koordinater = document.getElementById("Koordinater");
+        // Initialize the map
+        const map = lagKart();
 
-        // Lagrer GeoJSON-data som en streng i input-feltet
-        koordinater.value = JSON.stringify(geojson);
+        // Create a FeatureGroup to store editable layers
+        const drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
 
-        const meldingsBoks = document.getElementById("meldingsBoks")
-    
-        // Validering av melding i tekstboksen
-        // Og om det er lagt til et kart-lag
-        if (meldingsBoks.innerHTML.length < 5 || !geojson.features.length) return;
-        
-        // Sender skjemaet
-        document.getElementById("mapForm").submit();
-    }
-    
+        // Configure the drawing controls
+        map.pm.addControls({
+            position: 'topleft',
+            rotateMode: false,
+            drawMarker: true,
+            drawPolygon: true,
+            drawCircleMarker: false,
+            drawPolyline: false,
+            drawCircle: false,
+            drawText: false
+        });
 
-    // Lytt til pm:create eventen for å vise tekstboksen og knappen
+        // Function to handle form submission
+        function submitForm() {
+            const layers = drawnItems.getLayers();
+
+            if (layers.length === 0) {
+                alert("Vennligst tegn et område på kartet før du sender inn.");
+                return;
+            }
+
+            // Create a GeoJSON object for map data
+            const geojson = {
+                type: "FeatureCollection",
+                features: layers.map(layer => layer.toGeoJSON())
+            };
+
+            // Debugging: Log the GeoJSON data
+            console.log("GeoJSON data being submitted:", JSON.stringify(geojson));
+
+            // Store the GeoJSON data in the hidden input field
+            const koordinater = document.getElementById("Koordinater");
+            koordinater.value = JSON.stringify(geojson);
+
+            const meldingsBoks = document.getElementById("meldingsBoks");
+
+            // Submit the form
+            document.getElementById("mapForm").submit();
+        }
+
+        // Listen to the pm:create event to show the description form
         map.on('pm:create', function(e) {
+            const layer = e.layer;
+            drawnItems.addLayer(layer); // Add the new layer to drawnItems
             document.getElementById('descriptionForm').style.display = 'block';
         });
-        
-    // funksjon for å krysse ut descriptionForm boks
+
+        // Function to close the description form
         function closeForm() {
-            document.getElementById("descriptionForm").style.display = "none"; // Skjuler boksen
+            document.getElementById("descriptionForm").style.display = "none"; // Hides the form
+        }
+
+        @if (isEdit && !string.IsNullOrEmpty(Model.GeoJsonString))
+        {
+        <text>
+        const existingGeoJson = @Html.Raw(Json.Serialize(Model.GeoJsonString));
+        if (existingGeoJson) {
+            const geojson = JSON.parse(existingGeoJson);
+            const existingLayer = L.geoJSON(geojson).addTo(map); // Added directly to the map
+            map.fitBounds(existingLayer.getBounds());
+        }
+        </text>
         }
     </script>
 }
-
 </body>
 </html>

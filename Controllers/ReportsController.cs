@@ -314,6 +314,111 @@ private UserRegistrationModel MapUserToViewModel(Users user)
         // Pass the view model to reported.cshtml
         return View("ReportView", viewModel);
     }
+    
+    
+    [HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> EditMapReport(ReportViewModel model)
+{
+    if (model.ReportId == 0)
+    {
+        _logger.LogWarning("Invalid ReportId {ReportId}.", model.ReportId);
+        return BadRequest("Invalid Report ID.");
+    }
+
+    // Retrieve the existing report from the database, including related Messages
+    var report = await _context.Reports
+        .Include(r => r.Messages)
+        .FirstOrDefaultAsync(r => r.ReportId == model.ReportId);
+
+    if (report == null)
+    {
+        _logger.LogWarning("Report with ID {ReportId} not found.", model.ReportId);
+        return NotFound("Report not found.");
+    }
+
+    // Ensure the current user is authorized to edit the report
+    var userId = GetUserId();
+    if (userId == null || report.UserId != userId.Value)
+    {
+        _logger.LogWarning("User {UserId} is not authorized to edit report {ReportId}.", userId, model.ReportId);
+        return Unauthorized("You are not authorized to edit this report.");
+    }
+
+    // Validate the model
+    if (!ModelState.IsValid)
+    {
+        _logger.LogInformation("ModelState is invalid for ReportId {ReportId}.", model.ReportId);
+        foreach (var key in ModelState.Keys)
+        {
+            var state = ModelState[key];
+            foreach (var error in state.Errors)
+            {
+                _logger.LogError("Field {Field} Error: {ErrorMessage}", key, error.ErrorMessage);
+            }
+        }
+        return View("ReportView", model);
+    }
+
+    _logger.LogInformation("Processing edit for ReportId {ReportId}.", model.ReportId);
+
+    // **Replace the existing GeoJsonString with the new one**
+    report.GeoJsonString = model.GeoJsonString;
+    
+    // **Edit the content of the first message, if it exists**
+    var firstMessage = report.Messages.OrderBy(m => m.CreatedAt).FirstOrDefault();
+    if (firstMessage != null && !string.IsNullOrWhiteSpace(model.FirstMessage))
+    {
+        firstMessage.Message = model.FirstMessage;
+        _logger.LogInformation("Updated the first message for ReportId {ReportId}.", model.ReportId);
+    }
+    
+    
+    // **Save changes to the database**
+    try
+    {
+        await _context.SaveChangesAsync();
+        _logger.LogInformation("Successfully updated report with ID {ReportId}.", report.ReportId);
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error updating report with ID {ReportId}.", report.ReportId);
+        ModelState.AddModelError(string.Empty, "An error occurred while updating the report.");
+        return View("ReportView", model);
+    }
+
+    // **Redirect to the updated report details page**
+    return RedirectToAction("ReportView", new { id = report.ReportId });
+}
+
+
+    [HttpGet]
+    public async Task<IActionResult> EditMapReport(int id)
+    {
+        // Retrieve the report and prepare the model
+        var report = await _context.Reports
+            .Include(r => r.Messages)
+            .FirstOrDefaultAsync(r => r.ReportId == id);
+
+        if (report == null)
+        {
+            return NotFound();
+        }
+
+        // Authorization check (optional)
+
+        var model = new ReportViewModel
+        {
+            ReportId = report.ReportId,
+            GeoJsonString = report.GeoJsonString,
+            FirstMessage = report.Messages.FirstOrDefault()?.Message,
+            // Other properties...
+        };
+
+        ViewBag.IsEdit = true;
+        return View("MapReport", model);
+    }
+
 
     [HttpPost]
     public async Task<IActionResult> AddMessage(int ReportId, string MessageText)
