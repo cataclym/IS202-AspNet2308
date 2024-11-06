@@ -7,14 +7,11 @@ namespace Kartverket;
 
 public class Program
 {
-    
-    
     private static WebApplication App { get; set; }
     private static WebApplicationBuilder Builder { get; set; }
 
     public static void Main(string[] args)
     {
-        
         Builder = WebApplication.CreateBuilder(args);
         
         // Registrer GeoJsonService som en tjeneste
