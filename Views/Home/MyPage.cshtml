@@ -35,22 +35,47 @@
 </div>
 
 <div class="button-group">
-<div class="password-change">
-    <form asp-controller="Account" asp-action="PasswordView" method="post">
-        <button id="showPasswordFormBtn" class="btn">Endre passord
-            <i class="bi bi-key"></i>
+    <div class="password-change">
+        <form asp-controller="Account" asp-action="PasswordView" method="post">
+            <button id="showPasswordFormBtn" class="btn">Endre passord
+                <i class="bi bi-key"></i>
             </button>
-    </form>
-</div>
+        </form>
+    </div>
 
-<div>
-    <form asp-controller="Reports" asp-action="ReportOverview" method="get">
-        <button class="btn">Dine rapporter
-            <i class="bi bi-journal-text"></i>
+    <div>
+        <form asp-controller="Reports" asp-action="ReportOverview" method="get">
+            <button class="btn">Dine rapporter
+                <i class="bi bi-journal-text"></i>
             </button>
-    </form>
+        </form>
+    </div>
 </div>
-</div>
+<br>
+<form asp-controller="Account" asp-action="DeleteUser" method="post" onsubmit="return confirm('Er du sikker på at du vil slette brukeren din?');">
+    <button type="submit" class="btn-general btn-logout">Slett konto
+        <i class="bi bi-trash"></i>
+    </button>
+</form>
+<script>
+    // Funksjon for å vise popup
+    function showPopup() {
+        document.getElementById('deleteConfirmationPopup').style.display = 'block';
+    }
 
+    // Funksjon for å lukke popup
+    function closePopup() {
+        document.getElementById('deleteConfirmationPopup').style.display = 'none';
+    }
+
+    // Sjekk om det finnes en melding i TempData for å vise popup
+    window.onload = function() {
+        // Kontroller om meldingen fra TempData er tilgjengelig
+        var deletionMessage = '@TempData["DeletionMessage"]';
+        if (deletionMessage) {
+            showPopup();
+        }
+    }
+</script>
 </body>
 </html>

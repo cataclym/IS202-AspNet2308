@@ -294,4 +294,44 @@ public IActionResult AdminReview()
         return View();
     }
 
+// Sletting av brukerkonto
+    [Authorize]
+    [HttpPost]
+    
+    public async Task<IActionResult> DeleteUser()
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                ModelState.AddModelError("", "Brukeren ble ikke funnet.");
+                return View("Error");
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Brukeren ble ikke funnet.");
+                return View("Error");
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        
+            // Sett TempData før omdirigering
+            TempData["DeletionMessage"] = "Brukerkontoen din er nå slettet.";
+
+            return RedirectToAction("Index", "Home");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Feil ved sletting av brukerdata");
+            return View("Error");
+        }
+    }
 }
