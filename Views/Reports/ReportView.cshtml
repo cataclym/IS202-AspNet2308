@@ -28,6 +28,7 @@ else if (Model.IsAdmin)
     <div class="center-horizontal">
         <a asp-action="Claim" asp-route-id="@Model.ReportId" class="claim-btn">Ta Rapport
             <i class="bi bi-box-arrow-in-down"></i></a>
+
     </div>
 }
 <div class="center-horizontal">
@@ -92,6 +93,12 @@ else if (Model.IsAdmin)
         </div>
     </div>
 </div>
+   <div class="center-horizontal">
+    <form id="delete-form" asp-action="DeleteConfirmed" asp-route-id="@Model.ReportId" method="post">
+        <button type="button" class="delete-btn" onclick="confirmDelete()">Slett rapport</button>
+    </form>
+</div>
+
 </body>
 
 
@@ -148,6 +155,13 @@ else if (Model.IsAdmin)
 
     // Kall funksjonen hver gang en ny melding legges til, eller når siden lastes
     scrollToBottom();
+
+     function confirmDelete() {
+        if (confirm("Er du sikker på at du vil slette denne rapporten?")) {
+            document.getElementById("delete-form").submit();
+        }
+    }
+
     </script>
 
 }
