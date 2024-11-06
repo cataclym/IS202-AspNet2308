@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Kartverket.Services;
+using Kartverket.Models.AccountModels;
 
 
 namespace Kartverket.Controllers;
@@ -218,7 +219,7 @@ public async Task<IActionResult> Login(UserLoginModel userLoginModel, string ret
         }
     }
 
-    [HttpPost]
+    [HttpGet]
     public IActionResult PasswordView()
     {
         return View("ChangePassword");
@@ -226,13 +227,13 @@ public async Task<IActionResult> Login(UserLoginModel userLoginModel, string ret
 
 
     [HttpPost]
-    public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword, string confirmPassword)
+    public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
     {
         // Validate inputs and ensure newPassword matches confirmPassword
-        if (newPassword != confirmPassword)
+        if (!ModelState.IsValid)
         {
-            ModelState.AddModelError("", "Nytt passord og bekreft passord stemmer ikke.");
-            return View("ChangePassword");
+            ViewBag.ErrorMessage = "Passordendringen mislyktes. Vennligst prøv igjen.";
+            return View("ChangePassword", model);
         }
 
         // Get the current logged-in user's ID
@@ -244,19 +245,19 @@ public async Task<IActionResult> Login(UserLoginModel userLoginModel, string ret
 
         if (user == null)
         {
-            ModelState.AddModelError("", "Brukeren ble ikke funnet.");
-            return View("ChangePassword");
+            ViewBag.ErrorMessage = "Brukeren ble ikke funnet.";
+            return View("ChangePassword", model);
         }
 
         // Verify if the current password is correct
-        if (!VerifyPassword(currentPassword, user.Password))
+        if (!VerifyPassword(model.CurrentPassword, user.Password))
         {
-            ModelState.AddModelError("", "Nåværende passord er feil.");
-            return View("ChangePassword");
+            ViewBag.ErrorMessage = "Nåværende passord er feil.";
+            return View("ChangePassword", model);
         }
 
         // Hash the new password
-        user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
+        user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
 
         // Update the password in the database
         _context.Users.Update(user);
@@ -282,8 +283,10 @@ public async Task<IActionResult> Login(UserLoginModel userLoginModel, string ret
 
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-        // Redirect to the login page or any other desired page
-        return RedirectToAction("MyPage", "Home");
+        ViewBag.SuccessMessage = "Passordet ble endret suksessfullt.";
+
+        // Returnerer ChangePassword-visningen med meldingen
+        return View("ChangePassword");
     }
 
 public IActionResult AdminReview()

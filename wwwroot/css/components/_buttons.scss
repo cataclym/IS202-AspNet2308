@@ -145,6 +145,7 @@
     }
 }
 
+
 .reset-btn {
     margin-top: 20px;
 }
@@ -218,6 +219,17 @@
     background-color: #D9534F;
     color: #fff;
 }
+
+.delete-btn {
+    display: flex;
+
+    border: 2px solid #D9534F !important; /* Red border for delete */
+    background-color: #FFFFFF !important;
+    color: #D9534F !important; /* Red color for text */
+    margin-bottom: 50px;
+    margin-right: 50px;
+}
+
 
 
 @media (max-width: 480px) {
