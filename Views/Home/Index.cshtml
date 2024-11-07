@@ -1,21 +1,9 @@
-@model UserRegistrationModel
+<body class="background-image">
 
-@{
-    ViewData["Title"] = "Forside";
-}
-
-<!DOCTYPE html>
-<html lang="no">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Hjem"]</title>
-</head>
-
-<body>
-
+<div class="title-container">
 <div class="text-center">
-    <h1 class="display-4"><b>Meld inn feil til</b> <span class="highlight"><b>Kartverket</b></span></h1>
+    <h1 class="title-text"><b>MELD INN FEIL TIL KARTVERKET</b></h1>
+</div>
 </div>
 
 <div class="btn-container-index">
@@ -34,27 +22,34 @@
         </form>
     </div>
 </div>
-<div class="text-left">
-    <div class="list-container">
-        <div class="list-item">
-            <h2>Fremgangsmetode</h2>
-            <ul class="my-list">
-                <li>Registrer deg</li>
-                <li>Finn området på kartet</li>
-                <li>Marker og beskriv feilen</li>
-                <li>Send inn</li>
-            </ul>
-        </div>
-        <div class="list-item">
-            <h2>Hvorfor denne løsningen?</h2>
-            <ul class="my-list">
-                <li>Enkelt å melde inn feil</li>
-                <li>Du bidrar til å oppdatere kartet</li>
-                <li>Spor tidligere rapporter</li>
-            </ul>
+
+<!-- White Box Section -->
+<div class="white-box">
+    <div class="white-box-content">
+        <div class="text-left">
+            <div class="list-container">
+                <div class="list-item">
+                    <h2>Fremgangsmetode</h2>
+                    <ul class="my-list">
+                        <li>Registrer deg  <i class="bi-person-plus"></i></li>
+                        <li>Finn området på kartet  <i class="bi-geo-alt"></i></li>
+                        <li>Marker og beskriv feilen  <i class="bi-pencil-square"></i></li>
+                        <li>Send inn  <i class="bi-send"></i></li>
+                    </ul>
+                </div>
+                <div class="list-item">
+                    <h2>Hvorfor denne løsningen?</h2>
+                    <ul class="my-list">
+                        <li>Enkelt å melde inn feil <i class="bi-flag"></i></li>
+                        <li>Du bidrar til å oppdatere kartet <i class="bi-pencil-square"></i></li>
+                        <li>Spor tidligere rapporter <i class="bi-search"></i></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 <!-- Popup -->
 <div id="deleteConfirmationPopup" style="display:none;" class="popup">
     <div class="popup-content">
@@ -62,5 +57,5 @@
         <p>@TempData["DeletionMessage"]</p>
     </div>
 </div>
+
 </body>
-</html>

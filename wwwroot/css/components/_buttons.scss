@@ -46,16 +46,18 @@
 
 .btn-index {
     width: 320px;
-    height: 125px;
+    height: 115px;
     font-size: 35px;
-    border: 3px solid !important; /* Angi bredde og stil, men ikke farge */
-    border-radius: 10px;
+    border: 4px solid !important; /* Angi bredde og stil, men ikke farge */
+    border-radius: 20px;
     cursor: pointer; /* Håndmus ved hover */
     display: flex; /* Gjør knappen til en flex-container */
     align-items: center; /* Sentrerer innholdet vertikalt */
     justify-content: center; /* Sentrerer innholdet horisontalt */
     text-decoration: none; /* Ingen understreking på tekst */
     box-sizing: border-box; /* Inkluderer padding og border i bredden/høyden */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 .btn-container-index {
