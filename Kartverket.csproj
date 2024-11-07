@@ -16,8 +16,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NSubstitute" Version="5.3.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="xunit" Version="2.9.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -130,19 +132,7 @@
 
   <ItemGroup>
     <None Remove="wwwroot\css\utilities\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="NSubstitute">
-      <HintPath>..\..\.nuget\packages\nsubstitute\5.3.0\lib\net6.0\NSubstitute.dll</HintPath>
-    </Reference>
-    <Reference Include="xunit.assert">
-      <HintPath>..\..\.nuget\packages\xunit.assert\2.9.2\lib\net6.0\xunit.assert.dll</HintPath>
-    </Reference>
-    <Reference Include="xunit.core">
-      <HintPath>..\..\.nuget\packages\xunit.extensibility.core\2.9.2\lib\netstandard1.1\xunit.core.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+  </ItemGroup>  
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Kartverket.Tests\obj\Debug\net8.0\Kartverket.Tests.sourcelink.json" />

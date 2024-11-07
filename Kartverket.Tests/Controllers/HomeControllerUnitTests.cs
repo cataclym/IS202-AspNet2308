@@ -1,7 +1,5 @@
-using System.Net;
 using Kartverket.Controllers;
 using Kartverket.Database;
-using Kartverket.Database.Models;
 using Kartverket.Models;
 using Kartverket.Services;  
 using Microsoft.AspNetCore.Http;
@@ -56,7 +54,6 @@ public class HomeControllerUnitTests
         var mockLoggerUs = Substitute.For<ILogger<UserService>>();
         
         // Substitutt for database kontext
-        var dbContextOptions = Substitute.For<DbContextOptions>();
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseMemoryCache(null)
             .Options;
