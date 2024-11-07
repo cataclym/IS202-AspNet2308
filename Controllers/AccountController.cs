@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Kartverket.Services;
-using Kartverket.Models.AccountModels;
 
 
 namespace Kartverket.Controllers;
@@ -219,74 +218,81 @@ public async Task<IActionResult> Login(UserLoginModel userLoginModel, string ret
         }
     }
 
-    [HttpGet]
-    public IActionResult PasswordView()
+public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+{
+    // Validate model state, which includes ConfirmPassword matching and other annotations.
+    if (!ModelState.IsValid)
     {
-        return View("ChangePassword");
+        _logger.LogWarning("Password change failed: Invalid model state.");
+        return View("ChangePassword", model);
     }
 
-
-    [HttpPost]
-    public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    if (userId == null)
     {
-        // Validate inputs and ensure newPassword matches confirmPassword
-        if (!ModelState.IsValid)
-        {
-            ViewBag.ErrorMessage = "Passordendringen mislyktes. Vennligst prøv igjen.";
-            return View("ChangePassword", model);
-        }
+        _logger.LogWarning("Password change failed: User not authenticated.");
+        return View("ChangePassword", model);
+    }
 
-        // Get the current logged-in user's ID
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    // Retrieve the user from the database
+    var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
+    if (user == null)
+    {
+        _logger.LogWarning("Password change failed: User not found in the database.");
+        return View("ChangePassword", model);
+    }
 
-        // Retrieve the user from the database
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
+    // Verify if the current password is correct
+    if (!VerifyPassword(model.CurrentPassword, user.Password))
+    {
+        _logger.LogWarning("Password change failed: Current password is incorrect.");
+        ModelState.AddModelError(string.Empty, "Nåværende passord er feil."); // Add error message for the user
+        return View("ChangePassword", model);
+    }
 
+    // Hash the new password and mark the entity as modified
+    user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+    _context.Entry(user).Property(u => u.Password).IsModified = true;
 
-        if (user == null)
-        {
-            ViewBag.ErrorMessage = "Brukeren ble ikke funnet.";
-            return View("ChangePassword", model);
-        }
-
-        // Verify if the current password is correct
-        if (!VerifyPassword(model.CurrentPassword, user.Password))
-        {
-            ViewBag.ErrorMessage = "Nåværende passord er feil.";
-            return View("ChangePassword", model);
-        }
-
-        // Hash the new password
-        user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
-
-        // Update the password in the database
-        _context.Users.Update(user);
+    try
+    {
         await _context.SaveChangesAsync();
+        _logger.LogInformation("Password updated successfully for user with ID {UserId}", userId);
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "An error occurred while updating the password for user with ID {UserId}", userId);
+        return View("ChangePassword", model);
+    }
 
-        // Optionally, sign out the user and ask them to log in again, as the cookie still uses the old password
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    // Sign out and re-authenticate the user with the new password
+    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-        // Re-authenticate user
-        var claims = new List<Claim>
+    var claims = new List<Claim>
     {
         new Claim(ClaimTypes.Name, user.Username),
         new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
     };
+    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+    var authProperties = new AuthenticationProperties
+    {
+        IsPersistent = true,
+        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
+    };
 
-        var authProperties = new AuthenticationProperties
-        {
-            IsPersistent = true,  // Keeps the user logged in
-            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
-        };
+    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+    _logger.LogInformation("User with ID {UserId} re-authenticated successfully after password change.", userId);
 
-        ViewBag.SuccessMessage = "Passordet ble endret suksessfullt.";
+    return View("ChangePassword");
+}
 
-        // Returnerer ChangePassword-visningen med meldingen
-        return View("ChangePassword");
+
+    [HttpGet]
+    public IActionResult ChangePassword()
+    {
+        return View();
     }
 
 public IActionResult AdminReview()
