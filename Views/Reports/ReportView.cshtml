@@ -48,7 +48,8 @@ else if (Model.IsAdmin)
             }
             <p><strong>Beskrivelse:</strong> @Model.FirstMessage</p>
             <p><strong>Oprettet:</strong> @Model.CreatedAt</p>
-          
+            <p><strong>Fylke:</strong> @Model.MunicipalityInfo?.fylkesnavn</p>
+            <p><strong>Kommune:</strong> @Model.MunicipalityInfo?.kommunenavn</p>
             <p><strong>Koordinater:</strong> @Model.Coordinates</p>
         </div>
     </div>

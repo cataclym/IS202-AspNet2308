@@ -122,7 +122,7 @@ private async Task<List<ReportViewModel>> GetReportsAsync(Users user, List<int> 
                 Status = r.Status,
                 CreatedAt = r.CreatedAt,
                 Username = r.User.Username,
-                IsPinned = pinnedReportIdsSet.Contains(r.ReportId), // Correct casing and optimized lookup
+                IsPinned = pinnedReportIdsSet.Contains(r.ReportId), 
 
             })
             .OrderByDescending(r => r.IsPinned) // Pinned reports first
