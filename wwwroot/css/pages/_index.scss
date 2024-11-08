@@ -69,13 +69,14 @@
 
 .list-container {
   display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-direction: row;
+  justify-content: space-around; /* Brings columns closer together */
+  gap: 13rem; /* Adjust this to control spacing between columns */
   align-items: stretch;
-  width: 80%;
-  max-width: 2000px;
+  width: 80%; /* Reduced width to bring lists closer */
+  max-width: 80rem; /* Restrict max-width to control spacing */
   margin: 2rem auto;
+  flex-direction: row;
+  flex-wrap: nowrap; /* Ensure columns do not wrap on larger screens */
 }
 
 
