@@ -1276,6 +1276,16 @@ input[type=checkbox] {
   z-index: 1; /* Background layer */
 }
 
+.background-image2 {
+  background-image: url("../images/cena.jpg");
+  background-size: cover;
+  background-position: top 70px center;
+  background-repeat: no-repeat;
+  height: 100vh; /* Ensure it covers the full viewport height */
+  position: relative; /* Set to relative to control stacking context */
+  z-index: 1; /* Background layer */
+}
+
 .white-box {
   background-color: white;
   width: 100%;
