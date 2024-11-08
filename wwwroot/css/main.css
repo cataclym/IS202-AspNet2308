@@ -1273,7 +1273,6 @@ input[type=checkbox] {
   background-repeat: no-repeat;
   height: 100vh; /* Ensure it covers the full viewport height */
   position: relative; /* Set to relative to control stacking context */
-  z-index: 1; /* Background layer */
 }
 
 .background-image2 {
@@ -1322,14 +1321,13 @@ input[type=checkbox] {
 
 .my-list {
   list-style-type: disc;
-  padding-left: 20px;
+  padding-left: 1.25rem;
   margin: 0;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: auto;
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .my-list li {
@@ -1339,10 +1337,12 @@ input[type=checkbox] {
 .list-container {
   display: flex;
   justify-content: space-between;
-  gap: 0px;
+  gap: 1rem;
+  flex-direction: row;
   align-items: stretch;
   width: 80%;
-  margin: 0 auto;
+  max-width: 2000px;
+  margin: 2rem auto;
 }
 
 /*# sourceMappingURL=main.css.map */
