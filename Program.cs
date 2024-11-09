@@ -73,7 +73,7 @@ public class Program
     private static void AddRoutes()
     {
         // Registrer HttpClient for KommuneInfoService og StedsNavnService
-        Builder.Services.AddHttpClient<MunicipalityService>(client =>
+        Builder.Services.AddHttpClient<IMunicipalityService, MunicipalityService>(client =>
         {
             client.BaseAddress = new Uri("https://api.kartverket.no/kommuneinfo/v1");
         });
