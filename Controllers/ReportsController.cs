@@ -19,7 +19,7 @@ public class ReportsController : BaseController
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<ReportsController> _logger;
-    private readonly MunicipalityService _municipalityService;
+    private readonly IMunicipalityService _municipalityService;
     private readonly GeoJsonService _geoJsonService;
     private readonly IUserService _userService;
 
@@ -27,7 +27,7 @@ public class ReportsController : BaseController
     public ReportsController(
         ApplicationDbContext context,
         ILogger<ReportsController> logger,
-        MunicipalityService municipalityService,
+        IMunicipalityService municipalityService,
         GeoJsonService geoJsonService, IUserService userService)
     {
         _context = context;

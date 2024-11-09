@@ -1,6 +1,6 @@
 services:
   db:
-    image: mysql:8.0.39
+    image: mariadb:11.5.2
     restart: unless-stopped
     command: --wait-timeout=28800
     ports:
@@ -12,7 +12,7 @@ services:
       - MYSQL_USER=kartverket
       - MYSQL_PASSWORD=passord
     volumes:
-      - db:/var/lib/mysql
+      - db:/var/lib/mariadb
   kartverket:
     depends_on:
       - db

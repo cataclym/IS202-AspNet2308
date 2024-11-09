@@ -19,7 +19,8 @@
     <PackageReference Include="NSubstitute" Version="5.3.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
-    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.assert" Version="2.9.2" />
+    <PackageReference Include="xunit.extensibility.core" Version="2.9.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -120,6 +121,7 @@
       <Link>wwwroot\css\vendor\bootstrap.rtl.min.css.map</Link>
     </Content>
     <Content Remove="wwwroot\css\utilities\**" />
+    <Content Remove="wwwroot\css\main.css.map" />
   </ItemGroup>
 
   <ItemGroup>
@@ -132,7 +134,19 @@
 
   <ItemGroup>
     <None Remove="wwwroot\css\utilities\**" />
-  </ItemGroup>  
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="NSubstitute">
+      <HintPath>..\..\.nuget\packages\nsubstitute\5.3.0\lib\net6.0\NSubstitute.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.assert">
+      <HintPath>..\..\.nuget\packages\xunit.assert\2.9.2\lib\net6.0\xunit.assert.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.core">
+      <HintPath>..\..\.nuget\packages\xunit.extensibility.core\2.9.2\lib\netstandard1.1\xunit.core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Kartverket.Tests\obj\Debug\net8.0\Kartverket.Tests.sourcelink.json" />
@@ -210,6 +224,10 @@
     <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\project.assets.json" />
     <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\package-lock.json" />
     <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\package.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

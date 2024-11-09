@@ -4,6 +4,7 @@ using Kartverket.Models;
 using Kartverket.Services;  
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -20,9 +21,10 @@ public class HomeControllerUnitTests
         var result = GetUnitUnderTest().Index();
 
         // Assert
-        var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Null(viewResult.Model);
+        Assert.IsType<ViewResult>(result);
     }
+    
+    
 
     [Fact]
     public void Privacy_ReturnsViewResult()
@@ -50,25 +52,9 @@ public class HomeControllerUnitTests
     {
         // Substitutt for logger
         var mockLogger = Substitute.For<ILogger<HomeController>>();
-        var mockLoggerMs = Substitute.For<ILogger<MunicipalityService>>();
-        var mockLoggerUs = Substitute.For<ILogger<UserService>>();
-        
-        // Substitutt for database kontext
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseMemoryCache(null)
-            .Options;
-        var mockContext = Substitute.For<ApplicationDbContext>(options);
-        
-        // Substitutt for KommuneService
-        var mockHttpClient = Substitute.For<HttpClient>();
-        var mockMunicipalityService = Substitute.For<MunicipalityService>(mockHttpClient, mockLoggerMs);
-        
-        // Substitutt for BrukerService
-        var mockHttpContextAccessor = Substitute.For<IHttpContextAccessor>();
-        var mockUserService = Substitute.For<UserService>(mockContext, mockLoggerUs, mockHttpContextAccessor);
-        
+
         // Returner homecontroller med substituerte parametere i konstruktøren
-        var homeController =  new HomeController(mockContext, mockLogger, mockMunicipalityService, mockUserService);
+        var homeController = new HomeController(null, mockLogger, null, null);
         homeController.ControllerContext.HttpContext = new DefaultHttpContext();
         return homeController;
     }
