@@ -18,6 +18,20 @@
     </style>
 </head>
 <body>
+    <!-- Popup Overlay -->
+    <div id="popupOverlay" class="popup-overlay">
+        <div class="popup-box">
+            <!-- Lukk-knappen med et kryss -->
+            <span class="close-btn" onclick="closePopup()">&#10005;</span>
+            <!-- Innholdet som endres dynamisk -->
+            <div id="popupContent"></div>
+            </div>
+        </div>
+
+    <div id="questionIcon" class="question-icon" title="Åpne veiledning">
+        ?
+    </div>
+
 
 <div>
     <div class="map-container">
@@ -38,7 +52,7 @@
               id="mapForm">
             @if (isEdit)
             {
-                <input type="hidden" asp-for="ReportId" />
+            <input type="hidden" asp-for="ReportId" />
             }
             
             <div>
@@ -53,17 +67,118 @@
             <div class="center-horizontal">
                 <button type="button" class="submit-btn" onclick="submitForm()">Send inn <i class="bi bi-send"></i></button>
             </div>
+            
         </form>
-    </div>
-    
-    <div class="center-horizontal">
-        <button type="button" id="reopenFormBtn" class="hidden" onclick="openDescriptionForm()">Åpne beskrivelse</button>
-    </div>
 
+    </div>
 </div>
 
 @section Scripts {
     <script>
+
+            let popupStep = 1; // Variabel for å holde styr på popup-trinnet
+
+            // Funksjon for å gå til neste trinn i popupen
+            function nextPopupStep() {
+                popupStep++;
+                loadPopupContents();  // Last nytt innhold basert på trinnet
+            }
+
+            // Funksjon for å gå til forrige trinn i popupen
+            function prevPopupStep() {
+                popupStep--;
+                loadPopupContents();  // Last nytt innhold basert på trinnet
+            }
+
+            // Funksjon for å laste popup-innholdet basert på popupStep
+            function loadPopupContents() {
+                const popupContent = document.getElementById("popupContent");
+
+                if (popupStep === 1) {
+                    popupContent.innerHTML = `
+                        <h2>Velkommen til <span class="highlight">Meld Feil</span></h2>
+                        <p>1. Bruk verktøyene på venstre side for å markere et område</p>
+                        <p>2. Gi en beskrivelse av problemet i tekstboksen</p>
+                        <p>3. Trykk send, for så å bli sendt til en oversikt over rapporten din</p>
+                        <button onclick="nextPopupStep()">Neste</button>
+                    `;
+                } else if (popupStep === 2) {
+                    popupContent.innerHTML = `
+                        <h2>Verktøy <span class="highlight">Guide</h2>
+                        <div class="popup-step2">
+                        <p>1. Zoom funksjoner: Forstørrer og forminsker kartet</p>
+                        <p>2. GPS-lokasjon: Finner posisjonen din på kartet</p>
+                        <p>3. Plasser markører på kartet</p>
+                        <p>4. Polygon og linjer: Markerer et eller flere områder på kartet</p>
+                        <p>5. Bruk denne til å flytte på figurene dine</p>
+                        <p>6. Flytt på kartet</p>
+                        <p>7. Klipp funksjon: Klipp til endringer</p>
+                        <p>8. Fjern endringer: Trykk på figurene for å fjerne dem</p>
+                        </div>
+                        <button onclick="prevPopupStep()">Forrige</button>
+                    `;
+                    popupContent.classList.add('step2-popup'); // Legg til en klasse som er spesifikk for steg 2
+                }
+            }
+
+            // Funksjon for å åpne popupen
+                function openPopup() {
+                    loadPopupContents(); // Last inn popup-innholdet basert på popupStep
+                    document.getElementById("popupOverlay").style.display = "flex"; // Vis popupen
+                }
+
+            // Funksjon for å lukke popupen
+            function closePopup() {
+                document.getElementById("popupOverlay").style.display = "none"; // Skjul popupen
+            }
+
+            // Funksjon for å sette en cookie
+            function setCookie(name, value, days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));  // Angi utløpsdato for cookien
+                document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;  // Lagre cookie-en
+            }
+
+            // Funksjon for å hente en cookie
+            function getCookie(name) {
+                const cookieName = `${name}=`;
+                const cookies = document.cookie.split(';');
+                for (let cookie of cookies) {
+                    cookie = cookie.trim();
+                    if (cookie.indexOf(cookieName) === 0) {
+                        return cookie.substring(cookieName.length, cookie.length);
+                    }
+                }
+                return null;
+            }
+
+            // Når vinduet lastes, sjekk om brukeren har sett guiden
+            window.onload = function () {
+                    console.log("Has Seen Guide Cookie: ", getCookie("hasSeenGuide"));
+
+                const hasSeenGuide = getCookie("hasSeenGuide");  // Sjekk om brukeren har sett guiden før
+
+                if (!hasSeenGuide) {
+                    // Hvis brukeren ikke har sett guiden, vis popupen
+                    openPopup();
+                    setCookie("hasSeenGuide", "true", 30);  // Lagre cookie for å huske at guiden er sett
+                } else {
+                    document.getElementById("popupOverlay").style.display = "none";  // Skjul popupen hvis guiden er sett tidligere
+                }
+
+                // Eventlytter for spørsmålstegn-ikonet for å vise popup manuelt
+                const questionIcon = document.getElementById("questionIcon");
+                if (questionIcon) {
+                    questionIcon.addEventListener("click", () => {
+                        popupStep = 1;  // Tilbakestill popupen til første steg ved manuell åpning
+                        openPopup();  // Vis popupen
+                    });
+                }
+            };
+
+
+
+ 
         document.addEventListener("DOMContentLoaded", function() {
             const overlay = document.getElementById('modal-overlay');
             const modal = document.getElementById('modal-content');

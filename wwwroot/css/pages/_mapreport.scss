@@ -79,3 +79,104 @@
 .visually-hidden {
   display: none;
 }
+
+/* Overlay som dekker hele skjermen */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Gjennomsiktig mørk bakgrunn */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Selve popup-boksen */
+.popup-box {
+    position: fixed;
+    top: 130px;
+    left: 450px;
+    width: 48%; /* En tredjedel av skjermbredden */
+    height: 55%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 4px solid #006F35;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: left;
+}
+
+.popup-box h2 {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 1.5em; /* Adjust the font size as needed */
+    font-weight: 600; /* Semibold (600 is commonly used for semibold) */
+}
+
+.popup-box p {
+    margin-top: 45px;
+    line-height: 1.6; /* Du kan justere dette tallet for å få ønsket avstand */
+    padding: 10px;
+    padding-left: 70px;
+}
+
+/* CSS for andre popup (popupStep === 2) */
+.popup-box .popup-step2 p {
+    margin-top: 0 !important; /* Fjerner eventuell toppmarginal */
+    font-size: 1em !important; /* Øker tekststørrelsen litt */
+    margin-bottom: 10px !important; /* Øker avstanden mellom paragrafene */
+    line-height: 1.3 !important; /* Øker linjehøyden for mer mellomrom mellom linjene */
+}
+
+.popup-box button {
+    position: absolute; /* Gjør knappen posisjonert absolutt i forhold til popup-boksen */
+    bottom: 20px; /* Avstand fra toppen */
+    right: 20px; /* Avstand fra høyre kant */
+    padding: 10px 20px;
+    background-color: #FFFFFF !important;
+    color: #006F35 !important;
+    border: 2px solid #006F35 !important;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Stilsett for krysset i øvre høyre hjørne */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.close-btn:hover {
+    color: #ff0000; /* Gir en rød farge ved hover for tydeligere indikator */
+}
+
+.question-icon {
+    position: fixed !important;
+    bottom: 50px;
+    left: 20px !important;
+    background-color: #1B589F;
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+}
+
+.question-icon:hover {
+    background-color: #1B589F;
+}
