@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace Kartverket.Services;
 
-public class MunicipalityService
+public class MunicipalityService : IMunicipalityService
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<MunicipalityService> _logger;

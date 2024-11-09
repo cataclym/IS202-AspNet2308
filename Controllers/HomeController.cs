@@ -20,11 +20,11 @@ public class HomeController: Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<HomeController> _logger;
-    private readonly MunicipalityService _municipalityService;
+    private readonly IMunicipalityService _municipalityService;
     private readonly IUserService _userService;
     
     // Constructor for å injisere ApplicationDbContext
-    public HomeController(ApplicationDbContext context, ILogger<HomeController> logger, MunicipalityService municipalityService, IUserService userService)
+    public HomeController(ApplicationDbContext context, ILogger<HomeController> logger, IMunicipalityService municipalityService, IUserService userService)
     {
         _context = context;
         _logger = logger;
@@ -37,7 +37,7 @@ public class HomeController: Controller
     {
         // Brukeren er ikke autentisert
         // Brukeren er autentisert
-        Console.WriteLine(User.Identity.IsAuthenticated ? "User is authenticated" : "User is not authenticated");
+        Console.WriteLine(User.Identity is { IsAuthenticated: true } ? "User is authenticated" : "User is not authenticated");
         return View();
     }
 
