@@ -1,8 +1,35 @@
+
+
 .AdminDash {
+  background: linear-gradient(to bottom, #ffffff 15%, #f8fdf5 85%);
+  min-height: 100vh; /* Ensures the gradient covers the full viewport height */
+  padding: 0;
+  margin: 0;
+  
   main {
     text-align: center;
     margin-top: 30px;
   }
+  
+  .admin-title {
+    font-size: 56px;
+    font-weight: bold;
+    color: #008540;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  @keyframes slideInFromLeft {
+    from {
+      transform: translateX(-40%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
   
   .meld-feil-btn {
     width: 470px;
@@ -19,6 +46,8 @@
     gap: 10px;
     color: #006F35;
     transition: all 0.3s ease;
+    animation: slideInFromLeft 0.5s ease-out;
+
   }
 
   .meld-feil-btn:hover {
@@ -44,6 +73,8 @@
     width: 400px;
     flex: 1 1 45%;
     text-align: left;
+    animation: slideInFromLeft 0.5s ease-out;
+
   }
 
   .info-box h3 {
@@ -78,6 +109,8 @@
     gap: 20px;
     align-items: center; /* Sentrerer innholdet vertikalt */
     justify-content: center; /* Sentrerer innholdet horisontalt */
+    animation: slideInFromLeft 0.5s ease-out;
+
   }
 
   .button-group .btn {

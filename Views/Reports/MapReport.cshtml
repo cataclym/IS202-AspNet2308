@@ -38,7 +38,7 @@
               id="mapForm">
             @if (isEdit)
             {
-            <input type="hidden" asp-for="ReportId" />
+                <input type="hidden" asp-for="ReportId" />
             }
             
             <div>
@@ -53,10 +53,13 @@
             <div class="center-horizontal">
                 <button type="button" class="submit-btn" onclick="submitForm()">Send inn <i class="bi bi-send"></i></button>
             </div>
-            
         </form>
-
     </div>
+    
+    <div class="center-horizontal">
+        <button type="button" id="reopenFormBtn" class="hidden" onclick="openDescriptionForm()">Åpne beskrivelse</button>
+    </div>
+
 </div>
 
 @section Scripts {
