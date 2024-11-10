@@ -385,7 +385,6 @@ body {
   gap: 10px;
   color: #006F35;
   transition: all 0.1s ease;
-  margin-top: 50px;
   text-decoration: none;
 }
 
@@ -524,6 +523,7 @@ input[type=checkbox] {
 }
 
 .styledMap-report {
+  display: flex;
   border-radius: 10px;
   border: 1px solid black;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -531,7 +531,7 @@ input[type=checkbox] {
   margin-top: 30px;
   margin-bottom: 30px;
   height: 300px;
-  width: 750px;
+  width: 35rem;
 }
 
 .styledMap {
@@ -1064,6 +1064,13 @@ input[type=checkbox] {
 }
 
 .report-view {
+  background: linear-gradient(to bottom, #ffffff 15%, #f8fdf5 85%);
+  min-height: 100vh; /* Ensures the gradient covers the full viewport height */
+  padding: 0;
+  margin: 0;
+  /* Container for all content */
+  /* Individual grid items (cards) */
+  /* Media Queries for Different Screen Sizes */
   /* Generell styling for chatboksen */
   /* Styling for samtalestart-meldingen */
   /* Meldingsboblen */
@@ -1071,6 +1078,23 @@ input[type=checkbox] {
   /* Meldingsboks nederst */
   /* Styling for knappene inni dropdown */
   /* Hover-effekt for knappene */
+}
+.report-view .report-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+}
+.report-view .card {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+@media (max-width: 768px) {
+  .report-view .container {
+    grid-template-columns: 1fr; /* Stack columns on smaller screens */
+  }
 }
 .report-view .left-column {
   flex: 1;
@@ -1080,8 +1104,11 @@ input[type=checkbox] {
   gap: 20px; /* Optional: Add space between the elements */
 }
 .report-view .right-column {
-  width: 400px;
-  margin-top: 50px;
+  flex: 1;
+  display: flex; /* Enable Flexbox */
+  align-items: flex-start;
+  flex-direction: column; /* Stack children vertically */
+  gap: 20px; /* Optional: Add space between the elements */
 }
 .report-view .report-container {
   display: flex;
@@ -1097,6 +1124,18 @@ input[type=checkbox] {
   padding: 20px;
   max-width: 750px;
   flex: 1;
+}
+.report-view .report-title {
+  font-size: 56px;
+  font-weight: bold;
+  color: #008540;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.report-view .edit-btn-container {
+  display: flex; /* Enables flexbox */
+  justify-content: flex-end; /* Aligns content to the right */
+  padding: 10px; /* Optional: add some padding */
 }
 .report-view .chat-history {
   padding: 15px;

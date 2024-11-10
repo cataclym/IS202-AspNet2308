@@ -311,8 +311,10 @@ private UserRegistrationModel MapUserToViewModel(Users user)
 
         _logger.LogInformation("Loaded report details successfully for ID: {id}", id);
 
-        // Pass the view model to reported.cshtml
-        return View("ReportView", viewModel);
+        // If the user is a normal user, show the regular report view
+        return View(User.IsInRole("Admin") ?
+            // If the user is an admin, show the admin-specific view
+            "AdminReportView" : "ReportView", viewModel);
     }
     
     
