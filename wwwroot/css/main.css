@@ -585,6 +585,10 @@ input[type=checkbox] {
   background-image: url("../icons/Scissors.svg");
 }
 
+.icon-gps {
+  background-image: url("../icons/Gps.svg");
+}
+
 .home-page {
   position: relative; /* Needed for absolute positioning of child elements */
   text-align: center;
