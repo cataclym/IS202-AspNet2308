@@ -84,19 +84,13 @@ else
                         <i class="bi bi-check-circle"></i>
                     </span>
                 </a>
-    </div>
-</div>
-
-
-
-
+     </div>
+   </div>
  </div>
-    <!-- Dato filtrering 
-    <label for="dateFilter">Filter etter dato:</label>
-    <input type="date" id="dateFilter" onchange="filterByDate(this.value)"/> -->
+    
 
 <!-- Reports Table -->
-<div>
+<div class="table-size">
     <table id="@(Model.User.IsAdmin ? "admin-table" : "user-table")" class="user-info-table">
         <!-- Table header row for column names -->
         <thead>
@@ -314,6 +308,7 @@ function filterTable() {
        // Funksjon for å vise/hide avhukingsmerke og håndtere filtrering
         let selectedFilters = new Set();
         let selectedSorts = new Map();
+
 // Universell toggle-funksjon som håndterer både status og sortering (dato og brukernavn)
 function toggleFilter(filterType, element) {
     const isSelected = selectedFilters.has(filterType);
@@ -340,36 +335,6 @@ function toggleFilter(filterType, element) {
             toggleFilter('dato', element);
         }
 
- 
-
-    @* // Filter by selected date
-    function filterByDate(selectedDate) {
-        const table = document.querySelector('#admin-table tbody') || document.querySelector('#user-table tbody');
-        if (!table) return;
-
-        const rows = table.querySelectorAll('tr');
-        rows.forEach(row => {
-            const rowDate = row.getAttribute('data-date');
-            row.style.display = rowDate === selectedDate ? '' : 'none';
-        });
-
-        // Keep dropdown open after selection
-        const dropdown = document.getElementById("myDropdown");
-        dropdown.classList.add("show");
-         clearActiveFilters();
-    if (element) element.classList.add('active-filter');
-    }
-
-    // Function to retrieve the anti-forgery token from the hidden form
-    function getAntiForgeryToken() {
-        const tokenElement = document.querySelector('#reportForm input[name="__RequestVerificationToken"]');
-        if (tokenElement) {
-            console.log('Anti-Forgery Token retrieved:', tokenElement.value); // Debugging line
-            return tokenElement.value;
-        }
-        console.log('Anti-Forgery Token not found!');
-        return '';
-    } *@
     
     // Helper function to handle pin/unpin AJAX requests
     function togglePin(reportId, actionUrl, button) {
@@ -404,6 +369,8 @@ function toggleFilter(filterType, element) {
                         // Move to the bottom of the table
                         tbody.append(row);
                     }
+                        // Ensure that table rows are sorted (if necessary)
+                        sortTableByPinnedStatus(); // Sort again after pinning/unpinning
                 } else {
                     // Optionally handle failure (currently no toast)
                     console.warn("Action failed:", response.message);
@@ -415,6 +382,33 @@ function toggleFilter(filterType, element) {
             }
         });
     }
+
+        // Function to sort the table by pinned status and date
+        function sortTableByPinnedStatus() {
+            const table = document.querySelector('#admin-table tbody') || document.querySelector('#user-table tbody');
+            if (!table) return;
+
+            const rows = Array.from(table.rows);
+
+            // Sort rows by pinned status first, then by created date (latest first)
+            rows.sort((rowA, rowB) => {
+                const isPinnedA = rowA.dataset.isPinned === 'true';
+                const isPinnedB = rowB.dataset.isPinned === 'true';
+
+                // Prioritize pinned rows
+                if (isPinnedA && !isPinnedB) return -1;
+                if (!isPinnedA && isPinnedB) return 1;
+
+                // Sort by creation date (newest first)
+                const dateA = new Date(rowA.querySelector('td[data-created-at]').getAttribute('data-created-at'));
+                const dateB = new Date(rowB.querySelector('td[data-created-at]').getAttribute('data-created-at'));
+                return dateB - dateA;  // Newest first
+            });
+
+            // Clear the table and append sorted rows
+            table.innerHTML = '';
+            rows.forEach(row => table.appendChild(row));
+        }
 
     $(document).ready(function() {
         $('.pin-button').click(function(e) {
@@ -432,6 +426,8 @@ function toggleFilter(filterType, element) {
 
             togglePin(reportId, actionUrl, button);
         });
+            // Optionally, sort the table when the page loads (in case you need initial sorting)
+            sortTableByPinnedStatus();
     });
    
 </script>
