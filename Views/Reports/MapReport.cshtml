@@ -21,12 +21,38 @@
     <!-- Popup Overlay -->
     <div id="popupOverlay" class="popup-overlay">
         <div class="popup-box">
-            <!-- Lukk-knappen med et kryss -->
+            <!-- Close button -->
             <span class="close-btn" onclick="closePopup()">&#10005;</span>
-            <!-- Innholdet som endres dynamisk -->
-            <div id="popupContent"></div>
+
+            <!-- Popup Content -->
+            <div id="popupContent">
+                <!-- Step 1 -->
+                <div class="popup-step active" id="popupStep1">
+                    <h2>Velkommen til <span class="highlight">Meld Feil</span></h2>
+                    <p>1. Bruk verktøyene på venstre side for å markere et område</p>
+                    <p>2. Gi en beskrivelse av problemet i tekstboksen</p>
+                    <p>3. Trykk send, for så å bli sendt til en oversikt over rapporten din</p>
+                    <button onclick="nextPopupStep()">Neste</button>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="popup-step" id="popupStep2">
+                    <h2>Verktøy <span class="highlight">Guide</span></h2>
+                    <div class="popup-step2">
+                        <p>1. Zoom funksjoner: Forstørrer og forminsker kartet</p>
+                        <p>2. GPS-lokasjon: Finner posisjonen din på kartet</p>
+                        <p><i class="icon icon-marker"></i> Markør: Plasser markører på kartet</p>
+                        <p><i class="icon icon-polygon"></i> Polygon og linjer: Markerer et eller flere områder på kartet</p>
+                        <p><i class="icon icon-rectangle"></i> Rektangel: Markerer et område på kartet med et rektangel</p>
+                        <p><i class="icon icon-move"></i> Flytt verktøy: bruk til å flytte på figurene dine</p>
+                        <p><i class="icon icon-scissors"></i> Klipp funksjon: Klipp til endringer</p>
+                        <p><i class="icon icon-eraser"></i> Fjern endringer: Trykk på figurene for å fjerne dem</p>
+                    </div>
+                    <button onclick="prevPopupStep()">Forrige</button>
+                </div>
             </div>
         </div>
+    </div>
 
     <div id="questionIcon" class="question-icon" title="Åpne veiledning">
         ?
@@ -76,54 +102,36 @@
 @section Scripts {
     <script>
 
-            let popupStep = 1; // Variabel for å holde styr på popup-trinnet
+        let popupStep = 1; // Current popup step
 
-            // Funksjon for å gå til neste trinn i popupen
-            function nextPopupStep() {
-                popupStep++;
-                loadPopupContents();  // Last nytt innhold basert på trinnet
+        // Function to show the current popup step
+        function showPopupStep(step) {
+            // Hide all steps
+            const steps = document.querySelectorAll('.popup-step');
+            steps.forEach(s => s.classList.remove('active'));
+
+            // Show the selected step
+            const currentStep = document.getElementById(`popupStep${step}`);
+            if (currentStep) {
+                currentStep.classList.add('active');
             }
+        }
 
-            // Funksjon for å gå til forrige trinn i popupen
-            function prevPopupStep() {
-                popupStep--;
-                loadPopupContents();  // Last nytt innhold basert på trinnet
-            }
+        // Function to go to the next popup step
+        function nextPopupStep() {
+            popupStep++;
+            showPopupStep(popupStep);
+        }
 
-            // Funksjon for å laste popup-innholdet basert på popupStep
-            function loadPopupContents() {
-                const popupContent = document.getElementById("popupContent");
-
-                if (popupStep === 1) {
-                    popupContent.innerHTML = `
-                        <h2>Velkommen til <span class="highlight">Meld Feil</span></h2>
-                        <p>1. Bruk verktøyene på venstre side for å markere et område</p>
-                        <p>2. Gi en beskrivelse av problemet i tekstboksen</p>
-                        <p>3. Trykk send, for så å bli sendt til en oversikt over rapporten din</p>
-                        <button onclick="nextPopupStep()">Neste</button>
-                    `;
-                } else if (popupStep === 2) {
-                    popupContent.innerHTML = `
-                        <h2>Verktøy <span class="highlight">Guide</h2>
-                        <div class="popup-step2">
-                        <p>1. Zoom funksjoner: Forstørrer og forminsker kartet</p>
-                        <p>2. GPS-lokasjon: Finner posisjonen din på kartet</p>
-                        <p>3. Plasser markører på kartet</p>
-                        <p>4. Polygon og linjer: Markerer et eller flere områder på kartet</p>
-                        <p>5. Bruk denne til å flytte på figurene dine</p>
-                        <p>6. Flytt på kartet</p>
-                        <p>7. Klipp funksjon: Klipp til endringer</p>
-                        <p>8. Fjern endringer: Trykk på figurene for å fjerne dem</p>
-                        </div>
-                        <button onclick="prevPopupStep()">Forrige</button>
-                    `;
-                    popupContent.classList.add('step2-popup'); // Legg til en klasse som er spesifikk for steg 2
-                }
-            }
+        // Function to go to the previous popup step
+        function prevPopupStep() {
+            popupStep--;
+            showPopupStep(popupStep);
+        }
 
             // Funksjon for å åpne popupen
                 function openPopup() {
-                    loadPopupContents(); // Last inn popup-innholdet basert på popupStep
+                    showPopupStep(popupStep); // Last inn popup-innholdet basert på popupStep
                     document.getElementById("popupOverlay").style.display = "flex"; // Vis popupen
                 }
 

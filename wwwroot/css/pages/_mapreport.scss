@@ -82,6 +82,7 @@
 
 /* Overlay som dekker hele skjermen */
 .popup-overlay {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -106,6 +107,14 @@
     border: 4px solid #006F35;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     text-align: left;
+}
+
+.popup-step {
+  display: none; /* All steps hidden by default */
+}
+
+.popup-step.active {
+  display: block; /* Show active step */
 }
 
 .popup-box h2 {

@@ -10,17 +10,25 @@
 </head>
 <body class="MyPage">
 <div>
-    <h1 class="header1 display-4">Min <span class="highlight">Side</span></h1>
+    <h1 class="mypage-title">Min <span class="highlight">Side</span></h1>
 </div>
 
 <!-- Your buttons -->
 <div>
     <form asp-controller="Reports" asp-action="MapReport" method="post">
         <button type="submit" class="meld-feil-btn">Meld feil
-            <i class="bi bi-map"></i> 
+            <i class="bi bi-map"></i>
         </button>
     </form>
 </div>
+
+<div class="leaflet-buttons-control-button">
+    <div class="control-icon leaflet-pm-icon-rectangle"></div>
+</div>
+<div class="leaflet-buttons-control-button">
+    <div class="control-icon leaflet-pm-icon-marker"></div>
+</div>
+
 
 <div class="center-horizontal">
     <div class="info-box">
