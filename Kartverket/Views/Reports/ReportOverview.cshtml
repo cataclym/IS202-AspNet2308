@@ -335,6 +335,15 @@ function toggleFilter(filterType, element) {
             toggleFilter('dato', element);
         }
 
+    function getAntiForgeryToken() {
+        const tokenElement = document.querySelector('#reportForm input[name="__RequestVerificationToken"]');
+        if (tokenElement) {
+            console.log('Anti-Forgery Token retrieved:', tokenElement.value); // Debugging line
+            return tokenElement.value;
+        }
+        console.log('Anti-Forgery Token not found!');
+        return '';
+    }
     
     // Helper function to handle pin/unpin AJAX requests
     function togglePin(reportId, actionUrl, button) {
@@ -356,29 +365,17 @@ function toggleFilter(filterType, element) {
                         ? '<i class="bi bi-pin-fill"></i>'  // Unpin ikon
                         : '<i class="bi bi-pin"></i>');      // Pin ikon
                     // Update data attribute
-                    button.data('is-pinned', response.isPinned);
-
+                    button.attr('data-is-pinned', response.isPinned.toString().toLowerCase());
                     // Move the row based on the new pin state
                     var row = button.closest('tr');
-                    var tbody = row.parent();
 
-                    if(response.isPinned){
-                        // Move to the top of the table
-                        tbody.prepend(row);
-                    } else {
-                        // Move to the bottom of the table
-                        tbody.append(row);
-                    }
-                        // Ensure that table rows are sorted (if necessary)
-                        sortTableByPinnedStatus(); // Sort again after pinning/unpinning
+                    row.attr('data-is-pinned', response.isPinned.toString().toLowerCase());
+
+                    sortTableByPinnedStatus();
                 } else {
-                    // Optionally handle failure (currently no toast)
                     console.warn("Action failed:", response.message);
+                    // Optionally, notify the user about the failure
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX error:", status, error); // Debugging line
-                // Optionally handle error without toast
             }
         });
     }
@@ -411,13 +408,13 @@ function toggleFilter(filterType, element) {
         }
 
     $(document).ready(function() {
-        $('.pin-button').click(function(e) {
+        // Use event delegation to handle dynamically sorted/reordered buttons
+        $(document).on('click', '.pin-button', function(e) {
             e.preventDefault();
 
-            // Retrieve the report ID and current pinned state from the button's data attributes
-            var reportId = $(this).data('report-id');
-            var isPinned = $(this).data('is-pinned') === 'true' || $(this).data('is-pinned') === true;
             var button = $(this);
+            var reportId = button.attr('data-report-id'); // Use .attr() instead of .data()
+            var isPinned = button.attr('data-is-pinned') === 'true'; // Use .attr() instead of .data()
 
             console.log("Attempting to " + (isPinned ? "unpin" : "pin") + " Report ID:", reportId); // Debugging line
 
@@ -426,8 +423,9 @@ function toggleFilter(filterType, element) {
 
             togglePin(reportId, actionUrl, button);
         });
-            // Optionally, sort the table when the page loads (in case you need initial sorting)
-            sortTableByPinnedStatus();
+
+        // Initial sort on page load
+        sortTableByPinnedStatus();
     });
    
 </script>
