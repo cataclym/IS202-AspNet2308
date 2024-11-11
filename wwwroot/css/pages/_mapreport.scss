@@ -131,6 +131,13 @@
     padding-left: 70px;
 }
 
+.popup-box .popup-step1 p {
+  font-size: 1em !important; /* Øker tekststørrelsen litt */
+  margin-top: 4rem;
+  margin-bottom: 10px !important; /* Øker avstanden mellom paragrafene */
+  line-height: 1.3 !important; /* Øker linjehøyden for mer mellomrom mellom linjene */
+}
+
 /* CSS for andre popup (popupStep === 2) */
 .popup-box .popup-step2 p {
     margin-top: 0 !important; /* Fjerner eventuell toppmarginal */
