@@ -385,7 +385,6 @@ body {
   gap: 10px;
   color: #006F35;
   transition: all 0.1s ease;
-  margin-top: 50px;
   text-decoration: none;
 }
 
@@ -523,7 +522,7 @@ input[type=checkbox] {
   margin-bottom: 30px;
 }
 
-.styledMap-report {
+.styledMap-success {
   border-radius: 10px;
   border: 1px solid black;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -532,6 +531,17 @@ input[type=checkbox] {
   margin-bottom: 30px;
   height: 300px;
   width: 750px;
+}
+
+.styledMap-adminreport {
+  border-radius: 10px;
+  border: 1px solid black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  height: 300px;
+  width: 35rem;
 }
 
 .styledMap {
@@ -547,6 +557,46 @@ input[type=checkbox] {
 .map-container {
   display: flex;
   justify-content: center;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
+.icon-marker {
+  background-image: url("../icons/Marker.svg");
+}
+
+.icon-rectangle {
+  background-image: url("../icons/Rectangle.svg");
+}
+
+.icon-polygon {
+  background-image: url("../icons/Polygon.svg");
+}
+
+.icon-edit_vertex {
+  background-image: url("../icons/Edit_Vertex.svg");
+}
+
+.icon-eraser {
+  background-image: url("../icons/Eraser.svg");
+}
+
+.icon-move {
+  background-image: url("../icons/Move.svg");
+}
+
+.icon-scissors {
+  background-image: url("../icons/Scissors.svg");
+}
+
+.icon-gps {
+  background-image: url("../icons/Gps.svg");
 }
 
 .home-page {
@@ -913,7 +963,131 @@ input[type=checkbox] {
   display: none;
 }
 
-.report-view {
+/* Overlay som dekker hele skjermen */
+.popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Gjennomsiktig mørk bakgrunn */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Selve popup-boksen */
+.popup-box {
+  position: fixed;
+  top: 130px;
+  left: 450px;
+  width: 48%; /* En tredjedel av skjermbredden */
+  height: 55%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 4px solid #006F35;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
+
+.popup-step {
+  display: none; /* All steps hidden by default */
+}
+
+.popup-step.active {
+  display: block; /* Show active step */
+}
+
+.popup-box h2 {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 1.5em; /* Adjust the font size as needed */
+  font-weight: 600; /* Semibold (600 is commonly used for semibold) */
+}
+
+.popup-box p {
+  margin-top: 45px;
+  line-height: 1.6; /* Du kan justere dette tallet for å få ønsket avstand */
+  padding: 10px;
+  padding-left: 70px;
+}
+
+.popup-box .popup-step1 p {
+  font-size: 1em !important; /* Øker tekststørrelsen litt */
+  margin-top: 4rem;
+  margin-bottom: 10px !important; /* Øker avstanden mellom paragrafene */
+  line-height: 1.3 !important; /* Øker linjehøyden for mer mellomrom mellom linjene */
+}
+
+/* CSS for andre popup (popupStep === 2) */
+.popup-box .popup-step2 p {
+  margin-top: 0 !important; /* Fjerner eventuell toppmarginal */
+  font-size: 1em !important; /* Øker tekststørrelsen litt */
+  margin-bottom: 10px !important; /* Øker avstanden mellom paragrafene */
+  line-height: 1.3 !important; /* Øker linjehøyden for mer mellomrom mellom linjene */
+}
+
+.popup-box button {
+  position: absolute; /* Gjør knappen posisjonert absolutt i forhold til popup-boksen */
+  bottom: 20px; /* Avstand fra toppen */
+  right: 20px; /* Avstand fra høyre kant */
+  padding: 10px 20px;
+  background-color: #FFFFFF !important;
+  color: #006F35 !important;
+  border: 2px solid #006F35 !important;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Stilsett for krysset i øvre høyre hjørne */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.close-btn:hover {
+  color: #ff0000; /* Gir en rød farge ved hover for tydeligere indikator */
+}
+
+.question-icon {
+  position: fixed !important;
+  bottom: 50px;
+  left: 20px !important;
+  background-color: #1B589F;
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+}
+
+.question-icon:hover {
+  background-color: #1B589F;
+}
+
+.admin-report-view {
+  background: linear-gradient(to bottom, #ffffff 15%, #f8fdf5 85%);
+  min-height: 100vh; /* Ensures the gradient covers the full viewport height */
+  padding: 0;
+  margin: 0;
+  /* Container for all content */
+  /* Individual grid items (cards) */
+  /* Media Queries for Different Screen Sizes */
   /* Generell styling for chatboksen */
   /* Styling for samtalestart-meldingen */
   /* Meldingsboblen */
@@ -922,29 +1096,234 @@ input[type=checkbox] {
   /* Styling for knappene inni dropdown */
   /* Hover-effekt for knappene */
 }
-.report-view .left-column {
+.admin-report-view .report-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+}
+.admin-report-view .card {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+@media (max-width: 768px) {
+  .admin-report-view .container {
+    grid-template-columns: 1fr; /* Stack columns on smaller screens */
+  }
+}
+.admin-report-view .left-column {
   flex: 1;
   display: flex; /* Enable Flexbox */
   align-items: flex-start;
   flex-direction: column; /* Stack children vertically */
   gap: 20px; /* Optional: Add space between the elements */
 }
-.report-view .right-column {
-  width: 400px;
-  margin-top: 50px;
+.admin-report-view .right-column {
+  flex: 1;
+  display: flex; /* Enable Flexbox */
+  align-items: flex-start;
+  flex-direction: column; /* Stack children vertically */
+  gap: 20px; /* Optional: Add space between the elements */
 }
-.report-view .report-container {
+.admin-report-view .report-container {
   display: flex;
   gap: 20px;
   max-width: 1500px;
   margin: 0 auto;
   padding: 20px;
 }
-.report-view .reportstats-container {
+.admin-report-view .reportstats-container {
   background-color: #f9e8d2;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  max-width: 750px;
+  flex: 1;
+}
+.admin-report-view .report-title {
+  font-size: 56px;
+  font-weight: bold;
+  color: #008540;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.admin-report-view .edit-btn-container {
+  display: flex; /* Enables flexbox */
+  justify-content: flex-end; /* Aligns content to the right */
+  padding: 10px; /* Optional: add some padding */
+}
+.admin-report-view .chat-history {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  width: 100%;
+  max-width: 1000px !important;
+  margin: 0 auto;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+.admin-report-view .chat-history h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  font-weight: normal;
+  color: #333;
+}
+.admin-report-view .chat-history p {
+  margin: 10px 0;
+  color: #333;
+  font-weight: bold;
+}
+.admin-report-view .chat-history p:first-of-type {
+  font-weight: normal;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 15px;
+}
+.admin-report-view .chat-message {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: left;
+  max-width: 90%;
+  margin: 10px auto;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  height: 250px;
+  overflow-y: scroll;
+}
+.admin-report-view #message {
+  font-weight: lighter !important;
+}
+.admin-report-view .chat-message p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+.admin-report-view .chat-message p:first-child {
+  font-weight: bold;
+  color: #666;
+  margin-bottom: 5px;
+}
+.admin-report-view .chat-input {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  gap: 5px;
+  padding-top: 10px;
+}
+.admin-report-view .chat-input input[type=text] {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+.admin-report-view .chat-input button {
+  padding: 8px 12px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.admin-report-view .status-dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.admin-report-view .dropdown-btn {
+  padding: 10px;
+  width: 100%;
+  background-color: #e6f4ea;
+  color: #28a745;
+  border: 1px solid #28a745;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+}
+.admin-report-view .dropdown-btn-a {
+  padding: 10px;
+  width: 100%;
+  background-color: #e6f4ea;
+  color: #28a745;
+  border: 1px solid #28a745;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+}
+.admin-report-view .dropdown-btn:hover {
+  background-color: #d4ebdc; /* Litt mørkere grønn ved hover */
+  border-color: #1e8c34;
+}
+.admin-report-view .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  width: 100%;
+  z-index: 1;
+  margin-top: 5px;
+  overflow: hidden;
+}
+.admin-report-view .dropdown-content .dropdown-btn-a {
+  display: block;
+  width: 100%;
+  padding: 12px 0;
+  background-color: #e6f4ea;
+  color: #28a745;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-bottom: 1px solid #c3e0cf; /* Lysere skillelinje */
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+.admin-report-view .dropdown-content .dropdown-btn-a:last-child {
+  border-bottom: none; /* Fjerner skillelinje fra siste element */
+}
+.admin-report-view .dropdown-content .dropdown-btn-a:hover {
+  background-color: #d4ebdc; /* Litt mørkere grønn ved hover */
+  color: #1e8c34;
+}
+
+.report-view {
+  /* Generell styling for chatboksen */
+  /* Styling for samtalestart-meldingen */
+  /* Meldingsboblen */
+  /* Brukernavn-styling */
+  /* Meldingsboks nederst */
+}
+.report-view report-container-user {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+}
+.report-view .card-reportview {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.report-view .reportstats-container {
+  background-color: #f9e8d2;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
   max-width: 750px;
   flex: 1;
 }
@@ -1030,77 +1409,81 @@ input[type=checkbox] {
   justify-content: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-.report-view .status-dropdown {
-  position: relative;
-  display: inline-block;
+.report-view .edit-report-button-container {
+  display: flex;
+  justify-content: flex-end;
   width: 100%;
 }
-.report-view .dropdown-btn {
-  padding: 10px;
+.report-view .edit-report-button {
+  width: 320px;
+  height: 90px;
+  padding: 15px 20px 15px 20px;
+  border: 4px solid #006F35;
+  background-color: #FFFFFF;
+  font-size: 35px;
+  font-weight: 500;
+  border-radius: 20px;
+  color: #006F35;
+  transition: all 0.1s ease;
+  text-decoration: none;
+}
+.report-view .edit-report-button:hover {
+  background-color: #006F35;
+  color: #fff;
+}
+.report-view .report-container-user {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+}
+.report-view .delete-btn-container {
+  display: flex;
+  justify-content: flex-end;
   width: 100%;
-  background-color: #e6f4ea;
-  color: #28a745;
-  border: 1px solid #28a745;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  text-align: center;
+  padding-right: 75px;
 }
-.report-view .dropdown-btn-a {
-  padding: 10px;
-  width: 100%;
-  background-color: #e6f4ea;
-  color: #28a745;
-  border: 1px solid #28a745;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  text-align: center;
+.report-view .delete-btn-user {
+  width: 320px;
+  height: 60px;
+  padding: 10px 30px;
+  border: 4px solid #D9534F;
+  border-radius: 20px;
+  font-size: 25px;
+  font-weight: 500;
+  background-color: #FFFFFF;
+  color: #D9534F;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease; /* Smooth transition for hover */
 }
-.report-view .dropdown-btn:hover {
-  background-color: #d4ebdc; /* Litt mørkere grønn ved hover */
-  border-color: #1e8c34;
-}
-.report-view .dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  width: 100%;
-  z-index: 1;
-  margin-top: 5px;
-  overflow: hidden;
-}
-.report-view .dropdown-content .dropdown-btn-a {
-  display: block;
-  width: 100%;
-  padding: 12px 0;
-  background-color: #e6f4ea;
-  color: #28a745;
-  font-size: 1rem;
-  font-weight: bold;
-  text-align: center;
-  border: none;
-  border-bottom: 1px solid #c3e0cf; /* Lysere skillelinje */
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-}
-.report-view .dropdown-content .dropdown-btn-a:last-child {
-  border-bottom: none; /* Fjerner skillelinje fra siste element */
-}
-.report-view .dropdown-content .dropdown-btn-a:hover {
-  background-color: #d4ebdc; /* Litt mørkere grønn ved hover */
-  color: #1e8c34;
+.report-view .delete-btn-user:hover {
+  background-color: #D9534F; /* Red background on hover */
+  color: #fff; /* White text color on hover */
+  border-color: #D9534F; /* Ensures border remains the same color */
 }
 
 .MyPage {
+  background: linear-gradient(to bottom, #ffffff 15%, #f8fdf5 85%);
+  min-height: 100vh; /* Ensures the gradient covers the full viewport height */
+  padding: 0;
+  margin: 0;
   /* Main button */
   /* Fjern linje fra siste element */
 }
 .MyPage main {
   text-align: center;
   margin-top: 30px;
+}
+.MyPage .mypage-title {
+  font-size: 56px;
+  font-weight: bold;
+  color: #008540;
+  text-align: center;
+  margin-bottom: 20px;
 }
 .MyPage .meld-feil-btn {
   width: 470px;
@@ -1118,6 +1501,7 @@ input[type=checkbox] {
   color: #006F35;
   transition: all 0.3s ease;
   margin-bottom: 45px;
+  animation: slideInFromLeft 0.5s ease-out;
 }
 .MyPage .meld-feil-btn:hover {
   background-color: #006F35;
@@ -1132,6 +1516,7 @@ input[type=checkbox] {
   width: 470px;
   text-align: left;
   margin-bottom: 35px;
+  animation: slideInFromLeft 0.5s ease-out;
 }
 .MyPage .info-box h3 {
   font-size: 24px;
@@ -1161,6 +1546,7 @@ input[type=checkbox] {
   margin-top: 20px;
   align-items: center; /* Sentrerer innholdet vertikalt */
   justify-content: center; /* Sentrerer innholdet horisontalt */
+  animation: slideInFromLeft 0.5s ease-out;
 }
 .MyPage .button-group .btn {
   padding: 10px 20px;
@@ -1176,6 +1562,16 @@ input[type=checkbox] {
 .MyPage .button-group .btn:hover {
   background-color: #006F35;
   color: #fff;
+}
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-40%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .AdminDash {
@@ -1336,7 +1732,7 @@ input[type=checkbox] {
 }
 
 .btn-container {
-  animation: slideInFromLeft 0.6s ease-out;
+  animation: slideInFromLeft 0.4s ease-out;
 }
 
 .title-container {
@@ -1376,7 +1772,7 @@ input[type=checkbox] {
 
 @keyframes slideInFromLeft {
   from {
-    transform: translateX(-40%);
+    transform: translateX(-20%);
     opacity: 0;
   }
   to {

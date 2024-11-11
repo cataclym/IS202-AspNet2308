@@ -17,88 +17,66 @@ else
 <h2 class="display-4 center-horizontal">Rapport detaljer</h2>
 }
 
-@if (Model.AssignedAdminId != null)
-{
-    <p><strong>Saksbehandler:</strong> @Model.AssignedAdminUsername</p>
-    <p><strong>Saksbehandler ID:</strong> @Model.AssignedAdminId</p>
-}
-else if (Model.IsAdmin)
-{
-    <!-- Display the Claim button -->
-    <div class="center-horizontal">
-        <a asp-action="Claim" asp-route-id="@Model.ReportId" class="claim-btn">Ta Rapport
-            <i class="bi bi-box-arrow-in-down"></i></a>
 
-    </div>
-}
-<div class="center-horizontal">
-    <a asp-controller="Reports" asp-action="EditMapReport" asp-route-id="@Model.ReportId" class="claim-btn">
-        Endre rapport <i class="bi bi-box-arrow-in-down"></i>
-    </a>
-</div>
 
-<div class="report-container">
+<div class="report-container-user">
     <!-- Left Column: Map and Report Details -->
-    <div class="left-column">
+    <div class="left-column-reportview card-reportview">
         <div id="map" class="styledMap-report"></div>
         <div class="reportstats-container">
-            @if (Model.IsAdmin)
-            {
-                <p><strong>Sendt inn av:</strong> @Model.Username</p>
-            }
-            <p><strong>Beskrivelse:</strong> @Model.FirstMessage</p>
             <p><strong>Oprettet:</strong> @Model.CreatedAt</p>
+            <p><strong>Beskrivelse:</strong> @Model.FirstMessage</p>
             <p><strong>Fylke:</strong> @Model.MunicipalityInfo?.fylkesnavn</p>
             <p><strong>Kommune:</strong> @Model.MunicipalityInfo?.kommunenavn</p>
-            <p><strong>Koordinater:</strong> @Model.Coordinates</p>
         </div>
     </div>
 
     <!-- Right Column: Status Buttons and Chat History -->
-    <div class="right-column">
+    <div class="right-column-reportview card-reportview">
         <p class="center-horizontal"><strong>Status:</strong> @Model.Status</p>
-        @if (Model.IsAdmin)
-        {
-            <div class="status-dropdown">
-                <form asp-action="UpdateStatus" asp-controller="Reports" method="post">
-                    <input type="hidden" name="reportId" value="@Model.ReportId" />
-                    <button class="dropdown-btn" type="button" onclick="toggleDropdown()">Endre status ▼</button>
-                    <div class="dropdown-content">
-                        <button class="dropdown-btn-a" type="submit" name="status" value="Behandlet">Behandlet</button>
-                        <button class="dropdown-btn-a" type="submit" name="status" value="Under_behandling">Under behandling</button>
-                        <button class="dropdown-btn-a" type="submit" name="status" value="Ubehandlet">Ubehandlet</button>
+
+            <div class="chat-history">
+                <h3>Chat Historikk</h3>
+                <p>Samtale startet @Model.CreatedAt</p>
+                <div class="chat-message">
+                    @foreach (var message in Model.Messages)
+                    {
+                        <p style="font-weight: normal;">
+                            <strong>@message.Username</strong> - @message.CreatedAt
+                        </p>
+                        <p id="message">@message.Message</p>
+                    }
+                </div>
+                <form asp-action="AddMessage" asp-controller="Reports" method="post">
+                    <div class="chat-input">
+                        <input type="hidden" name="ReportId" value="@Model.ReportId" />
+                        <input type="text" name="MessageText" required minlength="1" placeholder="Skriv melding her..">
+                        <button>➤</button>
                     </div>
                 </form>
             </div>
-        }
 
-        <div class="chat-history">
-            <h3>Chat Historikk</h3>
-            <p>Samtale startet @Model.CreatedAt</p>
-            <div class="chat-message">
-                @foreach (var message in Model.Messages)
-                {
-                    <p style="font-weight: normal;">
-                        <strong>@message.Username</strong> - @message.CreatedAt
-                    </p>
-                    <p id="message">@message.Message</p>
-                }
+            <div class="edit-report-button-container">
+                <a asp-controller="Reports" asp-action="EditMapReport" asp-route-id="@Model.ReportId" class="edit-report-button">
+                    Endre rapport <i class="bi bi-box-arrow-in-down"></i>
+                </a>
             </div>
-            <form asp-action="AddMessage" asp-controller="Reports" method="post">
-                <div class="chat-input">
-                    <input type="hidden" name="ReportId" value="@Model.ReportId" />
-                    <input type="text" name="MessageText" required minlength="1" placeholder="Skriv melding her..">
-                    <button>➤</button>
-                </div>
-            </form>
-        </div>
+
+            <div class="delete-btn-container">
+                <form id="delete-form" asp-action="DeleteConfirmed" asp-route-id="@Model.ReportId" method="post">
+                    <button type="button" class="delete-btn-user delete-icon" onclick="confirmDelete()">
+                        Slett rapport
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>
+            </div>
+
     </div>
 </div>
-   <div class="center-horizontal">
-    <form id="delete-form" asp-action="DeleteConfirmed" asp-route-id="@Model.ReportId" method="post">
-        <button type="button" class="delete-btn" onclick="confirmDelete()">Slett rapport</button>
-    </form>
-</div>
+
+
+
+   
 
 </body>
 

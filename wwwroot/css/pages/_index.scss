@@ -43,7 +43,7 @@
 }
 
 .btn-container {
-  animation: slideInFromLeft 0.6s ease-out;
+  animation: slideInFromLeft 0.4s ease-out;
 }
 
 .title-container {
@@ -83,7 +83,7 @@
 
 @keyframes slideInFromLeft {
   from {
-    transform: translateX(-40%);
+    transform: translateX(-20%);
     opacity: 0;
   }
   to {

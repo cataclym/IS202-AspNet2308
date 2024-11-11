@@ -1,0 +1,39 @@
+.icon {
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
+.icon-marker {
+  background-image: url('../icons/Marker.svg');
+}
+
+.icon-rectangle {
+  background-image: url('../icons/Rectangle.svg');
+}
+
+.icon-polygon {
+  background-image: url('../icons/Polygon.svg');
+}
+
+.icon-edit_vertex {
+  background-image: url('../icons/Edit_Vertex.svg');
+}
+
+.icon-eraser {
+  background-image: url('../icons/Eraser.svg');
+}
+
+.icon-move {
+  background-image: url('../icons/Move.svg');
+}
+
+.icon-scissors {
+  background-image: url('../icons/Scissors.svg');
+}
+
+.icon-gps {
+  background-image: url('../icons/Gps.svg');
+}
