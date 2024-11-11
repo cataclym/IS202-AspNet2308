@@ -1,0 +1,436 @@
+@model Kartverket.Models.ReportOverviewModel
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Include any other necessary scripts or styles -->
+    <!-- Include Bootstrap CSS and JS for Toasts -->
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+</head>
+<body class="home-page">
+
+<form id="reportForm" method="post">
+    @Html.AntiForgeryToken()
+    <!-- Your form fields here -->
+</form>
+
+@if (Model.User.IsAdmin)
+{
+    <h1 class="header1 display-4">Administrer <span class="highlight">Rapporter</span></h1>
+}
+else
+{
+    <h1 class="header1 display-4">Dine <span class="highlight">Rapporter</span></h1>
+}
+
+<!-- Dropdown and Date Filter -->
+<div class="table-container">
+    <div class="dropdown">
+    <button onclick="myFunction()" class="dropbtn">
+        <i class="bi bi-sort-alpha-down"></i> Sorter
+    </button>
+    <div id="myDropdown" class="dropdown-content">
+                <a href="#" onclick="toggleFilter('ubehandlet', this)" class="dropdown-btn-a">
+                    Ubehandlet
+                    <span class="checkmark-icon" style="display: none;">
+                        <i class="bi bi-check-circle"></i>
+                    </span>
+                </a>
+                <a href="#" onclick="toggleFilter('behandlet', this)" class="dropdown-btn-a">
+                    Behandlet
+                    <span class="checkmark-icon" style="display: none;">
+                        <i class="bi bi-check-circle"></i>
+                    </span>
+                </a>
+                <a href="#" onclick="toggleFilter('under_behandling', this)" class="dropdown-btn-a">
+                    Under behandling
+                    <span class="checkmark-icon" style="display: none;">
+                        <i class="bi bi-check-circle"></i>
+                    </span>
+                </a>
+                @if (Model.User.IsAdmin)
+                {
+                 <a href="#" onclick="sortTable(2, this)" class="dropdown-btn-a">
+                    Brukernavn
+                    <span class="checkmark-icon" style="display: none;">
+                    <i class="bi bi-check-circle"></i>
+                    </span>
+                    </a>
+                    <a href="#" onclick="sortTable(4, this)" class="dropdown-btn-a">
+                    Dato
+                    <span class="checkmark-icon" style="display: none;">
+                    <i class="bi bi-check-circle"></i>
+                    </span>
+                 </a>
+                }
+                else
+                {
+                    <a href="#" onclick="toggleFilter('dato', this)" class="dropdown-btn-a">
+                        Dato
+                        <span class="checkmark-icon" style="display: none;">
+                            <i class="bi bi-check-circle"></i>
+                        </span>
+                    </a>
+                }
+                <a href="#" onclick="resetFilters()" class="dropdown-btn-a">
+                    Tilbakestill filtre
+                    <span class="checkmark-icon" style="display: none;">
+                        <i class="bi bi-check-circle"></i>
+                    </span>
+                </a>
+     </div>
+   </div>
+ </div>
+    
+
+<!-- Reports Table -->
+<div class="table-size">
+    <table id="@(Model.User.IsAdmin ? "admin-table" : "user-table")" class="user-info-table">
+        <!-- Table header row for column names -->
+        <thead>
+        <tr>
+            <th>Rapport ID</th>
+            <th>Melding</th>
+            @if (Model.User.IsAdmin)
+            {
+                <th>Brukernavn</th>
+            }
+            <th>Status</th>
+            <th>Opprettet</th>
+            <th>Pin</th>
+        </tr>
+        </thead>
+        <!-- Table body for reports data -->
+        <tbody>
+        @if (Model.Reports != null && Model.Reports.Any())
+        {
+            @foreach (var report in Model.Reports)
+            {
+                <tr data-report-id="@report.ReportId"
+                    data-is-pinned="@report.IsPinned.ToString().ToLower()"
+                    data-status="@report.Status.ToString().ToLower()"
+                    data-date="@report.CreatedAt.ToString("yyyy-MM-ddTHH:mm:ss")">
+                    <td>
+                        <a asp-action="ReportView"
+                           asp-controller="Reports"
+                           asp-route-id="@report.ReportId">
+                            @report.ReportId
+                        </a>
+                    </td>
+                    <td class="truncate-text" title="@report.FirstMessage">
+                        @report.FirstMessage
+                    </td>
+                    @if (Model.User.IsAdmin)
+                    {
+                        <td>@report.Username</td>
+                    }
+                    <td>@report.Status.ToString()</td>
+                    <td data-created-at="@report.CreatedAt.ToString("o")">
+                        @report.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")
+                    </td>
+                    <td>
+                        <button
+                            class="btn @(report.IsPinned ? "btn-pinned" : "btn-pin") pin-button"
+                            data-report-id="@report.ReportId"
+                            data-is-pinned="@report.IsPinned.ToString().ToLower()">
+                            <i class="bi @(report.IsPinned ? "bi-pin-fill" : "bi-pin")"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="@(Model.User.IsAdmin ? "6" : "5")">Ingen rapporter tilgjengelig.</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+
+<!-- JavaScript Functions -->
+<script>
+
+    // Function to show/hide dropdown
+  function myFunction() {
+        console.log("Dropdown button clicked"); // For debugging
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+
+
+    // Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn') && !event.target.closest('.dropdown-content')) {
+        const dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+            const openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+};
+
+    // Helper function to remove active-filter class from all filter options
+    function clearActiveFilters() {
+        const options = document.querySelectorAll('.dropdown-content a');
+        options.forEach(option => option.classList.remove('active-filter'));
+    }
+
+
+    // Sort table by a specific column
+    let currentSortOrder = { column: -1, order: 'asc' };
+
+    function sortTable(columnIndex, element) {
+        const isAdmin = @Model.User.IsAdmin.ToString().ToLower();
+        const table = isAdmin ? document.querySelector('#admin-table tbody') : document.querySelector('#user-table tbody');
+        if (!table) return;
+
+    // Toggle sort order
+    if (currentSortOrder.column === columnIndex) {
+        currentSortOrder.order = currentSortOrder.order === 'asc' ? 'desc' : 'asc';
+    } else {
+        currentSortOrder.column = columnIndex;
+        currentSortOrder.order = 'asc';
+    }
+
+    const rows = Array.from(table.rows);
+        // Sort rows by pinned status first, then by the selected column
+            rows.sort((rowA, rowB) => {
+                const isPinnedA = rowA.dataset.isPinned === 'true';
+                const isPinnedB = rowB.dataset.isPinned === 'true';
+
+                // Prioritize pinned rows
+                if (isPinnedA && !isPinnedB) return -1;
+                if (!isPinnedA && isPinnedB) return 1;
+
+                // If both are pinned or both are not pinned, apply column-specific sorting
+                let comparison = 0;
+
+                // Custom sorting for specific columns (e.g., Brukernavn for Admins)
+                if (columnIndex === 2 && isAdmin === 'true') {
+                    const cellA = rowA.cells[columnIndex].innerText.trim().toLowerCase();
+                    const cellB = rowB.cells[columnIndex].innerText.trim().toLowerCase();
+                    comparison = cellA.localeCompare(cellB);
+                } else {
+                    const cellA = rowA.cells[columnIndex].innerText.trim().toLowerCase();
+                    const cellB = rowB.cells[columnIndex].innerText.trim().toLowerCase();
+                    comparison = cellA.localeCompare(cellB);
+                }
+
+                return currentSortOrder.order === 'asc' ? comparison : -comparison;
+            });
+
+            // Clear the table and append sorted rows
+            table.innerHTML = '';
+            rows.forEach(row => table.appendChild(row));
+
+            clearActiveFilters();
+            if (element) element.classList.add('active-filter');
+        }
+
+
+    // Filter by status
+    function filterByStatus() {
+    const table = document.querySelector('#admin-table tbody') || document.querySelector('#user-table tbody');
+    if (!table) return;
+
+    const rows = table.querySelectorAll('tr');
+
+    // Display rows based on filter and pinned status
+    rows.forEach(row => {
+        const rowStatus = row.dataset.status;
+        const isPinned = row.dataset.isPinned === 'true';
+        
+        // Show row if its status is in the selectedFilters set
+        if (isPinned || selectedFilters.has(rowStatus)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+function filterTable() {
+     const table = document.querySelector('#admin-table tbody') || document.querySelector('#user-table tbody');
+    if (!table) return;
+
+   const rows = table.querySelectorAll('tr');
+    rows.forEach(row => {
+        const rowStatus = row.dataset.status;
+        const rowDate = row.getAttribute('data-date'); // Ensure this matches the data attribute format
+        const rowUsername = row.querySelector('td:nth-child(3)') ? row.querySelector('td:nth-child(3)').innerText.trim().toLowerCase() : "";
+        const isPinned = row.dataset.isPinned === 'true';
+
+        // Update the matches conditions to include the newly added filters
+        const matchesStatus = !selectedFilters.size || selectedFilters.has(rowStatus);
+        const matchesDate = selectedSorts.has('dato') ? (selectedSorts.get('dato') === rowDate) : true; // Ensure correct comparison
+        const matchesUsername = selectedSorts.has('brukernavn') ? (selectedSorts.get('brukernavn') === rowUsername) : true;
+
+        // Show the row if it is pinned or matches all active filters
+        row.style.display = isPinned || (matchesStatus && matchesDate && matchesUsername) ? '' : 'none';
+    });
+}
+
+    // Reset filters
+    function resetFilters() {
+    // Fjern alle elementer fra valgt sett
+    selectedFilters.clear();
+    selectedSorts.clear();
+
+    // Skjul alle checkmark-ikoner
+    const checkmarkIcons = document.querySelectorAll('.checkmark-icon');
+    checkmarkIcons.forEach(icon => {
+        icon.style.display = 'none';
+    });
+
+    // Oppdater tabellen for � vise alle rader
+    filterTable();
+}
+
+
+                // Helper function to remove 'active-filter' class from all filter options
+  function clearActiveFilters() {
+            const options = document.querySelectorAll('.dropdown-content a');
+            options.forEach(option => option.classList.remove('active-filter'));
+        }
+
+
+       // Funksjon for � vise/hide avhukingsmerke og h�ndtere filtrering
+        let selectedFilters = new Set();
+        let selectedSorts = new Map();
+
+// Universell toggle-funksjon som h�ndterer b�de status og sortering (dato og brukernavn)
+function toggleFilter(filterType, element) {
+    const isSelected = selectedFilters.has(filterType);
+
+    // Legg til eller fjern filterType fra settet
+    if (isSelected) {
+        selectedFilters.delete(filterType);
+    } else {
+        selectedFilters.add(filterType);
+    }
+
+    // Oppdater visningen av checkmark-ikonet
+    const checkmarkIcon = element.querySelector('.checkmark-icon');
+    if (checkmarkIcon) {
+        checkmarkIcon.style.display = isSelected ? 'none' : 'inline';
+    }
+
+    // Filtrer tabellen basert p� aktive valg
+    filterTable();
+}
+
+
+    function toggleDateFilter(element) {
+            toggleFilter('dato', element);
+        }
+
+    
+    // Helper function to handle pin/unpin AJAX requests
+    function togglePin(reportId, actionUrl, button) {
+        var token = $('#reportForm').find('input[name="__RequestVerificationToken"]').val();
+
+        $.ajax({
+            url: actionUrl,
+            type: 'POST',
+            data: {
+                __RequestVerificationToken: token,
+                reportId: reportId
+            },
+            success: function(response) {
+                if(response.success){
+                    // Toggle button classes
+                    button.toggleClass('btn-pinned btn-pin');
+                    // Update button text
+                    button.html(response.isPinned
+                        ? '<i class="bi bi-pin-fill"></i>'  // Unpin ikon
+                        : '<i class="bi bi-pin"></i>');      // Pin ikon
+                    // Update data attribute
+                    button.data('is-pinned', response.isPinned);
+
+                    // Move the row based on the new pin state
+                    var row = button.closest('tr');
+                    var tbody = row.parent();
+
+                    if(response.isPinned){
+                        // Move to the top of the table
+                        tbody.prepend(row);
+                    } else {
+                        // Move to the bottom of the table
+                        tbody.append(row);
+                    }
+                        // Ensure that table rows are sorted (if necessary)
+                        sortTableByPinnedStatus(); // Sort again after pinning/unpinning
+                } else {
+                    // Optionally handle failure (currently no toast)
+                    console.warn("Action failed:", response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error); // Debugging line
+                // Optionally handle error without toast
+            }
+        });
+    }
+
+        // Function to sort the table by pinned status and date
+        function sortTableByPinnedStatus() {
+            const table = document.querySelector('#admin-table tbody') || document.querySelector('#user-table tbody');
+            if (!table) return;
+
+            const rows = Array.from(table.rows);
+
+            // Sort rows by pinned status first, then by created date (latest first)
+            rows.sort((rowA, rowB) => {
+                const isPinnedA = rowA.dataset.isPinned === 'true';
+                const isPinnedB = rowB.dataset.isPinned === 'true';
+
+                // Prioritize pinned rows
+                if (isPinnedA && !isPinnedB) return -1;
+                if (!isPinnedA && isPinnedB) return 1;
+
+                // Sort by creation date (newest first)
+                const dateA = new Date(rowA.querySelector('td[data-created-at]').getAttribute('data-created-at'));
+                const dateB = new Date(rowB.querySelector('td[data-created-at]').getAttribute('data-created-at'));
+                return dateB - dateA;  // Newest first
+            });
+
+            // Clear the table and append sorted rows
+            table.innerHTML = '';
+            rows.forEach(row => table.appendChild(row));
+        }
+
+    $(document).ready(function() {
+        $('.pin-button').click(function(e) {
+            e.preventDefault();
+
+            // Retrieve the report ID and current pinned state from the button's data attributes
+            var reportId = $(this).data('report-id');
+            var isPinned = $(this).data('is-pinned') === 'true' || $(this).data('is-pinned') === true;
+            var button = $(this);
+
+            console.log("Attempting to " + (isPinned ? "unpin" : "pin") + " Report ID:", reportId); // Debugging line
+
+            // Determine which action to call based on the current state
+            var actionUrl = isPinned ? '/Reports/UnpinReport' : '/Reports/PinReport';
+
+            togglePin(reportId, actionUrl, button);
+        });
+            // Optionally, sort the table when the page loads (in case you need initial sorting)
+            sortTableByPinnedStatus();
+    });
+   
+</script>
+
+</body>
+</html>

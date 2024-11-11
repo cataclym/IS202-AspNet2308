@@ -1,0 +1,220 @@
+.report-view {
+  background: linear-gradient(to bottom, #ffffff 15%, #f8fdf5 85%);
+  min-height: 100vh; /* Ensures the gradient covers the full viewport height */
+  padding: 0;
+  margin: 0;
+  /* Container for all content */
+  .report-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+  }
+  /* Individual grid items (cards) */
+  .card {
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  /* Media Queries for Different Screen Sizes */
+  @media (max-width: 768px) {
+    .container {
+      grid-template-columns: 1fr; /* Stack columns on smaller screens */
+    }
+  }
+
+  .left-column {
+    flex: 1;
+    display: flex; /* Enable Flexbox */
+    align-items: flex-start;
+    flex-direction: column; /* Stack children vertically */
+    gap: 20px; /* Optional: Add space between the elements */
+  }
+  .right-column {
+    flex: 1;
+    display: flex; /* Enable Flexbox */
+    align-items: flex-start;
+    flex-direction: column; /* Stack children vertically */
+    gap: 20px; /* Optional: Add space between the elements */
+  }
+  .report-container {
+    display: flex;
+    gap: 20px;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .reportstats-container {
+    background-color: #f9e8d2;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 750px;
+    flex: 1;
+  }
+  .report-title {
+    font-size: 56px;
+    font-weight: bold;
+    color: #008540;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .edit-btn-container {
+    display: flex;          /* Enables flexbox */
+    justify-content: flex-end; /* Aligns content to the right */
+    padding: 10px;          /* Optional: add some padding */
+  }
+  /* Generell styling for chatboksen */
+  .chat-history {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    width: 100%;
+    max-width: 1000px !important;
+    margin: 0 auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  .chat-history h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    font-weight: normal;
+    color: #333;
+  }
+  .chat-history p {
+    margin: 10px 0;
+    color: #333;
+    font-weight: bold;
+  }
+  /* Styling for samtalestart-meldingen */
+  .chat-history p:first-of-type {
+    font-weight: normal;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+  }
+  /* Meldingsboblen */
+  .chat-message {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: left;
+    max-width: 90%;
+    margin: 10px auto;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    height: 250px;
+    overflow-y: scroll;
+  }
+  #message {
+    font-weight: lighter !important;
+  }
+  .chat-message p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #333;
+  }
+  /* Brukernavn-styling */
+  .chat-message p:first-child {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 5px;
+  }
+  /* Meldingsboks nederst */
+  .chat-input {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    gap: 5px;
+    padding-top: 10px;
+  }
+  .chat-input input[type="text"] {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .chat-input button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .status-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+  .dropdown-btn {
+    padding: 10px;
+    width: 100%;
+    background-color: #e6f4ea;
+    color: #28a745;
+    border: 1px solid #28a745;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+  }
+  .dropdown-btn-a {
+    padding: 10px;
+    width: 100%;
+    background-color: #e6f4ea;
+    color: #28a745;
+    border: 1px solid #28a745;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+  }
+  .dropdown-btn:hover {
+    background-color: #d4ebdc; /* Litt mørkere grønn ved hover */
+    border-color: #1e8c34;
+  }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    width: 100%;
+    z-index: 1;
+    margin-top: 5px;
+    overflow: hidden;
+  }
+  /* Styling for knappene inni dropdown */
+  .dropdown-content .dropdown-btn-a {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    background-color: #e6f4ea;
+    color: #28a745;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-bottom: 1px solid #c3e0cf; /* Lysere skillelinje */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .dropdown-content .dropdown-btn-a:last-child {
+    border-bottom: none; /* Fjerner skillelinje fra siste element */
+  }
+  /* Hover-effekt for knappene */
+  .dropdown-content .dropdown-btn-a:hover {
+    background-color: #d4ebdc; /* Litt mørkere grønn ved hover */
+    color: #1e8c34;
+  }
+}

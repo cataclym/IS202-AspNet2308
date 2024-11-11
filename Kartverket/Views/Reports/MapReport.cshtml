@@ -1,0 +1,278 @@
+@model ReportViewModel
+
+@{
+    bool isEdit = Model.ReportId != 0;
+    ViewData["Title"] = isEdit ? "Rediger rapport" : "Registrer ny rapport";
+    ViewBag.UseFluidContainer = true; // If using conditional container
+    // Or Layout = "~/Views/Shared/_FluidLayout.cshtml"; if using separate layout
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+        body {
+            overflow: hidden; /* Prevents scrolling on the page */
+        }
+    </style>
+</head>
+<body>
+    <!-- Popup Overlay -->
+    <div id="popupOverlay" class="popup-overlay">
+        <div class="popup-box">
+            <!-- Close button -->
+            <span class="close-btn" onclick="closePopup()">&#10005;</span>
+
+            <!-- Popup Content -->
+            <div id="popupContent">
+                <!-- Step 1 -->
+                <div class="popup-step active" id="popupStep1">
+                    <h2>Velkommen til <span class="highlight">Meld Feil</span></h2>
+                    <div class="popup-step1">
+                    <p>1. Bruk verktøyene på venstre side for å markere et område</p>
+                    <p>2. Gi en beskrivelse av problemet i tekstboksen</p>
+                    <p>3. Trykk send, for så å bli sendt til en oversikt over rapporten din</p>
+                    <button onclick="nextPopupStep()">Neste</button>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="popup-step" id="popupStep2">
+                    <h2>Verktøy <span class="highlight">Guide</span></h2>
+                    <div class="popup-step2">
+                        <p><i class="icon icon-gps"></i> GPS-lokasjon: Finner posisjonen din på kartet</p>
+                        <p><i class="icon icon-marker"></i> Markør: Plasser markører på kartet</p>
+                        <p><i class="icon icon-polygon"></i> Polygon og linjer: Markerer et eller flere områder på kartet</p>
+                        <p><i class="icon icon-rectangle"></i> Rektangel: Markerer et område på kartet med et rektangel</p>
+                        <p><i class="icon icon-move"></i> Flytt verktøy: bruk til å flytte på figurene dine</p>
+                        <p><i class="icon icon-scissors"></i> Klipp funksjon: Klipp til endringer</p>
+                        <p><i class="icon icon-eraser"></i> Fjern endringer: Trykk på figurene for å fjerne dem</p>
+                    </div>
+                    <button onclick="prevPopupStep()">Forrige</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="questionIcon" class="question-icon" title="Åpne veiledning">
+        ?
+    </div>
+
+
+<div>
+    <div class="map-container">
+        <div id="map" class="styledMap"></div>
+    </div>
+
+    @if (ViewData["ErrorMessage"] != null)
+    {
+    <div class="alert-danger m-auto mt-1 mb-1 p-1 border-radius-5">
+        <p class="mb-0">@ViewData["ErrorMessage"]</p>
+    </div>
+    }
+
+    <div id="descriptionForm">
+        <button type="button" class="close-btn" onclick="closeForm()">&times;</button>
+        <form asp-controller="Reports" asp-action="@(isEdit ? "EditMapReport" : "RegisterMapReport")"
+              method="post"
+              id="mapForm">
+            @if (isEdit)
+            {
+            <input type="hidden" asp-for="ReportId" />
+            }
+            
+            <div>
+                <textarea id="meldingsBoks" class="description-textarea" asp-for="FirstMessage"
+                 required minlength="5" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
+            </div>
+            
+            <div>
+                <input type="hidden" id="Koordinater" asp-for="GeoJsonString" required/>
+            </div>
+            
+            <div class="center-horizontal">
+                <button type="button" class="submit-btn" onclick="submitForm()">Send inn <i class="bi bi-send"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        let popupStep = 1; // Current popup step
+
+        // Function to show the current popup step
+        function showPopupStep(step) {
+            // Hide all steps
+            const steps = document.querySelectorAll('.popup-step');
+            steps.forEach(s => s.classList.remove('active'));
+
+            // Show the selected step
+            const currentStep = document.getElementById(`popupStep${step}`);
+            if (currentStep) {
+                currentStep.classList.add('active');
+            }
+        }
+
+        // Function to go to the next popup step
+        function nextPopupStep() {
+            popupStep++;
+            showPopupStep(popupStep);
+        }
+
+        // Function to go to the previous popup step
+        function prevPopupStep() {
+            popupStep--;
+            showPopupStep(popupStep);
+        }
+
+            // Funksjon for å åpne popupen
+                function openPopup() {
+                    showPopupStep(popupStep); // Last inn popup-innholdet basert på popupStep
+                    document.getElementById("popupOverlay").style.display = "flex"; // Vis popupen
+                }
+
+            // Funksjon for å lukke popupen
+            function closePopup() {
+                document.getElementById("popupOverlay").style.display = "none"; // Skjul popupen
+            }
+
+            // Funksjon for å sette en cookie
+            function setCookie(name, value, days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));  // Angi utløpsdato for cookien
+                document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;  // Lagre cookie-en
+            }
+
+            // Funksjon for å hente en cookie
+            function getCookie(name) {
+                const cookieName = `${name}=`;
+                const cookies = document.cookie.split(';');
+                for (let cookie of cookies) {
+                    cookie = cookie.trim();
+                    if (cookie.indexOf(cookieName) === 0) {
+                        return cookie.substring(cookieName.length, cookie.length);
+                    }
+                }
+                return null;
+            }
+
+            // Når vinduet lastes, sjekk om brukeren har sett guiden
+            window.onload = function () {
+                    console.log("Has Seen Guide Cookie: ", getCookie("hasSeenGuide"));
+
+                const hasSeenGuide = getCookie("hasSeenGuide");  // Sjekk om brukeren har sett guiden før
+
+                if (!hasSeenGuide) {
+                    // Hvis brukeren ikke har sett guiden, vis popupen
+                    openPopup();
+                    setCookie("hasSeenGuide", "true", 30);  // Lagre cookie for å huske at guiden er sett
+                } else {
+                    document.getElementById("popupOverlay").style.display = "none";  // Skjul popupen hvis guiden er sett tidligere
+                }
+
+                // Eventlytter for spørsmålstegn-ikonet for å vise popup manuelt
+                const questionIcon = document.getElementById("questionIcon");
+                if (questionIcon) {
+                    questionIcon.addEventListener("click", () => {
+                        popupStep = 1;  // Tilbakestill popupen til første steg ved manuell åpning
+                        openPopup();  // Vis popupen
+                    });
+                }
+            };
+
+
+
+ 
+        document.addEventListener("DOMContentLoaded", function() {
+            const overlay = document.getElementById('modal-overlay');
+            const modal = document.getElementById('modal-content');
+
+            if (overlay) overlay.style.display = 'none';
+            if (modal) modal.style.display = 'none';
+        });
+
+        // Initialize the map
+        const map = lagKart();
+
+        // Create a FeatureGroup to store editable layers
+        const drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+
+        // Configure the drawing controls
+        map.pm.addControls({
+            position: 'topleft',
+            rotateMode: false,
+            drawMarker: true,
+            drawPolygon: true,
+            drawCircleMarker: false,
+            drawPolyline: false,
+            drawCircle: false,
+            drawText: false
+        });
+
+        // Function to handle form submission
+        function submitForm() {
+            const layers = drawnItems.getLayers();
+
+            if (layers.length === 0) {
+                alert("Vennligst tegn et område på kartet før du sender inn.");
+                return;
+            }
+
+            // Create a GeoJSON object for map data
+            const geoJson = {
+                type: "FeatureCollection",
+                features: layers.map(layer => {
+                    const geoJson = layer.toGeoJSON();
+                    if (geoJson.geometry.type === "Point") {
+                        const coordinates = geoJson.geometry.coordinates;
+                        // Gjør om Point typer til riktig model i controller
+                        geoJson.geometry.coordinates = [[coordinates]];
+                    }
+                    return geoJson;
+                }),
+            };
+
+            // Debugging: Log the GeoJSON data
+            console.log("GeoJSON data being submitted:", JSON.stringify(geoJson));
+
+            // Store the GeoJSON data in the hidden input field
+            const koordinater = document.getElementById("Koordinater");
+            koordinater.value = JSON.stringify(geoJson);
+
+            const meldingsBoks = document.getElementById("meldingsBoks");
+
+            // Submit the form
+            document.getElementById("mapForm").submit();
+        }
+
+        // Listen to the pm:create event to show the description form
+        map.on('pm:create', function(e) {
+            const layer = e.layer;
+            drawnItems.addLayer(layer); // Add the new layer to drawnItems
+            document.getElementById('descriptionForm').style.display = 'block';
+        });
+
+        // Function to close the description form
+        function closeForm() {
+            document.getElementById("descriptionForm").style.display = "none"; // Hides the form
+        }
+
+        @if (isEdit && !string.IsNullOrEmpty(Model.GeoJsonString))
+        {
+            <text>
+        const existingGeoJson = @Html.Raw(Json.Serialize(Model.GeoJsonString));
+        if (existingGeoJson) {
+            const geojson = JSON.parse(existingGeoJson);
+            const existingLayer = L.geoJSON(geojson).addTo(map); // Added directly to the map
+            map.fitBounds(existingLayer.getBounds());
+        }
+        </text>
+        }
+    </script>
+}
+</body>
+</html>

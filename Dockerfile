@@ -7,9 +7,9 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Kartverket.csproj", "./"]
+COPY ["Kartverket/Kartverket.csproj", "."]
 RUN dotnet restore "Kartverket.csproj"
-COPY . .
+COPY ./Kartverket/. .
 WORKDIR "/src/"
 RUN dotnet build "Kartverket.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

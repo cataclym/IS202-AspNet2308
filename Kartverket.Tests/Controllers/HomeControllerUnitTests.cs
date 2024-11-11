@@ -1,11 +1,7 @@
 using Kartverket.Controllers;
-using Kartverket.Database;
 using Kartverket.Models;
-using Kartverket.Services;  
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 

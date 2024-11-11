@@ -1,0 +1,133 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Kartverket</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net" Version="0.1.0" />
+    <PackageReference Include="bootstrap" Version="5.3.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NSubstitute" Version="5.3.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="xunit.assert" Version="2.9.2" />
+    <PackageReference Include="xunit.extensibility.core" Version="2.9.2" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Remove="wwwroot\css\utilities\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="wwwroot\css\utilities\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="wwwroot\css\utilities\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="NSubstitute">
+      <HintPath>..\..\.nuget\packages\nsubstitute\5.3.0\lib\net6.0\NSubstitute.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.assert">
+      <HintPath>..\..\.nuget\packages\xunit.assert\2.9.2\lib\net6.0\xunit.assert.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.core">
+      <HintPath>..\..\.nuget\packages\xunit.extensibility.core\2.9.2\lib\netstandard1.1\xunit.core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\obj\Debug\net8.0\Kartverket.Tests.sourcelink.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\obj\Kartverket.Tests.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\appsettings.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.deps.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.staticwebassets.runtime.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests.deps.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\appsettings.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\appsettings.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.deps.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.staticwebassets.runtime.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests.deps.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\appsettings.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\appsettings.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.deps.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.staticwebassets.runtime.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests.deps.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\appsettings.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\appsettings.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.deps.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.staticwebassets.runtime.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests.deps.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\appsettings.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\Kartverket.Tests.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\Properties\launchSettings.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\Kartverket.Tests.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\package-lock.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\package.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\Debug\net8.0\Kartverket.Tests.sourcelink.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\Kartverket.Tests.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\Properties\launchSettings.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\Kartverket.Tests.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\package-lock.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\package.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\Debug\net8.0\Kartverket.Tests.sourcelink.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\Kartverket.Tests.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\Properties\launchSettings.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\Kartverket.Tests.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\package-lock.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\bin\Debug\net8.0\package.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\Debug\net8.0\Kartverket.Tests.sourcelink.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\Kartverket.Tests.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\Properties\launchSettings.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\Kartverket.Tests.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\Kartverket.Tests\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\package-lock.json" />
+    <_ContentIncludedByDefault Remove="Kartverket.Tests\bin\Debug\net8.0\package.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\icons\" />
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+</Project>

@@ -28,7 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Kartverket.csproj" />
+      <ProjectReference Include="..\Kartverket\Kartverket.csproj" />
     </ItemGroup>
 
 </Project>
