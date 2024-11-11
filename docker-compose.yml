@@ -3,6 +3,11 @@ services:
     image: mariadb:11.5.2
     restart: unless-stopped
     command: --wait-timeout=28800
+    healthcheck:
+      test: [ "CMD", "mariadb-admin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
       - "3307:3306"
     environment:
@@ -15,7 +20,8 @@ services:
       - db:/var/lib/mariadb
   kartverket:
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "8080:8080"
       - "8081:8081"
