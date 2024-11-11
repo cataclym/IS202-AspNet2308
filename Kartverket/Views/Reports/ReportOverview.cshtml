@@ -71,7 +71,7 @@ else
                 }
                 else
                 {
-                    <a href="#" onclick="toggleFilter('dato', this)" class="dropdown-btn-a">
+                    <a href="#" onclick="sortTable('3', this)" class="dropdown-btn-a">
                         Dato
                         <span class="checkmark-icon" style="display: none;">
                             <i class="bi bi-check-circle"></i>
@@ -180,13 +180,6 @@ window.onclick = function(event) {
     }
 };
 
-    // Helper function to remove active-filter class from all filter options
-    function clearActiveFilters() {
-        const options = document.querySelectorAll('.dropdown-content a');
-        options.forEach(option => option.classList.remove('active-filter'));
-    }
-
-
     // Sort table by a specific column
     let currentSortOrder = { column: -1, order: 'asc' };
 
@@ -194,6 +187,10 @@ window.onclick = function(event) {
         const isAdmin = @Model.User.IsAdmin.ToString().ToLower();
         const table = isAdmin ? document.querySelector('#admin-table tbody') : document.querySelector('#user-table tbody');
         if (!table) return;
+
+            // Bestem riktig kolonne for dato avhengig av brukertype
+            const dateColumnIndex = isAdmin === 'true' ? 4 : 3; // 4 for admin, 3 for bruker
+
 
     // Toggle sort order
     if (currentSortOrder.column === columnIndex) {
@@ -216,11 +213,22 @@ window.onclick = function(event) {
                 // If both are pinned or both are not pinned, apply column-specific sorting
                 let comparison = 0;
 
-                // Custom sorting for specific columns (e.g., Brukernavn for Admins)
-                if (columnIndex === 2 && isAdmin === 'true') {
-                    const cellA = rowA.cells[columnIndex].innerText.trim().toLowerCase();
-                    const cellB = rowB.cells[columnIndex].innerText.trim().toLowerCase();
-                    comparison = cellA.localeCompare(cellB);
+                // Hvis vi sorterer etter dato
+                if (columnIndex === dateColumnIndex) {
+                    const dateA = new Date(rowA.cells[dateColumnIndex].dataset.createdAt);
+                    const dateB = new Date(rowB.cells[dateColumnIndex].dataset.createdAt);
+
+                    // Håndter tilfeller med ugyldige datoer
+                    if (isNaN(dateA) || isNaN(dateB)) {
+                        console.warn("Ugyldig dato funnet i en rad. Kontrollér datoformatet.");
+                        return 0;
+                    }
+
+                    // Sammenlign datoene
+                    comparison = dateA - dateB;  // Sorter etter dato
+
+
+
                 } else {
                     const cellA = rowA.cells[columnIndex].innerText.trim().toLowerCase();
                     const cellB = rowB.cells[columnIndex].innerText.trim().toLowerCase();
@@ -281,25 +289,33 @@ function filterTable() {
     });
 }
 
-    // Reset filters
+
     function resetFilters() {
-    // Fjern alle elementer fra valgt sett
-    selectedFilters.clear();
-    selectedSorts.clear();
+        // Fjern alle elementer fra valgt sett
+        selectedFilters.clear();
+        selectedSorts.clear();
 
-    // Skjul alle checkmark-ikoner
-    const checkmarkIcons = document.querySelectorAll('.checkmark-icon');
-    checkmarkIcons.forEach(icon => {
-        icon.style.display = 'none';
-    });
 
-    // Oppdater tabellen for � vise alle rader
-    filterTable();
+        // Skjul alle checkmark-ikoner
+        const checkmarkIcons = document.querySelectorAll('.checkmark-icon');
+        checkmarkIcons.forEach(icon => {
+            icon.style.display = 'none';
+        });
+
+        // Clear active filter class from dropdown items
+        clearActiveFilters();
+
+        // Oppdater tabellen for � vise alle rader
+        filterTable();
+
+        // Reset table sorting (fjern sortering)
+        resetTableSorting();
 }
 
 
-                // Helper function to remove 'active-filter' class from all filter options
-  function clearActiveFilters() {
+
+        // Helper function to remove 'active-filter' class from all filter options
+function clearActiveFilters() {
             const options = document.querySelectorAll('.dropdown-content a');
             options.forEach(option => option.classList.remove('active-filter'));
         }
@@ -308,6 +324,7 @@ function filterTable() {
        // Funksjon for � vise/hide avhukingsmerke og h�ndtere filtrering
         let selectedFilters = new Set();
         let selectedSorts = new Map();
+
 
 // Universell toggle-funksjon som h�ndterer b�de status og sortering (dato og brukernavn)
 function toggleFilter(filterType, element) {
