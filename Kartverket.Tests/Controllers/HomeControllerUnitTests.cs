@@ -54,7 +54,7 @@ public class HomeControllerUnitTests
         var mockLogger = Substitute.For<ILogger<HomeController>>();
 
         // Returner homecontroller med substituerte parametere i konstruktøren
-        var homeController = new HomeController(null, mockLogger, null, null);
+        var homeController = new HomeController(null!, mockLogger, null!, null!);
         homeController.ControllerContext.HttpContext = new DefaultHttpContext();
         return homeController;
     }

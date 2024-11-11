@@ -1,136 +1,121 @@
-using Newtonsoft.Json.Linq;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Kartverket.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
+namespace Kartverket.Services;
 
-namespace Kartverket.Services
+public class GeoJsonService
 {
-    public class GeoJsonService
+    private readonly ILogger<GeoJsonService> _logger;
+
+    public GeoJsonService(ILogger<GeoJsonService> logger)
     {
-        private readonly ILogger<GeoJsonService> _logger;
+        _logger = logger;
+    }
 
-        public GeoJsonService(ILogger<GeoJsonService> logger)
+    public string ConvertGeoJsonToString(string geoJsonString)
+    {
+        if (string.IsNullOrWhiteSpace(geoJsonString)) return "No GeoJSON data available";
+
+        try
         {
-            _logger = logger;
+            var geoJsonObject = JObject.Parse(geoJsonString);
+            var type = geoJsonObject["type"]?.Value<string>();
+
+            switch (type)
+            {
+                case "FeatureCollection":
+                    var features = geoJsonObject["features"] as JArray;
+                    if (features != null)
+                    {
+                        var descriptions = new List<string>();
+                        foreach (var feature in features)
+                        {
+                            var featureDescription = ProcessFeature(feature as JObject);
+                            if (!string.IsNullOrEmpty(featureDescription)) descriptions.Add(featureDescription);
+                        }
+
+                        return string.Join("\n", descriptions);
+                    }
+
+                    break;
+
+                case "Feature":
+                    return ProcessFeature(geoJsonObject);
+
+                default:
+                    return "Unsupported GeoJSON type at root";
+            }
+        }
+        catch (JsonReaderException ex)
+        {
+            _logger.LogError("Invalid GeoJSON format: {Message}", ex.Message);
+            return "Invalid GeoJSON data";
         }
 
-        public string ConvertGeoJsonToString(string geoJsonString)
+        return "Unknown GeoJSON format";
+    }
+
+    private string ProcessFeature(JObject? feature)
+    {
+        if (feature == null) return null;
+
+        var geometry = feature.ToObject<Feature>()?.geometry;
+
+        if (geometry == null) return "Unknown geometry in feature";
+
+        var geomType = geometry.type;
+        var coordinates = geometry.coordinates;
+
+        if (coordinates == null) return "Unknown geometry in feature";
+
+        switch (geomType)
         {
-            if (string.IsNullOrWhiteSpace(geoJsonString))
+            case "Point":
             {
-                return "No GeoJSON data available";
-            }
-
-            try
-            {
-                var geoJsonObject = JObject.Parse(geoJsonString);
-                string type = geoJsonObject["type"]?.ToString();
-
-                switch (type)
+                var points = coordinates.FirstOrDefault()?.FirstOrDefault();
+                if (points != null)
                 {
-                    case "FeatureCollection":
-                        var features = geoJsonObject["features"] as JArray;
-                        if (features != null)
-                        {
-                            var descriptions = new List<string>();
-                            foreach (var feature in features)
-                            {
-                                var featureDescription = ProcessFeature(feature as JObject);
-                                if (!string.IsNullOrEmpty(featureDescription))
-                                {
-                                    descriptions.Add(featureDescription);
-                                }
-                            }
-                            return string.Join("\n", descriptions);
-                        }
-                        break;
-
-                    case "Feature":
-                        return ProcessFeature(geoJsonObject);
-
-                    default:
-                        return "Unsupported GeoJSON type at root";
+                    var longitude = points[0];
+                    var latitude = points[1];
+                    return $"Point at Latitude: {latitude}, Longitude: {longitude}";
                 }
-            }
-            catch (JsonReaderException ex)
-            {
-                _logger.LogError("Invalid GeoJSON format: {message}", ex.Message);
-                return "Invalid GeoJSON data";
+                break;
             }
 
-            return "Unknown GeoJSON format";
+            case "LineString":
+            {
+                var points = coordinates.Select(coord => $"({coord[1]}, {coord[0]})");
+                return "Line through points: " + string.Join(" -> ", points);
+            }
+
+            case "Polygon":
+                var rings = coordinates.First();
+                var polygonPoints = rings.Select(coord => $"({coord[1]}, {coord[0]})");
+                return "Polygon with vertices: " + string.Join(", ", polygonPoints);
+                break;
+
+            default:
+                return "Unsupported geometry type in feature";
         }
 
-        private string ProcessFeature(JObject feature)
+        return "Unknown geometry in feature";
+    }
+    
+    public MapLayersModel? GetGeoJson(string geoJson)
+    {
+        try
         {
-            if (feature == null)
-            {
-                return null;
-            }
+            var obj = JsonConvert.DeserializeObject<MapLayersModel>(geoJson);
 
-            var geometry = feature["geometry"] as JObject;
-            if (geometry != null)
-            {
-                string geomType = geometry["type"]?.ToString();
-                var coordinates = geometry["coordinates"] as JArray;
-
-                switch (geomType)
-                {
-                    case "Point":
-                        if (coordinates != null && coordinates.Count == 2)
-                        {
-                            double longitude = (double)coordinates[0];
-                            double latitude = (double)coordinates[1];
-                            return $"Point at Latitude: {latitude}, Longitude: {longitude}";
-                        }
-                        break;
-
-                    case "LineString":
-                        if (coordinates != null)
-                        {
-                            var points = coordinates.Select(coord => $"({coord[1]}, {coord[0]})");
-                            return "Line through points: " + string.Join(" -> ", points);
-                        }
-                        break;
-
-                    case "Polygon":
-                        if (coordinates != null)
-                        {
-                            var rings = coordinates.First() as JArray;
-                            if (rings != null)
-                            {
-                                var points = rings.Select(coord => $"({coord[1]}, {coord[0]})");
-                                return "Polygon with vertices: " + string.Join(", ", points);
-                            }
-                        }
-                        break;
-
-                    default:
-                        return "Unsupported geometry type in feature";
-                }
-            }
-
-            return "Unknown geometry in feature";
+            if (obj?.features?.Count > 0) return obj;
         }
-        public MapLayersModel? GetGeoJson(string geojson)
-        {   
-            try
-            {
-                var obj = JsonConvert.DeserializeObject<MapLayersModel>(geojson);
-
-                if (obj?.features?.Count > 0) return obj;
-            }
-            catch (JsonException ex)
-            {
-                _logger.LogError("Deserialization failed: {message}", ex.Message);
-                return null;
-            }
-
+        catch (JsonException ex)
+        {
+            _logger.LogError("Deserialization failed: {message}", ex.Message);
             return null;
         }
+
+        return null;
     }
 }

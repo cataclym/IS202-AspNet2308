@@ -67,9 +67,7 @@
             <div class="center-horizontal">
                 <button type="button" class="submit-btn" onclick="submitForm()">Send inn <i class="bi bi-send"></i></button>
             </div>
-            
         </form>
-
     </div>
 </div>
 
@@ -216,17 +214,25 @@
             }
 
             // Create a GeoJSON object for map data
-            const geojson = {
+            const geoJson = {
                 type: "FeatureCollection",
-                features: layers.map(layer => layer.toGeoJSON())
+                features: layers.map(layer => {
+                    const geoJson = layer.toGeoJSON();
+                    if (geoJson.geometry.type === "Point") {
+                        const coordinates = geoJson.geometry.coordinates;
+                        // Gjør om Point typer til riktig model i controller
+                        geoJson.geometry.coordinates = [[coordinates]];
+                    }
+                    return geoJson;
+                }),
             };
 
             // Debugging: Log the GeoJSON data
-            console.log("GeoJSON data being submitted:", JSON.stringify(geojson));
+            console.log("GeoJSON data being submitted:", JSON.stringify(geoJson));
 
             // Store the GeoJSON data in the hidden input field
             const koordinater = document.getElementById("Koordinater");
-            koordinater.value = JSON.stringify(geojson);
+            koordinater.value = JSON.stringify(geoJson);
 
             const meldingsBoks = document.getElementById("meldingsBoks");
 
@@ -248,7 +254,7 @@
 
         @if (isEdit && !string.IsNullOrEmpty(Model.GeoJsonString))
         {
-        <text>
+            <text>
         const existingGeoJson = @Html.Raw(Json.Serialize(Model.GeoJsonString));
         if (existingGeoJson) {
             const geojson = JSON.parse(existingGeoJson);
