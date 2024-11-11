@@ -24,7 +24,7 @@ public class Program
         // Konfigurer ApplicationDbContext her              
         Builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseMySql(Builder.Configuration.GetConnectionString("DefaultConnection"),
-                new MariaDbServerVersion(new Version(11, 5, 2)))); // Bytt til vår versjon av MySQL
+                new MariaDbServerVersion(new Version(11, 5, 2))));
         
         // Registrer IUserService og UserService
         Builder.Services.AddScoped<IUserService, UserService>();

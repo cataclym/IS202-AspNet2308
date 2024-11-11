@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kartverket", "Kartverket.csproj", "{2EAFB9E8-9E28-4360-983D-09CC1E8DAAA0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kartverket", "Kartverket\Kartverket.csproj", "{2EAFB9E8-9E28-4360-983D-09CC1E8DAAA0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kartverket.Tests", "Kartverket.Tests\Kartverket.Tests.csproj", "{20CF43C5-D20D-42CF-BFF5-37EE5885F58E}"
 EndProject
