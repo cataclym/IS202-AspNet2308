@@ -1,0 +1,182 @@
+.report-view {
+
+    report-container-user {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        padding: 2rem;
+    }
+
+    .card-reportview {
+        background-color: #f9f9f9;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .reportstats-container {
+        background-color: #f9e8d2;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        max-width: 750px;
+        flex: 1;
+    }
+
+    /* Generell styling for chatboksen */
+    .chat-history {
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+        width: 100%;
+        max-width: 1000px !important;
+        margin: 0 auto;
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+
+    .chat-history h3 {
+        margin-top: 0;
+        font-size: 1.2rem;
+        font-weight: normal;
+        color: #333;
+    }
+
+    .chat-history p {
+        margin: 10px 0;
+        color: #333;
+        font-weight: bold;
+    }
+    /* Styling for samtalestart-meldingen */
+    .chat-history p:first-of-type {
+        font-weight: normal;
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 15px;
+    }
+    /* Meldingsboblen */
+    .chat-message {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 10px;
+        text-align: left;
+        max-width: 90%;
+        margin: 10px auto;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        height: 250px;
+        overflow-y: scroll;
+    }
+
+    #message {
+        font-weight: lighter !important;
+    }
+
+    .chat-message p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #333;
+    }
+    /* Brukernavn-styling */
+    .chat-message p:first-child {
+        font-weight: bold;
+        color: #666;
+        margin-bottom: 5px;
+    }
+    /* Meldingsboks nederst */
+    .chat-input {
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+        gap: 5px;
+        padding-top: 10px;
+    }
+
+    .chat-input input[type="text"] {
+        flex: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .chat-input button {
+        padding: 8px 12px;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    //Edit report button
+    .edit-report-button-container {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    .edit-report-button {
+        width: 320px;
+        height: 90px;
+        padding: 15px 20px 15px 20px;
+        border: 4px solid #006F35;
+        background-color: #FFFFFF;
+        font-size: 35px;
+        font-weight: 500;
+        border-radius: 20px;
+        color: #006F35;
+        transition: all 0.1s ease;
+        text-decoration: none;
+    }
+
+    .edit-report-button:hover {
+        background-color: #006F35;
+        color: #fff;
+    }
+
+    .report-container-user {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        padding: 2rem;
+    }
+
+    .delete-btn-container {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        padding-right: 75px;
+    }
+
+    .delete-btn-user {
+        width: 320px;
+        height: 60px;
+        padding: 10px 30px;
+        border: 4px solid #D9534F;
+        border-radius: 20px;
+        font-size: 25px;
+        font-weight: 500;
+        background-color: #FFFFFF;
+        color: #D9534F;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.2s ease; /* Smooth transition for hover */
+    }
+
+    .delete-btn-user:hover {
+        background-color: #D9534F; /* Red background on hover */
+        color: #fff; /* White text color on hover */
+        border-color: #D9534F; /* Ensures border remains the same color */
+    }
+}
