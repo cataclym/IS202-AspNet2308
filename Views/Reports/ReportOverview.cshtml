@@ -6,7 +6,7 @@
 <head>
     <!-- Include any other necessary scripts or styles -->
     <!-- Include Bootstrap CSS and JS for Toasts -->
-
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -293,7 +293,7 @@ function filterTable() {
         icon.style.display = 'none';
     });
 
-    // Oppdater tabellen for å vise alle rader
+    // Oppdater tabellen for ï¿½ vise alle rader
     filterTable();
 }
 
@@ -305,11 +305,11 @@ function filterTable() {
         }
 
 
-       // Funksjon for å vise/hide avhukingsmerke og håndtere filtrering
+       // Funksjon for ï¿½ vise/hide avhukingsmerke og hï¿½ndtere filtrering
         let selectedFilters = new Set();
         let selectedSorts = new Map();
 
-// Universell toggle-funksjon som håndterer både status og sortering (dato og brukernavn)
+// Universell toggle-funksjon som hï¿½ndterer bï¿½de status og sortering (dato og brukernavn)
 function toggleFilter(filterType, element) {
     const isSelected = selectedFilters.has(filterType);
 
@@ -326,7 +326,7 @@ function toggleFilter(filterType, element) {
         checkmarkIcon.style.display = isSelected ? 'none' : 'inline';
     }
 
-    // Filtrer tabellen basert på aktive valg
+    // Filtrer tabellen basert pï¿½ aktive valg
     filterTable();
 }
 

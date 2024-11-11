@@ -522,8 +522,18 @@ input[type=checkbox] {
   margin-bottom: 30px;
 }
 
-.styledMap-report {
-  display: flex;
+.styledMap-success {
+  border-radius: 10px;
+  border: 1px solid black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  height: 300px;
+  width: 750px;
+}
+
+.styledMap-adminreport {
   border-radius: 10px;
   border: 1px solid black;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
