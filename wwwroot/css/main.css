@@ -1080,7 +1080,7 @@ input[type=checkbox] {
   background-color: #1B589F;
 }
 
-.admin-report-view {
+.report-view {
   background: linear-gradient(to bottom, #ffffff 15%, #f8fdf5 85%);
   min-height: 100vh; /* Ensures the gradient covers the full viewport height */
   padding: 0;
@@ -1096,45 +1096,45 @@ input[type=checkbox] {
   /* Styling for knappene inni dropdown */
   /* Hover-effekt for knappene */
 }
-.admin-report-view .report-container {
+.report-view .report-container {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 2rem;
   padding: 2rem;
 }
-.admin-report-view .card {
+.report-view .card {
   background-color: #f9f9f9;
   padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 @media (max-width: 768px) {
-  .admin-report-view .container {
+  .report-view .container {
     grid-template-columns: 1fr; /* Stack columns on smaller screens */
   }
 }
-.admin-report-view .left-column {
+.report-view .left-column {
   flex: 1;
   display: flex; /* Enable Flexbox */
   align-items: flex-start;
   flex-direction: column; /* Stack children vertically */
   gap: 20px; /* Optional: Add space between the elements */
 }
-.admin-report-view .right-column {
+.report-view .right-column {
   flex: 1;
   display: flex; /* Enable Flexbox */
   align-items: flex-start;
   flex-direction: column; /* Stack children vertically */
   gap: 20px; /* Optional: Add space between the elements */
 }
-.admin-report-view .report-container {
+.report-view .report-container {
   display: flex;
   gap: 20px;
   max-width: 1500px;
   margin: 0 auto;
   padding: 20px;
 }
-.admin-report-view .reportstats-container {
+.report-view .reportstats-container {
   background-color: #f9e8d2;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -1142,19 +1142,19 @@ input[type=checkbox] {
   max-width: 750px;
   flex: 1;
 }
-.admin-report-view .report-title {
+.report-view .report-title {
   font-size: 56px;
   font-weight: bold;
   color: #008540;
   text-align: center;
   margin-bottom: 20px;
 }
-.admin-report-view .edit-btn-container {
+.report-view .edit-btn-container {
   display: flex; /* Enables flexbox */
   justify-content: flex-end; /* Aligns content to the right */
   padding: 10px; /* Optional: add some padding */
 }
-.admin-report-view .chat-history {
+.report-view .chat-history {
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 15px;
@@ -1166,24 +1166,24 @@ input[type=checkbox] {
   text-align: center;
   font-family: Arial, sans-serif;
 }
-.admin-report-view .chat-history h3 {
+.report-view .chat-history h3 {
   margin-top: 0;
   font-size: 1.2rem;
   font-weight: normal;
   color: #333;
 }
-.admin-report-view .chat-history p {
+.report-view .chat-history p {
   margin: 10px 0;
   color: #333;
   font-weight: bold;
 }
-.admin-report-view .chat-history p:first-of-type {
+.report-view .chat-history p:first-of-type {
   font-weight: normal;
   font-size: 0.9rem;
   color: #666;
   margin-bottom: 15px;
 }
-.admin-report-view .chat-message {
+.report-view .chat-message {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -1195,27 +1195,27 @@ input[type=checkbox] {
   height: 250px;
   overflow-y: scroll;
 }
-.admin-report-view #message {
+.report-view #message {
   font-weight: lighter !important;
 }
-.admin-report-view .chat-message p {
+.report-view .chat-message p {
   margin: 0;
   font-size: 0.9rem;
   color: #333;
 }
-.admin-report-view .chat-message p:first-child {
+.report-view .chat-message p:first-child {
   font-weight: bold;
   color: #666;
   margin-bottom: 5px;
 }
-.admin-report-view .chat-input {
+.report-view .chat-input {
   display: flex;
   align-items: center;
   margin-top: 15px;
   gap: 5px;
   padding-top: 10px;
 }
-.admin-report-view .chat-input input[type=text] {
+.report-view .chat-input input[type=text] {
   flex: 1;
   padding: 8px 12px;
   border: 1px solid #ddd;
@@ -1223,7 +1223,7 @@ input[type=checkbox] {
   font-size: 0.9rem;
   box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
-.admin-report-view .chat-input button {
+.report-view .chat-input button {
   padding: 8px 12px;
   border: none;
   background-color: #007bff;
@@ -1236,12 +1236,12 @@ input[type=checkbox] {
   justify-content: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-.admin-report-view .status-dropdown {
+.report-view .status-dropdown {
   position: relative;
   display: inline-block;
   width: 100%;
 }
-.admin-report-view .dropdown-btn {
+.report-view .dropdown-btn {
   padding: 10px;
   width: 100%;
   background-color: #e6f4ea;
@@ -1252,7 +1252,7 @@ input[type=checkbox] {
   cursor: pointer;
   text-align: center;
 }
-.admin-report-view .dropdown-btn-a {
+.report-view .dropdown-btn-a {
   padding: 10px;
   width: 100%;
   background-color: #e6f4ea;
@@ -1263,11 +1263,11 @@ input[type=checkbox] {
   cursor: pointer;
   text-align: center;
 }
-.admin-report-view .dropdown-btn:hover {
+.report-view .dropdown-btn:hover {
   background-color: #d4ebdc; /* Litt mørkere grønn ved hover */
   border-color: #1e8c34;
 }
-.admin-report-view .dropdown-content {
+.report-view .dropdown-content {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
@@ -1278,7 +1278,7 @@ input[type=checkbox] {
   margin-top: 5px;
   overflow: hidden;
 }
-.admin-report-view .dropdown-content .dropdown-btn-a {
+.report-view .dropdown-content .dropdown-btn-a {
   display: block;
   width: 100%;
   padding: 12px 0;
@@ -1292,10 +1292,10 @@ input[type=checkbox] {
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
 }
-.admin-report-view .dropdown-content .dropdown-btn-a:last-child {
+.report-view .dropdown-content .dropdown-btn-a:last-child {
   border-bottom: none; /* Fjerner skillelinje fra siste element */
 }
-.admin-report-view .dropdown-content .dropdown-btn-a:hover {
+.report-view .dropdown-content .dropdown-btn-a:hover {
   background-color: #d4ebdc; /* Litt mørkere grønn ved hover */
   color: #1e8c34;
 }
