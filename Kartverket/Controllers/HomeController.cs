@@ -91,7 +91,17 @@ public class HomeController: Controller
             Email = user.Email,
             Phone = user.Phone
         };
+        
+        if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            // Hent brukerinformasjon hvis nødvendig
+            var isAdmin = User.IsInRole("Admin");
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            if (isAdmin)
+                return RedirectToAction("AdminDashboard", "Home");
+        }
+        
         // Sender modellen til viewet
         return View(model);
     }

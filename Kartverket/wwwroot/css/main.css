@@ -1481,9 +1481,9 @@ input[type=checkbox] {
 .MyPage .mypage-title {
   font-size: 56px;
   font-weight: bold;
-  color: #008540;
+  color: black;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 3rem;
 }
 .MyPage .meld-feil-btn {
   width: 470px;
@@ -1588,9 +1588,9 @@ input[type=checkbox] {
 .AdminDash .admin-title {
   font-size: 56px;
   font-weight: bold;
-  color: #008540;
+  color: black;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 4rem;
 }
 @keyframes slideInFromLeft {
   from {
@@ -1696,18 +1696,8 @@ input[type=checkbox] {
   position: relative; /* Set to relative to control stacking context */
 }
 
-.background-image2 {
-  background-image: url("../images/cena.jpg");
-  background-size: cover;
-  background-position: top 70px center;
-  background-repeat: no-repeat;
-  height: 100vh; /* Ensure it covers the full viewport height */
-  position: relative; /* Set to relative to control stacking context */
-  z-index: 1; /* Background layer */
-}
-
 .white-box {
-  background-color: white;
+  background-color: #F5F1F2;
   width: 100%;
   padding: 40px;
   position: absolute;

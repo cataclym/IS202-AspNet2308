@@ -7,18 +7,8 @@
   position: relative; /* Set to relative to control stacking context */
 }
 
-.background-image2 {
-  background-image: url("../images/cena.jpg");
-  background-size: cover;
-  background-position: top 70px center;
-  background-repeat: no-repeat;
-  height: 100vh; /* Ensure it covers the full viewport height */
-  position: relative; /* Set to relative to control stacking context */
-  z-index: 1; /* Background layer */
-}
-
 .white-box {
-  background-color: white;
+  background-color: #F5F1F2;
   width: 100%;
   padding: 40px;
   position: absolute;
