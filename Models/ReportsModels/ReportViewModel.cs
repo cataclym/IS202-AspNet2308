@@ -10,9 +10,7 @@ public class ReportViewModel
     public int ReportId { get; set; }
     public int UserId { get; set; }
     public string? Coordinates { get; set; }
-
-
-
+    
     [Required]
     [MinLength(5, ErrorMessage = "Meldingen må være minst 5 tegn lang.")]
     [MaxLength(256)]

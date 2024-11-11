@@ -46,5 +46,4 @@ public class UserRegistrationModel
             // Kopiere eller tilordne andre nødvendige egenskaper her
         };
     }
-
 }
