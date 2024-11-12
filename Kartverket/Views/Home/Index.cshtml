@@ -1,27 +1,60 @@
+@model Kartverket.Models.MyPageModel
+
 <body class="background-image">
 
 <div class="title-container">
-<div class="text-center">
-    <h1 class="title-text"><b>MELD INN FEIL TIL KARTVERKET</b></h1>
-</div>
-</div>
+    <div class="text-center">
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <h1 class="title-text"><b>Velkommen tilbake, @User.Identity.Name!</b></h1>
 
-<div class="btn-container-index">
-    <div class="btn-container">
-        <form asp-action="Login" asp-controller="Account" method="get" class="flex-grow-1">
-            <button type="submit" class="btn-index btn-primary m-auto">Logg inn
-                <i class="bi bi-box-arrow-in-right"></i>
-            </button>
-        </form>
+        }
+        else
+        { 
+            <h1 class="title-text"><b>MELD INN FEIL TIL KARTVERKET</b></h1>
 
-        <!-- Registration-form -->
-        <form asp-action="UserRegistration" asp-controller="Account" method="get" class="flex-grow-1">
-            <button type="submit" class="btn-index btn-primary m-auto">Registrer deg
-                <i class="bi bi-pencil-square"></i>
-            </button>
-        </form>
+        }
     </div>
 </div>
+
+
+@if (User.Identity != null && User.Identity.IsAuthenticated)
+{
+    <div class="btn-container-index">
+        <div class="btn-container">
+            <form asp-action="MyPage" asp-controller="Home" method="get" class="flex-grow-1">
+                <button type="submit" class="btn-index btn-primary m-auto">Min Side
+                    <i class="bi bi-box-arrow-in-right"></i>
+                </button>
+            </form>
+
+            <!-- Registration-form -->
+            <form asp-action="Logout" asp-controller="Account" method="get" class="flex-grow-1">
+                <button type="submit" class="btn-index btn-primary m-auto">Logg ut <i class=" bi bi-box-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="btn-container-index">
+        <div class="btn-container">
+            <form asp-action="Login" asp-controller="Account" method="get" class="flex-grow-1">
+                <button type="submit" class="btn-index btn-primary m-auto">Logg inn
+                    <i class="bi bi-box-arrow-in-right"></i>
+                </button>
+            </form>
+
+            <!-- Registration-form -->
+            <form asp-action="UserRegistration" asp-controller="Account" method="get" class="flex-grow-1">
+                <button type="submit" class="btn-index btn-primary m-auto">Registrer deg
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+}
 
 <!-- White Box Section -->
 <div class="white-box">
