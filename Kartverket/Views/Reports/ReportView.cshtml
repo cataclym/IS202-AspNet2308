@@ -14,7 +14,7 @@
 }
 else
 {
-<h2 class="display-4 center-horizontal">Rapport detaljer</h2>
+<h2 class="display-4 center-horizontal">Rapport-detaljer</h2>
 }
 
 
@@ -24,7 +24,7 @@ else
     <div class="left-column-reportview card-reportview">
         <div id="map" class="styledMap-adminreport"></div>
         <div class="reportstats-container">
-            <p><strong>Oprettet:</strong> @Model.CreatedAt</p>
+            <p><strong>Opprettet:</strong> @Model.CreatedAt</p>
             <p><strong>Beskrivelse:</strong> @Model.FirstMessage</p>
             <p><strong>Fylke:</strong> @Model.MunicipalityInfo?.fylkesnavn</p>
             <p><strong>Kommune:</strong> @Model.MunicipalityInfo?.kommunenavn</p>
@@ -36,7 +36,7 @@ else
         <p class="center-horizontal"><strong>Status:</strong> @Model.Status</p>
 
             <div class="chat-history">
-                <h3>Chat Historikk</h3>
+                <h3>Chat-historikk</h3>
                 <p>Samtale startet @Model.CreatedAt</p>
                 <div class="chat-message">
                     @foreach (var message in Model.Messages)

@@ -16,22 +16,22 @@
 
     <form asp-action="UserRegistration" method="post" class="register-form">
         <div class="form-group register-form">
-            <label asp-for="Username" class="registration-label">Brukernavn:</label>
+            <label asp-for="Username" class="registration-label">Brukernavn</label>
             <input asp-for="Username"/>
         </div>
         
         <div class="form-group">
-            <label asp-for="Email">E-post:</label>
+            <label asp-for="Email">E-post</label>
             <input asp-for="Email" class="register-form" required placeholder="Skriv e-postadressen din"/>
         </div>
 
         <div class="form-group">
-            <label asp-for="Phone">Telefonnummer:</label>
+            <label asp-for="Phone">Telefonnummer</label>
             <input asp-for="Phone" class="register-form" type="tel" pattern="[0-9]*"/>
         </div>
 
         <div class="form-group">
-            <label asp-for="Password">Passord:</label>
+            <label asp-for="Password">Passord</label>
             <div class="password-wrapper">
                 <input asp-for="Password" type="password" id="Password"/>
                @*  <span id="togglePassword" class="password-toggle">
