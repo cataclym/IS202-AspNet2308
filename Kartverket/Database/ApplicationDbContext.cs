@@ -34,8 +34,10 @@ public class ApplicationDbContext : DbContext
             .WithMany(u => u.Messages)
             .HasForeignKey(m => m.UserId);
         
+        // Composite primary key
         modelBuilder.Entity<PinnedReport>()
-            .HasKey(pr => new { pr.UserID, pr.ReportID });  // Composite primary key
+            .HasKey(pr => new { pr.UserID, pr.ReportID });  
+
         modelBuilder.Entity<PinnedReport>()
             .HasOne(pr => pr.User)
             .WithMany(u => u.PinnedReports)
@@ -46,5 +48,18 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(pr => pr.ReportID);
         
         base.OnModelCreating(modelBuilder);
+        
+        // Definerer MySQL til å bruke CURRENT_TIMESTAMP på databasenivå
+        modelBuilder.Entity<Users>()
+            .Property(e => e.CreatedAt)
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
+        
+        modelBuilder.Entity<Reports>()
+            .Property(e => e.CreatedAt)
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
+        
+        modelBuilder.Entity<Messages>()
+            .Property(e => e.CreatedAt)
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
     }
 }

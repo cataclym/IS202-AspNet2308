@@ -16,7 +16,7 @@ public sealed class Reports
     [MaxLength(2000)]
     public string GeoJsonString { get; set; }
     public Status Status { get; set; } = Status.Ubehandlet;
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; }
     public DateTime? ResolvedAt { get; set; }
     // Referrer til Messages tabell
     public ICollection<Messages> Messages { get; set; } = new List<Messages>();

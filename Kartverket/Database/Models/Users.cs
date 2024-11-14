@@ -17,7 +17,7 @@ public class Users
     [MaxLength(15)] // Valgfritt felt
     public string? Phone { get; set; }
     public bool IsAdmin { get; set; } = false;
-    public DateTime CreatedAt { get; set; }  = DateTime.Now;
+    public DateTime CreatedAt { get; set; }
     
     public ICollection<Messages> Messages { get; set; } = new List<Messages>();
     

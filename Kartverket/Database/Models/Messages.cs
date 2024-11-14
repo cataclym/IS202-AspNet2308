@@ -12,7 +12,7 @@ public class Messages
     [MaxLength(256)]
     public string Message { get; set; } // MinLength fungerer kun på strenger, arrays, eller samlinger
     
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; }
     
     // Foreign key property
     public int UserId { get; set; }
