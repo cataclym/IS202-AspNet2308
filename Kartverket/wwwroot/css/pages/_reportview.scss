@@ -116,11 +116,13 @@
         justify-content: center;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
+    
     //Edit report button
     .edit-report-button-container {
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         width: 100%;
+        margin-top: 1.5rem;
     }
 
     .edit-report-button {
@@ -148,35 +150,5 @@
         gap: 2rem;
         padding: 2rem;
     }
-
-    .delete-btn-container {
-        display: flex;
-        justify-content: flex-end;
-        width: 100%;
-        padding-right: 75px;
-    }
-
-    .delete-btn-user {
-        width: 320px;
-        height: 60px;
-        padding: 10px 30px;
-        border: 4px solid #D9534F;
-        border-radius: 20px;
-        font-size: 25px;
-        font-weight: 500;
-        background-color: #FFFFFF;
-        color: #D9534F;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        transition: all 0.2s ease; /* Smooth transition for hover */
-    }
-
-    .delete-btn-user:hover {
-        background-color: #D9534F; /* Red background on hover */
-        color: #fff; /* White text color on hover */
-        border-color: #D9534F; /* Ensures border remains the same color */
-    }
+    
 }

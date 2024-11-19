@@ -1,4 +1,4 @@
-@model Kartverket.Models.ReportViewModel
+﻿@model Kartverket.Models.ReportViewModel
 @{
 ViewData["Title"] = "Registrert rapport";
 var municipalityCountyNames = (MunicipalityCountyNames?) ViewData["MunicipalityInfo"];
@@ -24,31 +24,27 @@ var municipalityCountyNames = (MunicipalityCountyNames?) ViewData["MunicipalityI
                 <i class="bi bi-box-arrow-in-down"></i></a>
         </div>
         }
-
-        <div class="report-container">
-            <!-- Left Column: Map and Report Details -->
-            <div class="left-column">
-                <div id="map" class="styledMap-adminreport"></div>
-                
-                <div class="reportstats-container">
-                    @if (Model.IsAdmin)
-                    {
-                    <p><strong>Sendt inn av:</strong> @Model.Username</p>
-                    }
-                    <p><strong>Oprettet:</strong> @Model.CreatedAt</p>
-                    @if (Model.AssignedAdminId != null)
-                    {
-                    <p><strong>Saksbehandler:</strong> @Model.AssignedAdminUsername</p>
-                    <p><strong>Saksbehandler ID:</strong> @Model.AssignedAdminId</p>
-                    }
-                    <p><strong>Beskrivelse:</strong> @Model.FirstMessage</p>
-                    <p><strong>Fylke:</strong> @Model.MunicipalityInfo?.fylkesnavn</p>
-                    <p><strong>Kommune:</strong> @Model.MunicipalityInfo?.kommunenavn</p>
-                    <p><strong>Koordinater:</strong> @Model.Coordinates</p>
-                </div>
-            </div>
+        <div id="map" class="styledMap-adminreport"></div>
+        
+        <div class="reportstats-container">
+            @if (Model.IsAdmin)
+            {
+                <p><strong>Sendt inn av:</strong> @Model.Username</p>
+            }
+            <p><strong>Oprettet:</strong> @Model.CreatedAt</p>
+            @if (Model.AssignedAdminId != null)
+            {
+                <p><strong>Saksbehandler:</strong> @Model.AssignedAdminUsername</p>
+                <p><strong>Saksbehandler ID:</strong> @Model.AssignedAdminId</p>
+            }
+            <p><strong>Beskrivelse:</strong> @Model.FirstMessage</p>
+            <p><strong>Fylke:</strong> @Model.MunicipalityInfo?.fylkesnavn</p>
+            <p><strong>Kommune:</strong> @Model.MunicipalityInfo?.kommunenavn</p>
+            <p><strong>Koordinater:</strong> @Model.Coordinates</p>
         </div>
-    </div>
+        </div>
+    
+    
 
     <!-- Høyre Column: Status Buttons and Chat History -->
     <div class="right-column card">
@@ -87,9 +83,12 @@ var municipalityCountyNames = (MunicipalityCountyNames?) ViewData["MunicipalityI
                 </div>
             </form>
         </div>
-        <div class="center-horizontal">
+        <div class="delete-btn-container">
             <form id="delete-form" asp-action="DeleteConfirmed" asp-route-id="@Model.ReportId" method="post">
-                <button type="button" class="delete-btn" onclick="confirmDelete()">Slett rapport</button>
+                <button type="button" class="delete-btn-user delete-icon" onclick="confirmDelete()">
+                    Slett rapport
+                    <i class="bi bi-trash"></i>
+                </button>
             </form>
         </div>
     </div>

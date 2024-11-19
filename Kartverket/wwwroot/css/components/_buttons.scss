@@ -92,6 +92,37 @@
     cursor: pointer; /* Vis en håndpeker for bedre brukeropplevelse */
 }
 
+.delete-btn-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+.delete-btn-report {
+    width: 320px;
+    height: 60px;
+    padding: 10px 30px;
+    border: 4px solid #D9534F;
+    border-radius: 20px;
+    font-size: 25px;
+    font-weight: 500;
+    background-color: #FFFFFF;
+    color: #D9534F;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.2s ease; /* Smooth transition for hover */
+}
+
+.delete-btn-report:hover {
+    background-color: #D9534F; /* Red background on hover */
+    color: #fff; /* White text color on hover */
+    border-color: #D9534F; /* Ensures border remains the same color */
+}
+
 .btn-changepassword {
     display: flex;
     align-items: center;

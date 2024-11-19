@@ -27,7 +27,6 @@
   .left-column {
     flex: 1;
     display: flex; /* Enable Flexbox */
-    align-items: flex-start;
     flex-direction: column; /* Stack children vertically */
     gap: 20px; /* Optional: Add space between the elements */
   }

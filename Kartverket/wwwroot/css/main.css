@@ -311,6 +311,37 @@ body {
   cursor: pointer; /* Vis en håndpeker for bedre brukeropplevelse */
 }
 
+.delete-btn-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.delete-btn-report {
+  width: 320px;
+  height: 60px;
+  padding: 10px 30px;
+  border: 4px solid #D9534F;
+  border-radius: 20px;
+  font-size: 25px;
+  font-weight: 500;
+  background-color: #FFFFFF;
+  color: #D9534F;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease; /* Smooth transition for hover */
+}
+
+.delete-btn-report:hover {
+  background-color: #D9534F; /* Red background on hover */
+  color: #fff; /* White text color on hover */
+  border-color: #D9534F; /* Ensures border remains the same color */
+}
+
 .btn-changepassword {
   display: flex;
   align-items: center;
@@ -541,7 +572,6 @@ input[type=checkbox] {
   margin-top: 30px;
   margin-bottom: 30px;
   height: 300px;
-  width: 35rem;
 }
 
 .styledMap {
@@ -1116,7 +1146,6 @@ input[type=checkbox] {
 .report-view .left-column {
   flex: 1;
   display: flex; /* Enable Flexbox */
-  align-items: flex-start;
   flex-direction: column; /* Stack children vertically */
   gap: 20px; /* Optional: Add space between the elements */
 }
@@ -1411,8 +1440,9 @@ input[type=checkbox] {
 }
 .report-view .edit-report-button-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   width: 100%;
+  margin-top: 1.5rem;
 }
 .report-view .edit-report-button {
   width: 320px;
@@ -1439,9 +1469,9 @@ input[type=checkbox] {
 }
 .report-view .delete-btn-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   width: 100%;
-  padding-right: 75px;
+  margin-top: 1.5rem;
 }
 .report-view .delete-btn-user {
   width: 320px;
@@ -1483,7 +1513,7 @@ input[type=checkbox] {
   font-weight: bold;
   color: black;
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 .MyPage .meld-feil-btn {
   width: 470px;
