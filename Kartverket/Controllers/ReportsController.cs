@@ -6,11 +6,6 @@ using Kartverket.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Kartverket.Services;
-using Microsoft.AspNetCore.Mvc.Rendering;
-
 
 namespace Kartverket.Controllers;
 

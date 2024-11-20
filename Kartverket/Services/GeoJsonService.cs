@@ -56,7 +56,7 @@ public class GeoJsonService
         return "Unknown GeoJSON format";
     }
 
-    private string ProcessFeature(JObject? feature)
+    private string? ProcessFeature(JObject? feature)
     {
         if (feature == null) return null;
 
@@ -67,34 +67,29 @@ public class GeoJsonService
         var geomType = geometry.type;
         var coordinates = geometry.coordinates;
 
-        if (coordinates == null) return "Unknown geometry in feature";
-
         switch (geomType)
         {
             case "Point":
             {
-                var points = coordinates.FirstOrDefault()?.FirstOrDefault();
-                if (points != null)
-                {
-                    var longitude = points[0];
-                    var latitude = points[1];
-                    return $"Point at Latitude: {latitude}, Longitude: {longitude}";
-                }
-                break;
+                var longitude = coordinates[0];
+                var latitude = coordinates[1];
+                return $"Point at Latitude: {latitude}, Longitude: {longitude}";
             }
-
+            
             case "LineString":
             {
-                var points = coordinates.Select(coord => $"({coord[1]}, {coord[0]})");
+                var points = coordinates.Select(coord => coord is JArray coords ? $"({coords[1]}, {coords[0]})" : null);
                 return "Line through points: " + string.Join(" -> ", points);
             }
-
+            
             case "Polygon":
-                var rings = coordinates.First();
-                var polygonPoints = rings.Select(coord => $"({coord[1]}, {coord[0]})");
-                return "Polygon with vertices: " + string.Join(", ", polygonPoints);
+                if (coordinates.First() is JArray rings)
+                {
+                    var polygonPoints = rings.Select(coord => $"({coord[1]}, {coord[0]})");
+                    return "Polygon with vertices: " + string.Join(", ", polygonPoints);
+                }
                 break;
-
+            
             default:
                 return "Unsupported geometry type in feature";
         }

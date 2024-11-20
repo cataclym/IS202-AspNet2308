@@ -20,8 +20,6 @@ public class HomeControllerUnitTests
         Assert.IsType<ViewResult>(result);
     }
     
-    
-
     [Fact]
     public void Privacy_ReturnsViewResult()
     {
@@ -46,11 +44,8 @@ public class HomeControllerUnitTests
     
     private HomeController GetUnitUnderTest()
     {
-        // Substitutt for logger
-        var mockLogger = Substitute.For<ILogger<HomeController>>();
-
         // Returner homecontroller med substituerte parametere i konstruktøren
-        var homeController = new HomeController(null!, mockLogger, null!, null!);
+        var homeController = new HomeController(null, null);
         homeController.ControllerContext.HttpContext = new DefaultHttpContext();
         return homeController;
     }

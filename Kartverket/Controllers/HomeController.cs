@@ -7,30 +7,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Kartverket.Database.Models;
-using Newtonsoft.Json.Linq;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
-using System.Linq;
-using Kartverket.Services;
 
 namespace Kartverket.Controllers;
 
-public class HomeController: Controller
+public class HomeController : Controller
 {
     private readonly ApplicationDbContext _context;
-    private readonly ILogger<HomeController> _logger;
-    private readonly IMunicipalityService _municipalityService;
     private readonly IUserService _userService;
     
     // Constructor for å injisere ApplicationDbContext
-    public HomeController(ApplicationDbContext context, ILogger<HomeController> logger, IMunicipalityService municipalityService, IUserService userService)
+    public HomeController(ApplicationDbContext context, IUserService userService)
     {
         _context = context;
-        _logger = logger;
-        _municipalityService = municipalityService;
         _userService = userService;
-
     }
     
     public IActionResult Index()

@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = "Registrert rapport";
-    var municipalityCountyNames = (MunicipalityCountyNames?) ViewData["MunicipalityInfo"];
 }
 
 <!DOCTYPE html>
@@ -26,8 +25,11 @@ else
         <div class="reportstats-container">
             <p><strong>Opprettet:</strong> @Model.CreatedAt</p>
             <p><strong>Beskrivelse:</strong> @Model.FirstMessage</p>
-            <p><strong>Fylke:</strong> @Model.MunicipalityInfo?.fylkesnavn</p>
-            <p><strong>Kommune:</strong> @Model.MunicipalityInfo?.kommunenavn</p>
+            @if (Model.MunicipalityInfo != null)
+            {
+                <p><strong>Fylke:</strong> @Model.MunicipalityInfo.fylkesnavn</p>
+                <p><strong>Kommune:</strong> @Model.MunicipalityInfo.kommunenavn</p>
+            }
         </div>
     </div>
 
@@ -100,15 +102,6 @@ else
 
     // Hent GeoJSON Object fra modellen
     const geoJSONObject = @Html.Raw(Model.StringKoordinaterLag);
-
-    if (geoJSONObject.features[0].geometry.type === "Point") {
-        console.log("GeoJSON er Point")
-        geoJSONObject.features.map(feature => {
-            feature.geometry.coordinates = feature.geometry.coordinates.flat(2);
-            console.log("Koordinater på point: " + feature.geometry.coordinates);
-            return feature;
-        });
-    }
     
     // For feilsøking, logg geoJSONObject
     console.log("GeoJSON: ", geoJSONObject);

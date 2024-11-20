@@ -198,8 +198,6 @@
         const drawnItems = new L.FeatureGroup();
         map.addLayer(drawnItems);
         
-        drawnItems.addLayer(JSON.parse(@Model.GeoJsonString));
-
         // Configure the drawing controls
         map.pm.addControls({
             position: 'topleft',
@@ -224,15 +222,7 @@
             // Create a GeoJSON object for map data
             const geoJson = {
                 type: "FeatureCollection",
-                features: layers.map(layer => {
-                    const geoJson = layer.toGeoJSON();
-                    if (geoJson.geometry.type === "Point") {
-                        const coordinates = geoJson.geometry.coordinates;
-                        // Gjør om Point typer til riktig model i controller
-                        geoJson.geometry.coordinates = [[coordinates]];
-                    }
-                    return geoJson;
-                }),
+                features: layers.map(layer => layer.toGeoJSON()),
             };
 
             // Debugging: Log the GeoJSON data
@@ -249,11 +239,16 @@
         }
 
         // Listen to the pm:create event to show the description form
-        map.on('pm:create', function(e) {
+        map.on("pm:create", (e) => {
             const layer = e.layer;
             drawnItems.addLayer(layer); // Add the new layer to drawnItems
-            document.getElementById('descriptionForm').style.display = 'block';
+            document.getElementById("descriptionForm").style.display = "block";
         });
+        
+        // Fjerner lag fra drawnitems når de blir slettet
+        map.on("pm:remove", (e) => {
+            drawnItems.removeLayer(e.layer);
+        })
 
         // Function to close the description form
         function closeForm() {
@@ -263,13 +258,14 @@
         @if (isEdit && !string.IsNullOrEmpty(Model.GeoJsonString))
         {
             <text>
-        const existingGeoJson = @Html.Raw(Json.Serialize(Model.GeoJsonString));
-        if (existingGeoJson) {
-            const geojson = JSON.parse(existingGeoJson);
-            const existingLayer = L.geoJSON(geojson).addTo(map); // Added directly to the map
-            map.fitBounds(existingLayer.getBounds());
-        }
-        </text>
+                const existingGeoJson = @Html.Raw(Model.GeoJsonString);
+                if (existingGeoJson) {
+                    const existingLayer = L.geoJSON(existingGeoJson).eachLayer(layer => {
+                        drawnItems.addLayer(layer);
+                    }); // Added directly to the map
+                    map.fitBounds(existingLayer.getBounds());
+                }
+            </text>
         }
     </script>
 }

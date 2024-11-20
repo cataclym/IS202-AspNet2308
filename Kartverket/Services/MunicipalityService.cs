@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text.Json;
 using Kartverket.Models;
 using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json.Linq;
 
 namespace Kartverket.Services;
 
@@ -42,19 +43,36 @@ public class MunicipalityService : IMunicipalityService
     }
     public async Task<MunicipalityCountyNames?> GetMunicipalityFromCoordAsync(MapLayersModel mapLayers)
     {
-        var northEast = mapLayers.features.First().geometry.coordinates
-            .FirstOrDefault()?
-            .FirstOrDefault();
-
-        if (northEast == null) return null;
+        var geometry = mapLayers.features.First().geometry;
+        var coords = geometry.coordinates;
+        List<double>? geometricCoordinates = null;
         
         try
         {
+            switch (geometry.type)
+            {
+                case "Point":
+                    geometricCoordinates = coords.Cast<double>().ToList();
+                    break;
+                case "LineString":
+                    geometricCoordinates = ((coords.First() as JArray)?.ToObject<List<double>>());
+                    break;
+                case "Polygon":
+                    geometricCoordinates = (((coords.FirstOrDefault() as JArray)?.FirstOrDefault() as JArray)?.ToObject<List<double>>());
+                    break;
+            }
+            
+            if (geometricCoordinates == null || geometricCoordinates.Count < 2)
+            {
+                _logger.LogError("Ugyldige geometriske koordinater.");
+                return null;
+            }
+
             // Her defineres query parametere
             var query = new Dictionary<string, string?>()
             {
-                ["nord"] = northEast[1].ToString(CultureInfo.InvariantCulture),
-                ["ost"] = northEast[0].ToString(CultureInfo.InvariantCulture),
+                ["nord"] = (geometricCoordinates[1]).ToString(CultureInfo.InvariantCulture),
+                ["ost"] = geometricCoordinates[0].ToString(CultureInfo.InvariantCulture),
                 ["koordsys"] = "4258"
             };
 
