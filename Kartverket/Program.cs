@@ -5,6 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Kartverket;
 
+/// <summary>
+/// Representerer hovedprogrammet for applikasjonen.
+/// Programklassen inneholder hovedmetoden, som er inngangspunktet for applikasjonen.
+/// </summary>
 public class Program
 {
     private static WebApplication App { get; set; }
@@ -12,38 +16,14 @@ public class Program
 
     public static void Main(string[] args)
     {
+        // Initialiserer builder instansen
         Builder = WebApplication.CreateBuilder(args);
-        
-        // Registrer GeoJsonService som en tjeneste
-        Builder.Services.AddScoped<GeoJsonService>();
 
         // Legg til env variabler
         Builder.Configuration.AddEnvironmentVariables();
-
-        // Add services to the container.
-        // Konfigurer ApplicationDbContext her              
-        Builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseMySql(Builder.Configuration.GetConnectionString("DefaultConnection"),
-                new MariaDbServerVersion(new Version(11, 5, 2))));
         
-        // Registrer IUserService og UserService
-        Builder.Services.AddScoped<IUserService, UserService>();
-
-        // Registrer IHttpContextAccessor
-        Builder.Services.AddHttpContextAccessor();
-        
-        Builder.Services.AddAuthorization(options =>
-        {
-            options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-        });
-
-        // Add services to the container.
-        Builder.Services.AddControllersWithViews();
-        
-        // Add services to the container.
-        Builder.Services.AddControllersWithViews();
-        AddCookies();
-        AddRoutes();
+        // Registrerer alle tjenester i builder
+        RegisterServices();
 
         // Lag en instans av webapp fra builderen.
         App = Builder.Build();
@@ -61,6 +41,7 @@ public class Program
         App.UseHttpsRedirection();
         App.UseStaticFiles();
         App.UseRouting();
+        
         // Autorisasjon må være etter autentisering
         App.UseAuthorization();
         App.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
@@ -70,23 +51,58 @@ public class Program
         App.Run();
     }
 
-    private static void AddRoutes()
+    /// <summary>
+    /// Statisk metode for å registrere alle tjenestene samlet.
+    /// </summary>
+    private static void RegisterServices()
     {
+        // Konfigurer ApplicationDbContext her
+        // Denne henter DefaultConnection fra appsettings.json
+        // og er konfigurert for MySQL og MariaDB
+        Builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseMySql(Builder.Configuration.GetConnectionString("DefaultConnection"),
+                new MariaDbServerVersion(new Version(11, 5, 2))));
+        
+        // Registrer GeoJsonService som en tjeneste
+        Builder.Services.AddScoped<GeoJsonService>();
+        
         // Registrer HttpClient for KommuneInfoService og StedsNavnService
         Builder.Services.AddHttpClient<IMunicipalityService, MunicipalityService>(client =>
         {
             client.BaseAddress = new Uri("https://api.kartverket.no/kommuneinfo/v1");
         });
+        
+        // Registrer UserService
+        Builder.Services.AddScoped<IUserService, UserService>();
+
+        // Registrer IHttpContextAccessor
+        Builder.Services.AddHttpContextAccessor();
+        
+        Builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+        });
+
+        // Add services to the container.
+        Builder.Services.AddControllersWithViews();
+        
+        // Add services to the container.
+        Builder.Services.AddControllersWithViews();
+        AddCookies();
     }
 
-    private static void AddCookies()
+    /// <summary>
+    /// Legger til og definerer instillinger til cookies
+    /// </summary>
+    /// <param name="expiration"> En verdi i timer på hvor lenge en cookie skal vare. Standard valg er 2.</param>
+    private static void AddCookies(int expiration = 2)
     {
         // Legg til autentiseringstjenester med cookies
         Builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
                 options.LoginPath = "/Account/Login"; // Sti til innloggingssiden
-                options.ExpireTimeSpan = TimeSpan.FromHours(2); // Hvor lenge cookien varer
+                options.ExpireTimeSpan = TimeSpan.FromHours(expiration); // Hvor lenge cookien varer
                 options.SlidingExpiration = true; // Fornyer utløpstiden når brukeren er aktiv
                 options.Cookie.HttpOnly = true; // Cookie er kun tilgjengelig for serveren, ikke JavaScript
                 options.Cookie.SecurePolicy = CookieSecurePolicy.None; // Bruk HTTPS i produksjon
@@ -100,6 +116,10 @@ public class Program
         });
     }
 
+    /// <summary>
+    /// Oppdager og kjører migrasjoner som ikke er registert i databasen
+    /// Feil oppstår om migrasjoner ikke har blitt fulgt samtidig som databasen er oppdatert 
+    /// </summary>
     private static void RunMigrations()
     {
         using var scope = App.Services.CreateScope();
