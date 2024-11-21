@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kartverket.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241121171925_AddCountyMunicipality")]
+    [Migration("20241121234332_AddCountyMunicipality")]
     partial class AddCountyMunicipality
     {
         /// <inheritdoc />
@@ -114,7 +114,7 @@ namespace Kartverket.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("varchar(2000)");
 
-                    b.Property<int>("MunicipalityId")
+                    b.Property<int?>("MunicipalityId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ResolvedAt")
@@ -249,9 +249,7 @@ namespace Kartverket.Migrations
 
                     b.HasOne("Municipality", "Municipality")
                         .WithMany()
-                        .HasForeignKey("MunicipalityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MunicipalityId");
 
                     b.HasOne("Kartverket.Database.Models.Users", "User")
                         .WithMany("Reports")

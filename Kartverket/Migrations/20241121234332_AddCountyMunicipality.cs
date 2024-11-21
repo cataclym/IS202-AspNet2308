@@ -15,8 +15,7 @@ namespace Kartverket.Migrations
                 name: "MunicipalityId",
                 table: "Reports",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.CreateTable(
                 name: "County",
@@ -70,8 +69,7 @@ namespace Kartverket.Migrations
                 table: "Reports",
                 column: "MunicipalityId",
                 principalTable: "Municipality",
-                principalColumn: "MunicipalityId",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "MunicipalityId");
         }
 
         /// <inheritdoc />

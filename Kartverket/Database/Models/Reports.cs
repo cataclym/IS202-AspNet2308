@@ -29,7 +29,7 @@ public sealed class Reports
     public Users AssignedAdmin { get; set; }
 
     [ForeignKey("MunicipalityId")]
-    public int MunicipalityId { get; set; }
+    public int? MunicipalityId { get; set; }
     public Municipality Municipality { get; set; }
 }
 
