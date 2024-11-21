@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Kartverket.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kartverket.Database.Models;
@@ -20,11 +19,8 @@ public class Users
     public DateTime CreatedAt { get; set; }
     
     public ICollection<Messages> Messages { get; set; } = new List<Messages>();
-    
     public ICollection<Reports> Reports { get; set; } = new List<Reports>();
     public ICollection<Reports> AssignedReports { get; set; } // Reports assigned to the admin
-
-    
     public ICollection<PinnedReport> PinnedReports { get; set; }
     
 }

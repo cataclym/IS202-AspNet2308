@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Kartverket.Database.Models;
-using Kartverket.Models;
 
 namespace Kartverket.Database;
 

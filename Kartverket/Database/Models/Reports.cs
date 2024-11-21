@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Kartverket.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Kartverket.Database.Models;
 
@@ -22,15 +22,15 @@ public sealed class Reports
     public ICollection<Messages> Messages { get; set; } = new List<Messages>();
     public ICollection<PinnedReport> PinnedReports { get; set; }
     
-    
-    
-    
     [ForeignKey("AssignedAdmin")]
     public int? AssignedAdminId { get; set; }
 
     // Navigation property to the assigned admin
     public Users AssignedAdmin { get; set; }
-    
+
+    [ForeignKey("MunicipalityId")]
+    public int MunicipalityId { get; set; }
+    public Municipality Municipality { get; set; }
 }
 
 public enum Status
