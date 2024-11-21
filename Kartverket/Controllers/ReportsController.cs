@@ -653,6 +653,25 @@ public async Task<IActionResult> EditMapReport(ReportViewModel model)
 
         return RedirectToAction("ReportView", new { id = report.ReportId });
     }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var report = await _context.Reports
+            .Include(r => r.Messages)
+            .FirstOrDefaultAsync(r => r.ReportId == id);
+
+        if (report == null)
+        {
+            return NotFound();
+        }
+
+        _context.Reports.Remove(report);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("ReportOverview");
+    }
 }
 
 
