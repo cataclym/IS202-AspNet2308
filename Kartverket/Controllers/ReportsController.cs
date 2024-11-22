@@ -17,8 +17,7 @@ public class ReportsController : BaseController
     private readonly IMunicipalityService _municipalityService;
     private readonly GeoJsonService _geoJsonService;
     private readonly IUserService _userService;
-
-
+    
     public ReportsController(
         ApplicationDbContext context,
         ILogger<ReportsController> logger,
@@ -30,7 +29,6 @@ public class ReportsController : BaseController
         _municipalityService = municipalityService;
         _geoJsonService = geoJsonService;
         _userService = userService;
-
     }
     
     // GET: Viser registreringsskjemaet
@@ -191,8 +189,8 @@ private UserRegistrationModel MapUserToViewModel(Users user)
         if (municipalityInfo is not null)
         {
             model.MunicipalityInfo = municipalityInfo;
-        };
-        
+        }
+
         var userId = GetUserId();
         
         if (userId == null)
@@ -231,52 +229,7 @@ private UserRegistrationModel MapUserToViewModel(Users user)
         };
 
         // Legger til kommuneinfo om tilgjengelig
-        if (model.MunicipalityInfo is not null)  
-        {
-            // Henter int fra string
-            int municipalityId = int.Parse(model.MunicipalityInfo.kommunenummer);
-            int countyId = int.Parse(model.MunicipalityInfo.fylkesnummer);
-
-            var municipality = await _context.Municipality
-                .FirstOrDefaultAsync(m => m.MunicipalityId == municipalityId);
-            var county = await _context.County
-                .FirstOrDefaultAsync(m => m.CountyId == countyId);
-            
-            if (municipality is not null)
-            {
-                report.MunicipalityId = municipality.MunicipalityId;
-                report.Municipality = municipality;
-            }
-
-            else
-            {
-                Municipality newMunicipality = new()
-                {
-                    MunicipalityId = municipalityId,
-                    Name = model.MunicipalityInfo.kommunenavn,
-                    CountyId = countyId
-                };
-
-                if (county is not null)
-                {
-                    newMunicipality.County = county;
-                }
-
-                else
-                {
-                    newMunicipality.County = new()
-                    {
-                        CountyId = countyId,
-                        Name = model.MunicipalityInfo.fylkesnavn
-                    };
-                }
-                
-                // Lagrer den nye relasjonen med Kommune og Fylke tabeller
-                _context.Municipality.Add(newMunicipality);
-                report.MunicipalityId = newMunicipality.MunicipalityId;
-                report.Municipality = newMunicipality;
-            }
-        }
+        if (model.MunicipalityInfo != null) await GetAndSaveMunicipality(report, model.MunicipalityInfo);
 
         _context.Reports.Add(report);
         await _context.SaveChangesAsync();
@@ -293,6 +246,8 @@ private UserRegistrationModel MapUserToViewModel(Users user)
             .ThenInclude(m => m.User)
             .Include(r => r.User) // Hent brukerdata for selve rapporten
             .Include(r => r.AssignedAdmin) // Include the assigned admin
+            .Include(r => r.Municipality)
+            .ThenInclude(m => m.County)
             .FirstOrDefaultAsync(r => r.ReportId == id);
 
         // Handle the case where the report is not found
@@ -302,9 +257,14 @@ private UserRegistrationModel MapUserToViewModel(Users user)
             return NotFound(); // Alternatively, redirect to a "not found" page or error view
         }
         
-        var mapLayers = _geoJsonService.GetGeoJson(report.GeoJsonString);
-        var municipalityInfo = await _municipalityService.GetMunicipalityFromCoordAsync(mapLayers);
-
+        // Hvis kommune mangler på rapport så prøver vi å hente den på nytt og lagre den 
+        if (report.MunicipalityId == null)
+        {
+            var mapLayers = _geoJsonService.GetGeoJson(report.GeoJsonString);
+            var municipalityInfo = await _municipalityService.GetMunicipalityFromCoordAsync(mapLayers);
+            if (municipalityInfo != null) report.Municipality = await GetAndSaveMunicipality(report, municipalityInfo);
+        }
+        
         // Parse the GeoJsonString into a readable format
         var normalString = _geoJsonService.ConvertGeoJsonToString(report.GeoJsonString);
 
@@ -324,7 +284,13 @@ private UserRegistrationModel MapUserToViewModel(Users user)
             Status = report.Status,
             IsAdmin = isAdmin,
             Username = report.User.Username,
-            MunicipalityInfo = municipalityInfo,
+            MunicipalityInfo = report.Municipality != null ? new ()
+            {
+                fylkesnavn = report.Municipality.County.Name,
+                fylkesnummer = report.Municipality.County.CountyId.ToString(),
+                kommunenavn = report.Municipality.Name,
+                kommunenummer = report.Municipality.MunicipalityId.ToString(),
+            } : null,
             AssignedAdminId = report.AssignedAdminId,
             AssignedAdminUsername = report.AssignedAdmin?.Username,
             Messages = report.Messages.Select(m => new MessagesModel
@@ -450,12 +416,12 @@ public async Task<IActionResult> EditMapReport(ReportViewModel model)
 
 
     [HttpPost]
-    public async Task<IActionResult> AddMessage(int ReportId, string MessageText)
+    public async Task<IActionResult> AddMessage(int reportId, string messageText)
     {
         // Finn rapporten ved hjelp av ReportId
         var report = await _context.Reports
             .Include(r => r.Messages) // Inkluder eksisterende meldinger
-            .FirstOrDefaultAsync(r => r.ReportId == ReportId);
+            .FirstOrDefaultAsync(r => r.ReportId == reportId);
 
         if (report == null)
         {
@@ -472,7 +438,7 @@ public async Task<IActionResult> EditMapReport(ReportViewModel model)
         // Opprett en ny melding og legg til i rapporten
         var newMessage = new Messages
         {
-            Message = MessageText,
+            Message = messageText,
             CreatedAt = DateTime.Now,
             UserId = parsedUserId
         };
@@ -483,7 +449,7 @@ public async Task<IActionResult> EditMapReport(ReportViewModel model)
         await _context.SaveChangesAsync();
 
         // Omdiriger til ReportView for å vise oppdatert melding
-        return RedirectToAction("ReportView", new { id = ReportId });
+        return RedirectToAction("ReportView", new { id = reportId });
     }
 
     [HttpPost]
@@ -703,6 +669,57 @@ public async Task<IActionResult> EditMapReport(ReportViewModel model)
         await _context.SaveChangesAsync();
 
         return RedirectToAction("ReportOverview");
+    }
+
+    private async Task<Municipality> GetAndSaveMunicipality(Reports report, MunicipalityCountyNames municipalityInfo)
+    {
+        // Henter int fra string
+        int municipalityId = int.Parse(municipalityInfo.kommunenummer);
+        int countyId = int.Parse(municipalityInfo.fylkesnummer);
+
+        // Prøver å hente relevant fylke og kommune
+        var municipality = await _context.Municipality
+            .FirstOrDefaultAsync(m => m.MunicipalityId == municipalityId);
+        var county = await _context.County
+            .FirstOrDefaultAsync(m => m.CountyId == countyId);
+
+        // Hvis kommune eksisterer så kobler vi den til rapporten
+        if (municipality is not null)
+        {
+            report.MunicipalityId = municipality.MunicipalityId;
+            report.Municipality = municipality;
+
+            return municipality;
+        }
+
+        // Opprett rad i kommune tabellen og fylke tabellen hvis de ikke eksisterer
+        Municipality newMunicipality = new()
+        {
+            MunicipalityId = municipalityId,
+            Name = municipalityInfo.kommunenavn,
+            CountyId = countyId
+        };
+
+        if (county is not null)
+        {
+            newMunicipality.County = county;
+        }
+
+        else
+        {
+            newMunicipality.County = new()
+            {
+                CountyId = countyId,
+                Name = municipalityInfo.fylkesnavn
+            };
+        }
+
+        // Lagrer den nye relasjonen med Kommune og Fylke tabeller
+        _context.Municipality.Add(newMunicipality);
+        report.MunicipalityId = newMunicipality.MunicipalityId;
+        report.Municipality = newMunicipality;
+            
+        return report.Municipality;
     }
 }
 

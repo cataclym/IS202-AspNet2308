@@ -30,7 +30,7 @@ public sealed class Reports
 
     [ForeignKey("MunicipalityId")]
     public int? MunicipalityId { get; set; }
-    public Municipality Municipality { get; set; }
+    public Municipality? Municipality { get; set; }
 }
 
 public enum Status

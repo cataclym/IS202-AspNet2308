@@ -41,6 +41,7 @@ public class Program
         App.UseHttpsRedirection();
         App.UseStaticFiles();
         App.UseRouting();
+        App.UseAntiforgery();
         
         // Autorisasjon må være etter autentisering
         App.UseAuthorization();

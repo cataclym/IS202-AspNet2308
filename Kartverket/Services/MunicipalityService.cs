@@ -41,8 +41,10 @@ public class MunicipalityService : IMunicipalityService
             return null;
         }
     }
-    public async Task<MunicipalityCountyNames?> GetMunicipalityFromCoordAsync(MapLayersModel mapLayers)
+    public async Task<MunicipalityCountyNames?> GetMunicipalityFromCoordAsync(MapLayersModel? mapLayers)
     {
+        if (mapLayers == null) return null;
+        
         var geometry = mapLayers.features.First().geometry;
         var coords = geometry.coordinates;
         List<double>? geometricCoordinates = null;
@@ -55,10 +57,10 @@ public class MunicipalityService : IMunicipalityService
                     geometricCoordinates = coords.Cast<double>().ToList();
                     break;
                 case "LineString":
-                    geometricCoordinates = ((coords.First() as JArray)?.ToObject<List<double>>());
+                    geometricCoordinates = (coords.First() as JArray)?.ToObject<List<double>>();
                     break;
                 case "Polygon":
-                    geometricCoordinates = (((coords.FirstOrDefault() as JArray)?.FirstOrDefault() as JArray)?.ToObject<List<double>>());
+                    geometricCoordinates = ((coords.FirstOrDefault() as JArray)?.FirstOrDefault() as JArray)?.ToObject<List<double>>();
                     break;
             }
             
@@ -71,7 +73,7 @@ public class MunicipalityService : IMunicipalityService
             // Her defineres query parametere
             var query = new Dictionary<string, string?>()
             {
-                ["nord"] = (geometricCoordinates[1]).ToString(CultureInfo.InvariantCulture),
+                ["nord"] = geometricCoordinates[1].ToString(CultureInfo.InvariantCulture),
                 ["ost"] = geometricCoordinates[0].ToString(CultureInfo.InvariantCulture),
                 ["koordsys"] = "4258"
             };
