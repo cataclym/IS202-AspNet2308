@@ -11,6 +11,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Users> Users { get; set; }
     public DbSet<Messages> Messages { get; set; }
     public DbSet<PinnedReport> PinnedReports { get; set; }
+    public DbSet<Municipality> Municipality { get; set; }
+    public DbSet<County> County { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
