@@ -258,14 +258,15 @@
         @if (isEdit && !string.IsNullOrEmpty(Model.GeoJsonString))
         {
             <text>
-                const existingGeoJson = @Html.Raw(Model.GeoJsonString);
-                if (existingGeoJson) {
-                    const existingLayer = L.geoJSON(existingGeoJson).eachLayer(layer => {
-                        drawnItems.addLayer(layer);
-                    }); // Added directly to the map
-                    map.fitBounds(existingLayer.getBounds());
-                }
-            </text>
+            const geoJsonString = @Json.Serialize(Model.GeoJsonString);
+            const existingGeoJson = JSON.parse(geoJsonString);
+        if (existingGeoJson) {
+            const existingLayer = L.geoJSON(existingGeoJson).eachLayer(layer => {
+                drawnItems.addLayer(layer);
+            });
+            map.fitBounds(existingLayer.getBounds());
+        }
+        </text>
         }
     </script>
 }
