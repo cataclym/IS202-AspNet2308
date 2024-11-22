@@ -47,8 +47,8 @@ public class KommuneInfo
 
 public class MunicipalityCountyNames
 {
-    public string? fylkesnavn { get; set; }
-    public string? fylkesnummer { get; set; }
-    public string? kommunenavn { get; set; }
-    public string? kommunenummer { get; set; }
+    public string fylkesnavn { get; set; }
+    public string fylkesnummer { get; set; }
+    public string kommunenavn { get; set; }
+    public string kommunenummer { get; set; }
 }

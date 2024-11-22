@@ -244,9 +244,32 @@ private UserRegistrationModel MapUserToViewModel(Users user)
             CreatedAt = DateTime.Now,
             Messages = !string.IsNullOrWhiteSpace(model.FirstMessage)
                 ? new List<Messages>
-                    { new Messages { Message = model.FirstMessage, CreatedAt = DateTime.Now, UserId = userId } }
-                : new List<Messages>()
+                    { new() { Message = model.FirstMessage, CreatedAt = DateTime.Now, UserId = userId } }
+                : [],
         };
+
+        // Legger til kommuneinfo om tilgjengelig
+        if (model.MunicipalityInfo is not null)  
+        {
+            // Henter int fra string
+            int municipalityId = int.Parse(model.MunicipalityInfo.kommunenummer);
+            int countyId = int.Parse(model.MunicipalityInfo.fylkesnummer);
+
+            // Lagrer relasjon med Kommune og Fylke tabeller
+            report.MunicipalityId = municipalityId;
+            report.Municipality = new()
+            {
+                MunicipalityId = municipalityId,
+                Name = model.MunicipalityInfo.kommunenavn,
+                CountyId = countyId,
+                County = new()
+                {
+                    CountyId = countyId,
+                    Name = model.MunicipalityInfo.fylkesnavn
+                }
+            };
+        }
+
         _context.Reports.Add(report);
         await _context.SaveChangesAsync();
     }

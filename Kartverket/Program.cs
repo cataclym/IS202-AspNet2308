@@ -11,8 +11,8 @@ namespace Kartverket;
 /// </summary>
 public class Program
 {
-    private static WebApplication App { get; set; }
-    private static WebApplicationBuilder Builder { get; set; }
+    private static WebApplication? App { get; set; }
+    private static WebApplicationBuilder? Builder { get; set; }
 
     public static void Main(string[] args)
     {
@@ -59,7 +59,7 @@ public class Program
         // Konfigurer ApplicationDbContext her
         // Denne henter DefaultConnection fra appsettings.json
         // og er konfigurert for MySQL og MariaDB
-        Builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        Builder!.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseMySql(Builder.Configuration.GetConnectionString("DefaultConnection"),
                 new MariaDbServerVersion(new Version(11, 5, 2))));
         
@@ -78,10 +78,8 @@ public class Program
         // Registrer IHttpContextAccessor
         Builder.Services.AddHttpContextAccessor();
         
-        Builder.Services.AddAuthorization(options =>
-        {
-            options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-        });
+        Builder.Services.AddAuthorizationBuilder()
+                    .AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 
         // Add services to the container.
         Builder.Services.AddControllersWithViews();
@@ -98,7 +96,7 @@ public class Program
     private static void AddCookies(int expiration = 2)
     {
         // Legg til autentiseringstjenester med cookies
-        Builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        Builder!.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
                 options.LoginPath = "/Account/Login"; // Sti til innloggingssiden
@@ -122,7 +120,7 @@ public class Program
     /// </summary>
     private static void RunMigrations()
     {
-        using var scope = App.Services.CreateScope();
+        using var scope = App!.Services.CreateScope();
         var services = scope.ServiceProvider;
 
         var context = services.GetRequiredService<ApplicationDbContext>();
