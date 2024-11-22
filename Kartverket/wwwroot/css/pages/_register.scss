@@ -1,15 +1,14 @@
 .user-registration {
-
+  
   .register-container {
     width: 100%;
-    max-width: 400px; // Same as login-container
-    margin: 50px auto; // Center horizontally
+    max-width: 400px;
+    margin: 50px auto;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
-
 
   .register-title {
     text-align: center;
@@ -35,7 +34,25 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-  
+
+  .password-wrapper {
+    position: relative;
+  }
+
+  .password-wrapper input[type="password"] {
+    padding-right: 2.5em; // Space for the icon
+  }
+
+  .show-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    font-size: 18px;
+  }
+
   .register-section {
     text-align: center;
     margin-top: 20px;
@@ -44,5 +61,4 @@
       margin-bottom: 10px;
     }
   }
-
 }
