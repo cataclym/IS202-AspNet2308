@@ -533,3 +533,4 @@ obj/
 
 .env
 .DS_Store
+.vscode/
