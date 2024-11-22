@@ -2,8 +2,6 @@ using Kartverket.Controllers;
 using Kartverket.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using NSubstitute;
 
 namespace Kartverket.Tests.Controllers;
 

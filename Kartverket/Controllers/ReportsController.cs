@@ -188,6 +188,11 @@ private UserRegistrationModel MapUserToViewModel(Users user)
         }
 
         var municipalityInfo = await _municipalityService.GetMunicipalityFromCoordAsync(mapLayers);
+        if (municipalityInfo is not null)
+        {
+            model.MunicipalityInfo = municipalityInfo;
+        };
+        
         var userId = GetUserId();
         
         if (userId == null)
@@ -195,31 +200,8 @@ private UserRegistrationModel MapUserToViewModel(Users user)
             _logger.LogWarning("User ID could not be retrieved.");
             return Unauthorized();
         }
-
-        // Konstruerer database-modellen for Reports
-        var report = new Reports
-        {
-            UserId = userId.Value,
-            GeoJsonString = model.GeoJsonString,
-            CreatedAt = DateTime.Now,
-            Messages = new List<Messages>() // Oppretter en tom liste for meldinger
-        };
-
-        // Legg til meldingen til Messages-listen hvis det finnes en melding i modellen
-        if (!string.IsNullOrWhiteSpace(model.FirstMessage))
-        {
-            report.Messages.Add(new Messages
-            {
-                Message = model.FirstMessage,
-                CreatedAt = DateTime.Now,
-                UserId = userId.Value
-            });
-        }
-
-        // Legg til rapporten i databasen
-        _context.Reports.Add(report);
-        // Lagre endringer til databasen asynkront
-        await _context.SaveChangesAsync();
+        
+        var report = await SaveReportAsync(model, userId.Value);
         _logger.LogInformation("Data har blitt lagret i databasen");
         
         var viewModel = new ReportViewModel
@@ -235,7 +217,7 @@ private UserRegistrationModel MapUserToViewModel(Users user)
         return View("ReportSuccess", viewModel); // Eller til et annet view for å bekrefte lagringen
     }
     
-    private async Task SaveReportAsync(ReportViewModel model, int userId)
+    private async Task<Reports> SaveReportAsync(ReportViewModel model, int userId)
     {
         var report = new Reports
         {
@@ -244,11 +226,61 @@ private UserRegistrationModel MapUserToViewModel(Users user)
             CreatedAt = DateTime.Now,
             Messages = !string.IsNullOrWhiteSpace(model.FirstMessage)
                 ? new List<Messages>
-                    { new Messages { Message = model.FirstMessage, CreatedAt = DateTime.Now, UserId = userId } }
-                : new List<Messages>()
+                    { new() { Message = model.FirstMessage, CreatedAt = DateTime.Now, UserId = userId } }
+                : [],
         };
+
+        // Legger til kommuneinfo om tilgjengelig
+        if (model.MunicipalityInfo is not null)  
+        {
+            // Henter int fra string
+            int municipalityId = int.Parse(model.MunicipalityInfo.kommunenummer);
+            int countyId = int.Parse(model.MunicipalityInfo.fylkesnummer);
+
+            var municipality = await _context.Municipality
+                .FirstOrDefaultAsync(m => m.MunicipalityId == municipalityId);
+            var county = await _context.County
+                .FirstOrDefaultAsync(m => m.CountyId == countyId);
+            
+            if (municipality is not null)
+            {
+                report.MunicipalityId = municipality.MunicipalityId;
+                report.Municipality = municipality;
+            }
+
+            else
+            {
+                Municipality newMunicipality = new()
+                {
+                    MunicipalityId = municipalityId,
+                    Name = model.MunicipalityInfo.kommunenavn,
+                    CountyId = countyId
+                };
+
+                if (county is not null)
+                {
+                    newMunicipality.County = county;
+                }
+
+                else
+                {
+                    newMunicipality.County = new()
+                    {
+                        CountyId = countyId,
+                        Name = model.MunicipalityInfo.fylkesnavn
+                    };
+                }
+                
+                // Lagrer den nye relasjonen med Kommune og Fylke tabeller
+                _context.Municipality.Add(newMunicipality);
+                report.MunicipalityId = newMunicipality.MunicipalityId;
+                report.Municipality = newMunicipality;
+            }
+        }
+
         _context.Reports.Add(report);
         await _context.SaveChangesAsync();
+        return report;
     }
 
     public async Task<IActionResult> ReportView(int id)

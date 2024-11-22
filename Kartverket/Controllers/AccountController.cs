@@ -117,7 +117,7 @@ public class AccountController : Controller
     
     // TODO beskrivelse
     [HttpGet]
-    public IActionResult UserRegistration(string returnUrl = null)
+    public IActionResult UserRegistration(string? returnUrl = null)
     {
         if (User.Identity != null && User.Identity.IsAuthenticated)
         {
