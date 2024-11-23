@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <None Remove="wwwroot\css\utilities\**" />
+    <None Include="wwwroot\js\reportOverview.js" />
   </ItemGroup>
 
   <ItemGroup>
