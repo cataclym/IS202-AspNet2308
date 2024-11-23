@@ -56,13 +56,13 @@ else
                 </a>
                 @if (Model.User.IsAdmin)
                 {
-                 <a href="#" onclick="sortTable(2, this, @Model.User.IsAdmin)" class="dropdown-btn-a">
+                 <a href="#" onclick="sortTable(2, this)" class="dropdown-btn-a">
                     Brukernavn
                     <span class="checkmark-icon" style="display: none;">
                     <i class="bi bi-check-circle"></i>
                     </span>
                     </a>
-                    <a href="#" onclick="sortTable(4, this, @Model.User.IsAdmin)" class="dropdown-btn-a">
+                    <a href="#" onclick="sortTable(4, this)" class="dropdown-btn-a">
                     Dato
                     <span class="checkmark-icon" style="display: none;">
                     <i class="bi bi-check-circle"></i>
@@ -71,7 +71,7 @@ else
                 }
                 else
                 {
-                    <a href="#" onclick="sortTable(3, this, @Model.User.IsAdmin)" class="dropdown-btn-a">
+                    <a href="#" onclick="sortTable(3, this)" class="dropdown-btn-a">
                         Dato
                         <span class="checkmark-icon" style="display: none;">
                             <i class="bi bi-check-circle"></i>

@@ -1,8 +1,8 @@
 // Close the dropdown if the user clicks outside of it
-window.onclick = function (event) {
+window.onclick = (event) => {
     if (!event.target.matches('.dropbtn') && !event.target.closest('.dropdown-content')) {
         const dropdowns = document.getElementsByClassName("dropdown-content");
-        for (const openDropdown in dropdowns) {
+        for (const openDropdown of dropdowns) {
             if (openDropdown.classList.contains('show')) {
                 openDropdown.classList.remove('show');
             }
@@ -14,6 +14,7 @@ window.onclick = function (event) {
 const currentSortOrder = { column: -1, order: "asc" };
 const selectedFilters = new Set();
 const selectedSorts = new Map();
+let savedTable;
 
 // Function to show/hide dropdown
 function showDropdown() {
@@ -21,12 +22,15 @@ function showDropdown() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
 
-function sortTable(columnIndex, element, isAdmin = false) {
-    const table = isAdmin ? document.querySelector('#admin-table tbody') : document.querySelector('#user-table tbody');
+function sortTable(columnIndex, element) {
+    const table = document.querySelector('#admin-table tbody');
     if (!table) return;
 
+    // Lagre tabellen
+    savedTable = table.innerHTML;
+    
     // Bestem riktig kolonne for dato avhengig av brukertype
-    const dateColumnIndex = isAdmin ? 4 : 3; // 4 for admin, 3 for bruker
+    const dateColumnIndex = 4; // 4 for admin, 3 for bruker
 
     // Toggle sort order
     if (currentSortOrder.column === columnIndex) {
@@ -63,7 +67,6 @@ function sortTable(columnIndex, element, isAdmin = false) {
             // Sammenlign datoene
             comparison = dateA - dateB;  // Sorter etter dato
 
-
         } else {
             const cellA = rowA.cells[columnIndex].innerText.trim().toLowerCase();
             const cellB = rowB.cells[columnIndex].innerText.trim().toLowerCase();
@@ -79,28 +82,6 @@ function sortTable(columnIndex, element, isAdmin = false) {
 
     clearActiveFilters();
     if (element) element.classList.add('active-filter');
-}
-
-
-// Filter by status
-function filterByStatus() {
-    const table = document.querySelector('#admin-table tbody') || document.querySelector('#user-table tbody');
-    if (!table) return;
-
-    const rows = table.querySelectorAll('tr');
-
-    // Display rows based on filter and pinned status
-    rows.forEach(row => {
-        const rowStatus = row.dataset.status;
-        const isPinned = row.dataset.isPinned === 'true';
-
-        // Show row if its status is in the selectedFilters set
-        if (isPinned || selectedFilters.has(rowStatus)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
 }
 
 function filterTable() {
@@ -129,8 +110,7 @@ function resetFilters() {
     // Fjern alle elementer fra valgt sett
     selectedFilters.clear();
     selectedSorts.clear();
-
-
+    
     // Skjul alle checkmark-ikoner
     const checkmarkIcons = document.querySelectorAll('.checkmark-icon');
     checkmarkIcons.forEach(icon => {
@@ -144,9 +124,18 @@ function resetFilters() {
     filterTable();
 
     // Reset table sorting (fjern sortering)
-    // resetTableSorting();
+    resetTableSorting();
 }
 
+function resetTableSorting() {
+    currentSortOrder.column = -1;
+    currentSortOrder.order = "asc";
+
+    let adminTableBody = document.querySelector('#admin-table tbody');
+    if (adminTableBody) {
+        adminTableBody.innerHTML = savedTable;
+    }
+}
 
 // Helper function to remove 'active-filter' class from all filter options
 function clearActiveFilters() {
