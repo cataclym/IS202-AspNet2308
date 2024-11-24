@@ -27,9 +27,9 @@ public class AccountController : Controller
 
     // GET: Viser innloggingsskjemaet
     [HttpGet]
-    public IActionResult Login(string returnUrl = null)
+    public IActionResult Login(string? returnUrl = null)
     {
-        if (User.Identity != null && User.Identity.IsAuthenticated)
+        if (User.Identity is { IsAuthenticated: true })
         {
             // Hent brukerinformasjon hvis nødvendig
             var isAdmin = User.IsInRole("Admin");
@@ -46,7 +46,7 @@ public class AccountController : Controller
 
     // POST: Behandler innlogging
     [HttpPost]
-    public async Task<IActionResult> Login(UserLoginModel userLoginModel, string returnUrl = null)
+    public async Task<IActionResult> Login(UserLoginModel userLoginModel, string? returnUrl = null)
     {
         // Sjekk om modellen er gyldig
         if (!ModelState.IsValid) return View("Login", userLoginModel);

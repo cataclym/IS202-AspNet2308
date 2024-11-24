@@ -15,13 +15,13 @@ public class ReportViewModel
     [MinLength(5, ErrorMessage = "Meldingen må være minst 5 tegn lang.")]
     [MaxLength(256)]
 
-    public string FirstMessage { get; set; } // The first message
+    public string? FirstMessage { get; set; } // The first message
 
     public List<MessagesModel> Messages { get; set; } = new List<MessagesModel>();
 
 
     [Required(ErrorMessage = "Du må markere området på kartet.")]
-    public string GeoJsonString { get; set; }
+    public required string GeoJsonString { get; set; }
 
     public string? Username { get; set; }
 

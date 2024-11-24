@@ -36,7 +36,7 @@ public class ReportsController : BaseController
     [HttpGet]
     public async Task<IActionResult> ReportOverview(int id = 0)
     {
-        id = await _userService.GetUserIdAsync(id);
+        id = _userService.GetUserId(id);
         if (id == 0)
         {
             return RedirectToAction("Login", "Account");
@@ -109,13 +109,15 @@ private async Task<List<ReportViewModel>> GetReportsAsync(Users user, List<int> 
             {
                 ReportId = r.ReportId,
                 FirstMessage = r.Messages
-                    .OrderBy(m => m.CreatedAt)
-                    .Select(m => m.Message)
-                    .FirstOrDefault() ?? "No message",
+                                   .OrderBy(m => m.CreatedAt)
+                                   .Select(m => m.Message)
+                                   .FirstOrDefault() ??
+                               "No message",
                 Status = r.Status,
                 CreatedAt = r.CreatedAt,
                 Username = r.User.Username,
-                IsPinned = pinnedReportIdsSet.Contains(r.ReportId), 
+                IsPinned = pinnedReportIdsSet.Contains(r.ReportId),
+                GeoJsonString = r.GeoJsonString,
 
             })
             .OrderByDescending(r => r.IsPinned) // Pinned reports first
@@ -136,7 +138,8 @@ private UserRegistrationModel MapUserToViewModel(Users user)
         Username = user.Username,
         Email = user.Email,
         Phone = user.Phone,
-        IsAdmin = user.IsAdmin
+        IsAdmin = user.IsAdmin,
+        Password = user.Password
     };
 }
     
@@ -224,8 +227,15 @@ private UserRegistrationModel MapUserToViewModel(Users user)
             CreatedAt = DateTime.Now,
             Messages = !string.IsNullOrWhiteSpace(model.FirstMessage)
                 ? new List<Messages>
-                    { new() { Message = model.FirstMessage, CreatedAt = DateTime.Now, UserId = userId } }
-                : [],
+                {
+                    new()
+                    {
+                        Message = model.FirstMessage,
+                        CreatedAt = DateTime.Now,
+                        UserId = userId
+                    }
+                }
+                : []
         };
 
         // Legger til kommuneinfo om tilgjengelig
@@ -247,7 +257,7 @@ private UserRegistrationModel MapUserToViewModel(Users user)
             .Include(r => r.User) // Hent brukerdata for selve rapporten
             .Include(r => r.AssignedAdmin) // Include the assigned admin
             .Include(r => r.Municipality)
-            .ThenInclude(m => m.County)
+            .ThenInclude(m => m!.County)
             .FirstOrDefaultAsync(r => r.ReportId == id);
 
         // Handle the case where the report is not found
@@ -347,6 +357,7 @@ public async Task<IActionResult> EditMapReport(ReportViewModel model)
         foreach (var key in ModelState.Keys)
         {
             var state = ModelState[key];
+            if (state == null) continue;
             foreach (var error in state.Errors)
             {
                 _logger.LogError("Field {Field} Error: {ErrorMessage}", key, error.ErrorMessage);
@@ -596,9 +607,11 @@ public async Task<IActionResult> EditMapReport(ReportViewModel model)
         {
             ReportId = report.ReportId,
             FirstMessage = report.Messages
-                .OrderBy(m => m.CreatedAt)
-                .Select(m => m.Message)
-                .FirstOrDefault() ?? "No message",
+                               .OrderBy(m => m.CreatedAt)
+                               .Select(m => m.Message)
+                               .FirstOrDefault() ??
+                           "No message",
+            GeoJsonString = report.GeoJsonString,
         };
         
         return View(viewModel);
@@ -643,7 +656,7 @@ public async Task<IActionResult> EditMapReport(ReportViewModel model)
             await _context.SaveChangesAsync();
             TempData["SuccessMessage"] = "Report successfully claimed.";
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // Log the error (not shown)
             TempData["ErrorMessage"] = "An error occurred while claiming the report.";
@@ -697,23 +710,14 @@ public async Task<IActionResult> EditMapReport(ReportViewModel model)
         {
             MunicipalityId = municipalityId,
             Name = municipalityInfo.kommunenavn,
-            CountyId = countyId
-        };
-
-        if (county is not null)
-        {
-            newMunicipality.County = county;
-        }
-
-        else
-        {
-            newMunicipality.County = new()
+            CountyId = countyId,
+            County = county ?? new()
             {
                 CountyId = countyId,
                 Name = municipalityInfo.fylkesnavn
-            };
-        }
-
+            },
+        };
+        
         // Lagrer den nye relasjonen med Kommune og Fylke tabeller
         _context.Municipality.Add(newMunicipality);
         report.MunicipalityId = newMunicipality.MunicipalityId;

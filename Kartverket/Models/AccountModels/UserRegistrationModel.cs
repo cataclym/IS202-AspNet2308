@@ -13,12 +13,12 @@ public class UserRegistrationModel
     [Required]
     [PasswordPropertyText]
     [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Brukernavnet må kun bestå av bokstaver og tall.")]
-    public string Username { get; set; }
+    public required string Username { get; set; }
     [Required]
     [PasswordPropertyText]
     [DataType(DataType.Password)]
-    public string Password { get; set; }
-    [EmailAddress] public string Email { get; set; }
+    public required string Password { get; set; }
+    [EmailAddress] public required string Email { get; set; }
     [Phone] public string? Phone { get; set; }
     public bool IsAdmin { get; set; } = false;
     public ICollection<ReportViewModel> MapReports { get; set; } = new List<ReportViewModel>();

@@ -41,7 +41,14 @@ public class GeoJsonService
                     break;
 
                 case "Feature":
-                    return ProcessFeature(geoJsonObject);
+                {
+                    var featureDescription = ProcessFeature(geoJsonObject);
+                    if (featureDescription != null)
+                    {
+                        return featureDescription;
+                    }
+                    break;
+                }
 
                 default:
                     return "Unsupported GeoJSON type at root";

@@ -10,7 +10,7 @@ public class Messages
     [Required]
     [MinLength(5)]
     [MaxLength(256)]
-    public string Message { get; set; } // MinLength fungerer kun på strenger, arrays, eller samlinger
+    public required string Message { get; set; } // MinLength fungerer kun på strenger, arrays, eller samlinger
     
     public DateTime CreatedAt { get; set; }
     
