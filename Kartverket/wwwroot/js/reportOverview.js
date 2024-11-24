@@ -127,12 +127,16 @@ function resetFilters() {
     resetTableSorting();
 }
 
+// Tilbakestilling av tabellens sortering
 function resetTableSorting() {
+    // Tilbakestiller sorterings rekkefølge
     currentSortOrder.column = -1;
     currentSortOrder.order = "asc";
 
+    // Tilbakestiller tabellen ved å hente elementet i dokumentet
     let adminTableBody = document.querySelector('#admin-table tbody');
     if (adminTableBody) {
+        // Deretter skriver over HTML-en i tabellen med den originale versjonen
         adminTableBody.innerHTML = savedTable;
     }
 }
