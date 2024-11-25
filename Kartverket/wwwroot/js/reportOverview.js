@@ -14,7 +14,10 @@ window.onclick = (event) => {
 const currentSortOrder = { column: -1, order: "asc" };
 const selectedFilters = new Set();
 const selectedSorts = new Map();
-let savedTable;
+
+const table = document.querySelector('#admin-table tbody');
+// Lagre originale utgave av tabellen
+const savedTable = table.innerHTML;
 
 // Function to show/hide dropdown
 function showDropdown() {
@@ -25,9 +28,6 @@ function showDropdown() {
 function sortTable(columnIndex, element) {
     const table = document.querySelector('#admin-table tbody');
     if (!table) return;
-
-    // Lagre tabellen
-    savedTable = table.innerHTML;
     
     // Bestem riktig kolonne for dato avhengig av brukertype
     const dateColumnIndex = 4; // 4 for admin, 3 for bruker

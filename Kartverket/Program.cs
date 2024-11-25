@@ -84,9 +84,6 @@ public class Program
 
         // Add services to the container.
         Builder.Services.AddControllersWithViews();
-        
-        // Add services to the container.
-        Builder.Services.AddControllersWithViews();
         AddCookies();
     }
 
