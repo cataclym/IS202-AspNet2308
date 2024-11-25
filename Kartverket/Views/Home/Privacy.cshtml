@@ -1,53 +1,95 @@
 ﻿@{
     ViewData["Title"] = "Personvern";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>
-    Personvernerklæring for Kartverkstjenesten.
-    
-    <br>
+<head>
+    <title>@ViewData["Title"]</title>
 
-    Denne personvernerklæringen beskriver hvordan vi samler inn, bruker og beskytter dine personopplysninger i forbindelse med vår kartverkstjeneste.
-</p>
+    <style>
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #2d2d2d;
+            margin-bottom: 10px;
+        }
 
 
-<h3> 1. Hvilke data samler vi inn? </h3>
+        .guide-section {
+            margin-bottom: 40px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
 
-<p>
-    Vi samler inn følgende opplysninger når du registrerer deg som bruker:
+        
+    </style>
+</head>
 
-   
-                <ul class="my-list">
-                    <li>Navn</li>
-                    <li>E-postadresse</li>
-                    <li>Telefonnummer</li>
-                    <li>Brukernavn</li>
-                </ul>
-      
-<h3> 2. Hva bruker vi dine data til? </h3>
+<body>
+    <header>
+        <h1> Personvern for <span style="color: #1a589f;">Kart</span><span style="color: #1a833b;">verket</span> </h1>
+    </header>
 
-<p>Vi bruker dine personopplysninger til følgende formål:</p>
+    <main>
+        <!-- Section: Data Collection -->
+        <section class="guide-section">
+            <h2>1. Hvilke data samler vi inn?</h2>
+            <p>
+                Vi samler inn følgende opplysninger når du registrerer deg som bruker:
+            </p>
+            <ul class="my-list">
+                <li>Navn</li>
+                <li>E-postadresse</li>
+                <li>Telefonnummer</li>
+                <li>Brukernavn</li>
+            </ul>
+        </section>
 
- 
-        <ul class="my-list">
-            <li>For å opprette og administrere din brukerkonto.</li>
-            <li>For å gi deg tilgang til våre kartverkstjenester.</li>
-            <li>For å sikre at tjenestene våre fungerer på en trygg og sikker måte.</li>
-        </ul>
+        <!-- Section: Data Usage -->
+        <section class="guide-section">
+            <h2>2. Hva bruker vi dine data til?</h2>
+            <p>Vi bruker dine personopplysninger til følgende formål:</p>
+            <ul class="my-list">
+                <li>For å opprette og administrere din brukerkonto.</li>
+                <li>For å gi deg tilgang til våre kartverkstjenester.</li>
+                <li>For å sikre at tjenestene våre fungerer på en trygg og sikker måte.</li>
+            </ul>
+        </section>
 
-<h3> 3. Sikkerhet </h3>
+        <!-- Section: Security -->
+        <section class="guide-section">
+            <h2>3. Sikkerhet</h2>
+            <p>Vi tar sikkerheten til dine personopplysninger på alvor. Alle data lagres sikkert og passordene dine blir kryptert for å beskytte dem mot uautorisert tilgang.</p>
+        </section>
 
-<p>Vi tar sikkerheten til dine personopplysninger på alvor. Alle data lagres sikkert og passordene dine blir kryptert for å beskytte dem mot uautorisert tilgang.</p>
+        <!-- Section: Rights -->
+        <section class="guide-section">
+            <h2>4. Dine rettigheter</h2>
+            <p>
+                Du har rett til å be om innsyn i, endre eller slette dine personopplysninger når som helst. Ta kontakt med oss på tlf eller vår e-postadresse for å utøve dine rettigheter.
+            </p>
+        </section>
 
-<h3> 4. Dine rettigheter </h3>
+        <!-- Section: Changes -->
+        <section class="guide-section">
+            <h2>5. Endringer i personvernerklæringen</h2>
+            <p>
+                Vi kan oppdatere denne personvernerklæringen fra tid til annen. Eventuelle endringer vil bli publisert på denne siden.
+            </p>
+        </section>
+    </main>
+</body>
 
-<p>
-    Du har rett til å be om innsyn i, endre eller slette dine personopplysninger når som helst. Ta kontakt med oss på tlf eller vår e-postaddresse for å utøve dine rettigheter.
-</p>
-
-<h3> 5. Endringer i personvernerklæringen </h3>
-
-<p>
-    Vi kan oppdatere denne personvernerklæringen fra tid til annen. Eventuelle endringer vil bli publisert på denne siden.
-</p>
+</html>

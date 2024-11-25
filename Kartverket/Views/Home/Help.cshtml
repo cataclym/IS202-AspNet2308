@@ -1,128 +1,136 @@
-﻿<!DOCTYPE html>
-<html lang="no">
+﻿@model Kartverket.Models.MyPageModel
+
 <head>
-
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guide til Kartverket</title>
-    <link rel="stylesheet" href="styles.css">
+
     <style>
-        section {
-            margin-bottom: 40px; /* Adjust the value as needed for more/less space */
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        h1, h2 {
-            margin-top: 20px;
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            color: #333;
             margin-bottom: 20px;
         }
 
-        .my-list {
-            margin-top: 10px;
-            padding-left: 20px;
+        h2 {
+            font-size: 1.8em;
+            color: #2d2d2d;
+            margin-bottom: 10px;
         }
 
-        p {
-            margin-top: 10px;
-            line-height: 1.6;
+
+        .guide-section {
+            margin-bottom: 40px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
         }
 
-        ol {
-            padding-left: 20px;
+        section-part {
+            margin-bottom: 20px;
         }
 
-            ol li {
-                margin-bottom: 10px;
-            }
-
-            ol a {
+        a {
+            color: #007acc;
             text-decoration: none;
-            font-size: 20px;
-            color: black;
-            font-weight: bold;
-            }
+        }
 
-             ol a:hover {
-            color: #006A33; 
+            a:hover {
+                text-decoration: underline;
             }
-
     </style>
-
-
 </head>
-
 
 <body>
     <header>
-        <h1>Guide til <span class="highlight">Kartverket</span></h1>
+        <h1> Guide til <span style="color: #1a589f;">Kart</span><span style="color: #1a833b;">verket</span> </h1>
     </header>
 
+
+
     <main>
-        <section id="overview">
+        <!-- Table of Contents -->
+        <section id="overview" class="guide-section">
             <h2>Innhold</h2>
+
             <ol>
                 <li><a href="#registrering">Registrering av bruker</a></li>
                 <li><a href="#rapport">Innsending av rapport</a></li>
                 <li><a href="#behandlingstid">Lengde på behandlingstid</a></li>
                 <li><a href="#sletting">Sletting av bruker</a></li>
-                <li><a href="#glemt-passord">Glemt passord</a></li>
+                <li><a href="#glemt-passord">Glemt brukernavn/passord</a></li>
             </ol>
         </section>
 
-
-
-        <section id="registrering">
+        <!-- Section: Registrering -->
+        <section id="registrering" class="guide-section">
             <h2>1. Registrering av bruker</h2>
-            <ul class="my-list">
-                <li>Klikk på <strong>"Registrer deg"</strong>-knappen på <strong>"Hjem"</strong>-siden.</li>
-                <li>Fyll ut brukernavn, e-post, telefonnummer (valgfritt) og passord.</li>
-                <li>Trykk på knappen med teksten <strong>"Registrer deg"</strong>.</li>
-                <li>Du kan nå logge inn med ditt valgte brukernavn og passord.</li>
+
+            <ul>
+                <sections>
+                    Klikk på <strong>"Registrer deg"</strong>-knappen på <strong>"Hjem"</strong>-siden.</section-part>
+                    <section-part>Fyll ut brukernavn, e-post, telefonnummer (valgfritt) og passord.</section-part>
+                    <section-part>Trykk på knappen med teksten <strong>"Registrer deg"</strong>.</section-part>
+                    <section-part>Du kan nå logge inn med ditt valgte brukernavn og passord.</section-part>
             </ul>
         </section>
 
-        <section id="rapport">
+
+        <!-- Section: Rapport -->
+        <section id="rapport" class="guide-section">
             <h2>2. Innsending av rapport</h2>
-            <ul class="my-list">
-                <li>Registrer en ny bruker ved å klikke på <strong>"Registrer deg"</strong>-knappen.</li>
-                <li>Fyll ut skjemaet og trykk <strong>"Registrer"</strong>.</li>
-                <li>Klikk på <strong>"Meld feil"</strong>-knappen øverst på siden.</li>
-                <li>Marker området ved hjelp av verktøyene på venstre side av kartet.</li>
-                <li>Skriv en detaljert beskrivelse av feilen (minst 5 tegn).</li>
-                <li>Trykk <strong>"Send inn"</strong> for å sende rapporten.</li>
+
+            <ul>
+                <section-part>Registrer en ny bruker ved å klikke på <strong>"Registrer deg"</strong>-knappen.</section-part>
+                <section-part>Fyll ut skjemaet og trykk <strong>"Registrer"</strong>.</section-part>
+                <section-part>Klikk på <strong>"Meld feil"</strong>-knappen øverst på siden.</section-part>
+                <section-part>Marker området ved hjelp av verktøyene på venstre side av kartet.</section-part>
+                <section-part>Skriv en detaljert beskrivelse av feilen (minst 5 tegn).</section-part>
+                <section-part>Trykk <strong>"Send inn"</strong> for å sende rapporten.</section-part>
             </ul>
             <p>Din første rapport er nå sendt inn! Gratulerer :)</p>
         </section>
 
 
-
-
-        <section id="behandlingstid">
+        <!-- Section: Behandlingstid -->
+        <section id="behandlingstid" class="guide-section">
             <h2>3. Lengde på behandlingstid</h2>
-            <p>Behandlingstiden for en rapport varierer, men som hovedregel kan du forvente en saksbehandlingstid på mellom 1 og 2 uker.</p>
+
+            <ul>
+                <section-part>Behandlingstiden for en rapport varierer, men som hovedregel kan du forvente en saksbehandlingstid på mellom 1 og 2 uker.</section-part>
+            </ul>
+
         </section>
 
-        <section id="sletting">
+        <!-- Section: Sletting -->
+        <section id="sletting" class="guide-section">
             <h2>4. Sletting av bruker</h2>
-            <ul class="my-list">
-                <li>Gå til <strong>"Min Side"</strong> og klikk på <strong>"Slett bruker"</strong>-knappen nederst.</li>
-                <li>Bekreft sletting ved å trykke <strong>"OK"</strong> i dialogboksen.</li>
-                <li>Din bruker og personopplysninger blir nå slettet.</li>
+
+            <ul>
+                <section-part>Gå til <strong>"Min Side"</strong> og klikk på <strong>"Slett bruker"</strong>-knappen nederst.</section-part>
+                <section-part>Bekreft sletting ved å trykke <strong>"OK"</strong> i dialogboksen.</section-part>
+                <section-part>Din bruker og personopplysninger blir nå slettet.</section-part>
             </ul>
         </section>
 
 
+        <!-- Section: Glemt Passord -->
+        <section id="glemt-passord" class="guide-section">
+            <h2>5. Glemt brukernavn/passord</h2>
 
-        <section id="glemt-passord">
-            <h2>5. Glemt passord</h2>
-            <ul class="my-list">
-                <li>Klikk på <strong>"Glemt passord"</strong> og skriv inn e-postadressen du brukte ved registrering.</li>
-                <li>Trykk <strong>"Send"</strong>.</li>
-                <li>Du mottar en e-post for å opprette et nytt passord (av sikkerhetshensyn).</li>
-                <li>Logg inn med det nye passordet.</li>
+            <ul>
+                <section-part>Klikk på <strong>"Glemt passord"</strong> og skriv inn e-postadressen du brukte ved registrering.</section-part>
+                <section-part>Trykk <strong>"Send"</strong>.</section-part>
+                <section-part>Du mottar en e-post for å opprette et nytt passord (av sikkerhetshensyn).</section-part>
+                <section-part>Logg inn med det nye passordet.</section-part>
             </ul>
         </section>
-
     </main>
 </body>
+
 </html>
