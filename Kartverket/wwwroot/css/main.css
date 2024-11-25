@@ -318,7 +318,7 @@ body {
   margin-top: 1.5rem;
 }
 
-.delete-btn-report {
+.delete-btn-user {
   width: 320px;
   height: 60px;
   padding: 10px 30px;
@@ -336,7 +336,7 @@ body {
   transition: all 0.2s ease; /* Smooth transition for hover */
 }
 
-.delete-btn-report:hover {
+.delete-btn-user:hover {
   background-color: #D9534F; /* Red background on hover */
   color: #fff; /* White text color on hover */
   border-color: #D9534F; /* Ensures border remains the same color */
@@ -903,6 +903,21 @@ input[type=checkbox] {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+.user-registration .password-wrapper {
+  position: relative;
+}
+.user-registration .password-wrapper input[type=password] {
+  padding-right: 2.5em;
+}
+.user-registration .show-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  font-size: 18px;
+}
 .user-registration .register-section {
   text-align: center;
   margin-top: 20px;
@@ -1325,8 +1340,15 @@ input[type=checkbox] {
   border-bottom: none; /* Fjerner skillelinje fra siste element */
 }
 .report-view .dropdown-content .dropdown-btn-a:hover {
-  background-color: #d4ebdc; /* Litt mørkere grønn ved hover */
+  background-color: red; /* Litt mørkere grønn ved hover */
   color: #1e8c34;
+}
+.report-view .select-admin {
+  width: 100%; /* Gjør den full bredde av containeren */
+  height: 40px; /* Gjør feltet høyere */
+  font-size: 16px; /* Øker fontstørrelsen */
+  padding: 5px; /* Legger til litt plass inni feltet */
+  margin-bottom: 10px; /* Øk avstanden under feltet */
 }
 
 .report-view {
@@ -1466,34 +1488,6 @@ input[type=checkbox] {
   grid-template-columns: 2fr 1fr;
   gap: 2rem;
   padding: 2rem;
-}
-.report-view .delete-btn-container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 1.5rem;
-}
-.report-view .delete-btn-user {
-  width: 320px;
-  height: 60px;
-  padding: 10px 30px;
-  border: 4px solid #D9534F;
-  border-radius: 20px;
-  font-size: 25px;
-  font-weight: 500;
-  background-color: #FFFFFF;
-  color: #D9534F;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: all 0.2s ease; /* Smooth transition for hover */
-}
-.report-view .delete-btn-user:hover {
-  background-color: #D9534F; /* Red background on hover */
-  color: #fff; /* White text color on hover */
-  border-color: #D9534F; /* Ensures border remains the same color */
 }
 
 .MyPage {

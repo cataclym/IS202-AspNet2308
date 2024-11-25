@@ -282,6 +282,12 @@ private UserRegistrationModel MapUserToViewModel(Users user)
         bool isAdmin = int.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int userId)
                        && (await _context.Users.FindAsync(userId))?.IsAdmin == true;
 
+        var currentUserId = GetUserId();
+
+        // Hent alle admin-brukere, ekskludert den nåværende adminen
+        var admins = await _context.Users
+            .Where(u => u.IsAdmin && u.UserId != currentUserId)
+            .ToListAsync();
 
         // Populate a view model with the necessary data
         var viewModel = new ReportViewModel
@@ -308,8 +314,10 @@ private UserRegistrationModel MapUserToViewModel(Users user)
                 Message = m.Message,
                 CreatedAt = m.CreatedAt,
                 Username = m.User?.Username ?? "Unknown"
-            }).ToList()
+            }).ToList(),
             // Include any additional fields as needed
+            // Legg til adminliste for valg
+        AdminUsers = admins
         };
 
         _logger.LogInformation("Loaded report details successfully for ID: {id}", id);
@@ -664,7 +672,53 @@ public async Task<IActionResult> EditMapReport(ReportViewModel model)
 
         return RedirectToAction("ReportView", new { id = report.ReportId });
     }
-    
+
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> TransferReport(int reportId, int newAdminId)
+    {
+        var report = await _context.Reports
+            .Include(r => r.AssignedAdmin)
+            .FirstOrDefaultAsync(r => r.ReportId == reportId);
+
+        if (report == null)
+        {
+            return NotFound("Report not found.");
+        }
+
+        var currentUserId = GetUserId();
+        if (report.AssignedAdminId != currentUserId)
+        {
+            return Unauthorized("You are not authorized to transfer this report.");
+        }
+
+        // Sjekk at den nye adminen er gyldig
+        var newAdmin = await _context.Users
+            .FirstOrDefaultAsync(u => u.UserId == newAdminId && u.IsAdmin);
+        if (newAdmin == null)
+        {
+            return BadRequest("The target admin does not exist or is not an admin.");
+        }
+
+        // Utfør overføringen
+        report.AssignedAdminId = newAdminId;
+
+        try
+        {
+            _context.Update(report);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Report successfully transferred.";
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = "An error occurred while transferring the report.";
+            return StatusCode(500, "Internal server error.");
+        }
+
+        return RedirectToAction("ReportView", new { id = report.ReportId });
+    }
+
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
