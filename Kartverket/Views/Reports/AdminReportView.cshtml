@@ -1,7 +1,12 @@
 ﻿@model Kartverket.Models.ReportViewModel
+@using System.Security.Claims
+
 @{
 ViewData["Title"] = "Registrert rapport";
 var municipalityCountyNames = (MunicipalityCountyNames?) ViewData["MunicipalityInfo"];
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var assignedAdminId = Model.AssignedAdminId?.ToString();
+    var isCurrentUserAssignedAdmin = currentUserId == assignedAdminId;
 }
 <!DOCTYPE html>
 <body class="report-view">
@@ -83,15 +88,41 @@ var municipalityCountyNames = (MunicipalityCountyNames?) ViewData["MunicipalityI
                 </div>
             </form>
         </div>
-        <div class="delete-btn-container">
-            <form id="delete-form" asp-action="DeleteConfirmed" asp-route-id="@Model.ReportId" method="post">
-                <button type="button" class="delete-btn-user delete-icon" onclick="confirmDelete()">
-                    Slett rapport
-                    <i class="bi bi-trash"></i>
-                </button>
-            </form>
-        </div>
+            <div class="delete-btn-container">
+                <form id="delete-form" asp-action="DeleteConfirmed" asp-route-id="@Model.ReportId" method="post">
+                    <button type="button" class="delete-btn-user delete-icon" onclick="confirmDelete()">
+                        Slett rapport
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>
+            </div>
+
+            @if (User.IsInRole("Admin") && isCurrentUserAssignedAdmin)
+            {
+                <p>
+                    Report ID: @Model.ReportId<br />
+                    Currently Assigned to: @Model.AssignedAdminUsername
+                </p>
+
+
+                <form asp-action="TransferReport" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" name="reportId" value="@Model.ReportId" />
+
+                    <label for="newAdmin">Transfer to:</label>
+                    <select class="select-admin" id="newAdmin" name="newAdminId" required>
+                        @foreach (var admin in Model.AdminUsers)
+                        {
+                            <option value="@admin.UserId">@admin.Username</option>
+                        }
+                    </select>
+
+                    <button class="btn-general btn-primary" type="submit">Transfer</button>
+                </form>
+            }
     </div>
+
 </main>
 </body>
 @section Scripts {

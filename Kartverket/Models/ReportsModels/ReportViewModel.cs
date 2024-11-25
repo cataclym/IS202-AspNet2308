@@ -29,6 +29,8 @@ public class ReportViewModel
 
     public int? AssignedAdminId { get; set; }
     public string? AssignedAdminUsername { get; set; }
+    public List<Users> AdminUsers { get; set; } = new List<Users>(); // Liste over admin-brukere
+
 
     public bool IsPinned { get; set; }
 
