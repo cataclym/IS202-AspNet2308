@@ -101,9 +101,7 @@ else
     kartLag.Land.addTo(map); 
 
     // Hent GeoJSON Object fra modellen
-    const geoJSONObject = new Object(
-        @Model.StringKoordinaterLag
-    );
+    const geoJSONObject = JSON.parse(@Json.Serialize(Model.StringKoordinaterLag));
     
     // For feilsøking, logg geoJSONObject
     console.log("GeoJSON: ", geoJSONObject);

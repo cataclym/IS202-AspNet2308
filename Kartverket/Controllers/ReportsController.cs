@@ -250,14 +250,14 @@ private UserRegistrationModel MapUserToViewModel(Users user)
     {
         _logger.LogInformation("Loading report with ID: {id}", id);
 
-        // Fetch the report by ReportId, including any associated messages
+        // Fetch the report by ReportId, including any associated tables
         var report = await _context.Reports
             .Include(r => r.Messages)
             .ThenInclude(m => m.User)
             .Include(r => r.User) // Hent brukerdata for selve rapporten
             .Include(r => r.AssignedAdmin) // Include the assigned admin
             .Include(r => r.Municipality)
-            .ThenInclude(m => m!.County)
+            .ThenInclude(m => m.County)
             .FirstOrDefaultAsync(r => r.ReportId == id);
 
         // Handle the case where the report is not found
