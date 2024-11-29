@@ -1712,7 +1712,7 @@ input[type=checkbox] {
 }
 
 .background-image {
-  background-image: url("../images/newbakgrunn.jpg");
+  background-image: url("../images/newbakgrunn.webp");
   background-size: cover;
   background-position: top 60px center;
   background-repeat: no-repeat;
