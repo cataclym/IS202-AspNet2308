@@ -226,7 +226,7 @@ public class AccountController : Controller
 
         _logger.LogInformation("User with ID {UserId} re-authenticated successfully after password change.", userId);
 
-        return View("ChangePassword");
+        return RedirectToAction("MyPage", "Home");
     }
 
 
