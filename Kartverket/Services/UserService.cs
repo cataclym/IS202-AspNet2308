@@ -18,7 +18,7 @@ public class UserService : IUserService
         _httpContextAccessor = httpContextAccessor;
     }
     
-    public async Task<int> GetUserIdAsync(int id)
+    public int GetUserId(int id)
     {
         if (id != 0) return id;
 
@@ -33,7 +33,7 @@ public class UserService : IUserService
         return 0;
     }
 
-    public async Task<Users> GetUserAsync(int id)
+    public async Task<Users?> GetUserAsync(int id)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
         if (user == null)
@@ -43,7 +43,7 @@ public class UserService : IUserService
         return user;
     }
     
-    public async Task<Users> GetUserByUsernameAsync(string username)
+    public async Task<Users?> GetUserByUsernameAsync(string username)
     {
         if (string.IsNullOrWhiteSpace(username))
         {
@@ -57,7 +57,7 @@ public class UserService : IUserService
             .FirstOrDefaultAsync(u => u.Username.ToLower() == lowerUsername);
 
         if (user == null)
-        {
+        { 
             _logger.LogInformation("User not found with username: {username}", username);
         }
         else

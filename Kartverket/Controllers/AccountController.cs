@@ -27,9 +27,9 @@ public class AccountController : Controller
 
     // GET: Viser innloggingsskjemaet
     [HttpGet]
-    public IActionResult Login(string returnUrl = null)
+    public IActionResult Login(string? returnUrl = null)
     {
-        if (User.Identity != null && User.Identity.IsAuthenticated)
+        if (User.Identity is { IsAuthenticated: true })
         {
             // Hent brukerinformasjon hvis nødvendig
             var isAdmin = User.IsInRole("Admin");
@@ -46,7 +46,7 @@ public class AccountController : Controller
 
     // POST: Behandler innlogging
     [HttpPost]
-    public async Task<IActionResult> Login(UserLoginModel userLoginModel, string returnUrl = null)
+    public async Task<IActionResult> Login(UserLoginModel userLoginModel, string? returnUrl = null)
     {
         // Sjekk om modellen er gyldig
         if (!ModelState.IsValid) return View("Login", userLoginModel);
@@ -115,7 +115,7 @@ public class AccountController : Controller
         return BCrypt.Net.BCrypt.Verify(inputPassword, storedPasswordHash);
     }
     
-    // TODO beskrivelse
+    //Endrer nettside basert på rolle
     [HttpGet]
     public IActionResult UserRegistration(string? returnUrl = null)
     {
@@ -133,7 +133,7 @@ public class AccountController : Controller
         return View();
     }
 
-    // TODO beskrivelse
+    //POST: Behandler UserRegistration
     [HttpPost]
     public async Task<IActionResult> UserRegistration(UserRegistrationModel userRegistrationModelModel)
     {
@@ -157,40 +157,6 @@ public class AccountController : Controller
             new { id = userRegistrationModelModel.UserId }); // Omdirigerer til brukerens profilside, for eksempel
     }
 
-    // POST: Behandle bruker registrering
-    [HttpPost]
-    public async Task<IActionResult> RegisterUser(UserRegistrationModel userRegistrationModelModel)
-    {
-        // Sjekk om modellen er gyldig
-        if (!ModelState.IsValid) return View(userRegistrationModelModel);
-
-        try
-        {
-            var users = new Users
-            {
-                Username = userRegistrationModelModel.Username,
-                Password = userRegistrationModelModel.Password,
-                Email = userRegistrationModelModel.Email,
-                Phone = userRegistrationModelModel.Phone,
-                IsAdmin = userRegistrationModelModel.IsAdmin
-            };
-            // Legger til brukerdata i databasen
-            _context.Users.Add(users);
-
-            // Lagre endringer til databasen asynkront
-            await _context.SaveChangesAsync();
-
-            // Gå til en suksess- eller bekreftelsesside (eller tilbakemelding på skjema)
-            return View("Min Side", userRegistrationModelModel);
-        }
-        catch (Exception ex)
-        {
-            // Logg feil hvis lagringen ikke fungerer
-            _logger.LogError(ex, "Feil ved lagring av brukerdata");
-            // Returner en feilmelding
-            return View("Error");
-        }
-    }
 
     public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
     {
@@ -260,7 +226,7 @@ public class AccountController : Controller
 
         _logger.LogInformation("User with ID {UserId} re-authenticated successfully after password change.", userId);
 
-        return View("ChangePassword");
+        return RedirectToAction("MyPage", "Home");
     }
 
 
