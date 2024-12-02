@@ -70,7 +70,7 @@
                 </ul>
 
                 <ul class="navbar-nav ms-auto">
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity?.IsAuthenticated is true)
                     {
                     <li class="nav-item">
                         <a class="nav-link text-dark logout-link @(view == "Logg ut" ? "active" : "")"

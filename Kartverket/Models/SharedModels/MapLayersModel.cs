@@ -2,20 +2,20 @@ namespace Kartverket.Models;
 
 public class MapLayersModel
 {
-    public string type { get; set; }
-    public List<Feature> features { get; set; }
+    public required string type { get; set; }
+    public required List<Feature> features { get; set; }
 }
 
 public class Feature
 {
-    public string type { get; set; }
-    public Dictionary<string, object> properties { get; set; }
-    public Geometry geometry { get; set; }
+    public required string type { get; set; }
+    public required Dictionary<string, object> properties { get; set; }
+    public required Geometry geometry { get; set; }
 }
 
 public class Geometry
 {
-    public string type { get; set; }
-    public List<object> coordinates { get; set; }
+    public required string type { get; set; }
+    public required List<object> coordinates { get; set; }
 }
 

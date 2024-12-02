@@ -99,7 +99,7 @@
     margin-top: 1.5rem;
 }
 
-.delete-btn-report {
+.delete-btn-user {
     width: 320px;
     height: 60px;
     padding: 10px 30px;
@@ -117,11 +117,13 @@
     transition: all 0.2s ease; /* Smooth transition for hover */
 }
 
-.delete-btn-report:hover {
+.delete-btn-user:hover {
     background-color: #D9534F; /* Red background on hover */
     color: #fff; /* White text color on hover */
     border-color: #D9534F; /* Ensures border remains the same color */
 }
+
+
 
 .btn-changepassword {
     display: flex;

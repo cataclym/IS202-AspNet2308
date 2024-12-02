@@ -6,8 +6,8 @@ public class Municipality
     [Key]
     public int MunicipalityId { get; set; }
     [MaxLength(15)]
-    public string Name { get; set; }
+    public required string Name { get; set; }
     [ForeignKey("CountyId")]
     public int CountyId { get; set; }
-    public County County { get; set; }
+    public required County County { get; set; }
 }

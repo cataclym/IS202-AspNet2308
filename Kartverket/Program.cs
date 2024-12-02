@@ -41,6 +41,7 @@ public class Program
         App.UseHttpsRedirection();
         App.UseStaticFiles();
         App.UseRouting();
+        App.UseAntiforgery();
         
         // Autorisasjon må være etter autentisering
         App.UseAuthorization();
@@ -81,9 +82,6 @@ public class Program
         Builder.Services.AddAuthorizationBuilder()
                     .AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 
-        // Add services to the container.
-        Builder.Services.AddControllersWithViews();
-        
         // Add services to the container.
         Builder.Services.AddControllersWithViews();
         AddCookies();
