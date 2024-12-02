@@ -24,24 +24,15 @@ public class HomeController : Controller
     
     public IActionResult Index()
     {
-        // Brukeren er ikke autentisert
-        // Brukeren er autentisert
-        Console.WriteLine(User.Identity is { IsAuthenticated: true } ? "User is authenticated" : "User is not authenticated");
+        // Logg om bruker er autentisert
+        LogAuthentication();
         return View();
     }
 
     public IActionResult Privacy()
     {
-        if (User.Identity?.IsAuthenticated == true)
-        {
-            // Brukeren er autentisert
-            Console.WriteLine("User is authenticated");
-        }
-        else
-        {
-            // Brukeren er ikke autentisert
-            Console.WriteLine("User is not authenticated");
-        }
+        // Logg om bruker er autentisert
+        LogAuthentication();
         return View();
     }
 
@@ -149,5 +140,10 @@ public class HomeController : Controller
     public ViewResult Login()
     {
         return View();
+    }
+
+    private void LogAuthentication()
+    {
+        Console.WriteLine(User.Identity is { IsAuthenticated: true } ? "User is authenticated" : "User is not authenticated");
     }
 }
