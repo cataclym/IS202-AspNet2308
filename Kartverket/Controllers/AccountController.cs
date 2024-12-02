@@ -278,6 +278,7 @@ public class AccountController : Controller
 // Sletting av brukerkonto
     [Authorize]
     [HttpPost]
+    [ValidateAntiForgeryToken]  
     public async Task<IActionResult> DeleteUser()
     {
         try
@@ -303,9 +304,6 @@ public class AccountController : Controller
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            // Sett TempData før omdirigering
-            TempData["DeletionMessage"] = "Brukerkontoen din er nå slettet.";
-
             return RedirectToAction("Index", "Home");
         }
         catch (Exception ex)
@@ -314,4 +312,4 @@ public class AccountController : Controller
             return View("Error");
         }
     }
-}
+    }
