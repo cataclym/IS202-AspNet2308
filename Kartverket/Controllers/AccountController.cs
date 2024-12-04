@@ -157,7 +157,7 @@ public class AccountController : Controller
             new { id = userRegistrationModelModel.UserId }); // Omdirigerer til brukerens profilside, for eksempel
     }
 
-
+    [HttpPost]
     public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
     {
         // Validate model state, which includes ConfirmPassword matching and other annotations.
