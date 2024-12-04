@@ -675,10 +675,10 @@ public async Task<IActionResult> EditMapReport(ReportViewModel model)
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> TransferReport(int reportId, int newAdminId)
     {
         var report = await _context.Reports
-            .Include(r => r.AssignedAdmin)
             .FirstOrDefaultAsync(r => r.ReportId == reportId);
 
         if (report == null)
