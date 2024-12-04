@@ -49,26 +49,4 @@
     </form>
 </div>
 </body>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const togglePassword = document.getElementById("togglePassword");
-        const passwordField = document.getElementById("Password");
-        const eyeOpen = document.getElementById("eyeOpen");
-        const eyeClosed = document.getElementById("eyeClosed");
-
-        // Initial visning: skjul "åpen øye" ikon
-        eyeOpen.style.display = "none";
-        eyeClosed.style.display = "inline";
-
-        togglePassword.addEventListener("click", function () {
-            const isPasswordHidden = passwordField.getAttribute("type") === "password";
-            passwordField.setAttribute("type", isPasswordHidden ? "text" : "password");
-
-            // Bytt mellom ikoner
-            eyeOpen.style.display = isPasswordHidden ? "inline" : "none";
-            eyeClosed.style.display = isPasswordHidden ? "none" : "inline";
-        });
-    });
-</script>
 </html>
