@@ -186,13 +186,11 @@ public class AccountController : Controller
         if (!VerifyPassword(model.CurrentPassword, user.Password))
         {
             _logger.LogWarning("Password change failed: Current password is incorrect.");
-            ModelState.AddModelError(string.Empty, "Nåværende passord er feil."); // Add error message for the user
             return View("ChangePassword", model);
         }
 
         // Hash the new password and mark the entity as modified
         user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
-        _context.Entry(user).Property(u => u.Password).IsModified = true;
 
         try
         {
@@ -212,7 +210,12 @@ public class AccountController : Controller
         {
             new(ClaimTypes.Name, user.Username),
             new(ClaimTypes.NameIdentifier, user.UserId.ToString())
+
         };
+
+        // Legg til rollekrav hvis brukeren er admin
+        if (user.IsAdmin) claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
         var authProperties = new AuthenticationProperties
@@ -226,7 +229,7 @@ public class AccountController : Controller
 
         _logger.LogInformation("User with ID {UserId} re-authenticated successfully after password change.", userId);
 
-        return RedirectToAction("MyPage", "Home");
+        return RedirectToAction("Index", "Home");
     }
 
 
