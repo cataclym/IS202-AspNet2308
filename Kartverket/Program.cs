@@ -35,40 +35,6 @@ public class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             App.UseHsts();
         }
-        
-        // Legg til sikkerhetsrelaterte HTTP-headere
-        App.Use(async (context, next) =>
-        {
-            // Beskyttelse mot XSS-angrep for gamle nettlesere
-            context.Response.Headers["X-Xss-Protection"] = "1; mode=block";
-
-            // Beskytt mot Clickjacking
-            context.Response.Headers["X-Frame-Options"] = "DENY";
-
-            // Beskytt mot misbruk av Content-Type
-            context.Response.Headers["X-Content-Type-Options"] = "nosniff";
-
-            // Beskytt mot avsløring av referrer informasjon
-            context.Response.Headers["Referrer-Policy"] = "no-referrer";
-
-            // Hindre at nettleseren prøver å bruke HTTP når HTTPS er tilgjengelig
-            context.Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
-
-            // Forhindrer at serverdetaljer blir avslørt
-            context.Response.Headers["Server"] = "";
-            
-            context.Response.Headers["Content-Security-Policy"] = 
-                "default-src 'self'; " +
-                "script-src 'self' 'unsafe-inline'; " +
-                "style-src 'self' 'unsafe-inline'; " +
-                "img-src 'self' data:; " +
-                "font-src 'self'; " +
-                "connect-src 'self'; " +
-                "frame-ancestors 'none';";
-
-            // Kjør videre til neste middleware i kjeden
-            await next();
-        });
 
         // Denne legger autentisering i pipelinen
         App.UseAuthentication();
