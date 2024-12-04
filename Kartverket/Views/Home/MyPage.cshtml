@@ -61,29 +61,10 @@
 </div>
 <br>
 <form asp-controller="Account" asp-action="DeleteUser" method="post" onsubmit="return confirm('Er du sikker på at du vil slette brukeren din?');">
+    @Html.AntiForgeryToken()  
     <button type="submit" class="btn-general btn-logout">Slett konto
         <i class="bi bi-trash"></i>
     </button>
 </form>
-<script>
-    // Funksjon for å vise popup
-    function showPopup() {
-        document.getElementById('deleteConfirmationPopup').style.display = 'block';
-    }
-
-    // Funksjon for å lukke popup
-    function closePopup() {
-        document.getElementById('deleteConfirmationPopup').style.display = 'none';
-    }
-
-    // Sjekk om det finnes en melding i TempData for å vise popup
-    window.onload = function() {
-        // Kontroller om meldingen fra TempData er tilgjengelig
-        var deletionMessage = '@TempData["DeletionMessage"]';
-        if (deletionMessage) {
-            showPopup();
-        }
-    }
-</script>
 </body>
 </html>
