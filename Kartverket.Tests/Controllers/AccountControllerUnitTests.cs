@@ -20,9 +20,9 @@ public class AccountControllerUnitTests
         // Returner accountcontroller med substituerte parametere i konstruktøren
         _logger = Substitute.For<ILogger<AccountController>>();
         _userService = Substitute.For<IUserService>();
-        var homeController = new AccountController(null, _logger, _userService);
-        homeController.ControllerContext.HttpContext = new DefaultHttpContext();
-        return homeController;
+        var controller = new AccountController(null, _logger, _userService);
+        controller.ControllerContext.HttpContext = new DefaultHttpContext();
+        return controller;
     }
 
     [Fact]
