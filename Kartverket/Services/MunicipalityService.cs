@@ -91,8 +91,7 @@ public class MunicipalityService : IMunicipalityService
             _logger.LogInformation("Kommune punkt Response: {Json}", json);
             
             // Hent JSON fra string med KommuneInfo Modellen 
-            var municipalityInfo = JsonSerializer.Deserialize<MunicipalityCountyNames>(json);
-            return municipalityInfo; 
+            return JsonSerializer.Deserialize<MunicipalityCountyNames>(json);
         }
         catch (Exception ex)
         {

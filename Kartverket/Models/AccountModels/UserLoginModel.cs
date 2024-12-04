@@ -6,7 +6,6 @@ namespace Kartverket.Models;
 public class UserLoginModel
 {
     [Required]
-    [PasswordPropertyText]
     [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Brukernavnet må kun bestå av bokstaver og tall.")]
     public required string Username { get; set; }
     [Required]
