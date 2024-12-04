@@ -18,7 +18,7 @@ public sealed class Reports
     public DateTime CreatedAt { get; set; }
     public DateTime? ResolvedAt { get; set; }
     // Referrer til Messages tabell
-    public ICollection<Messages> Messages { get; set; } = new List<Messages>();
+    public ICollection<Messages> Messages { get; set; }
     public ICollection<PinnedReport> PinnedReports { get; set; }  = new List<PinnedReport>();
     
     [ForeignKey("AssignedAdmin")]

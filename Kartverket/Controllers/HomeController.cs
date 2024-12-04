@@ -76,8 +76,6 @@ public class HomeController : Controller
         {
             // Hent brukerinformasjon hvis nødvendig
             var isAdmin = User.IsInRole("Admin");
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
             if (isAdmin)
                 return RedirectToAction("AdminDashboard", "Home");
         }
@@ -86,6 +84,9 @@ public class HomeController : Controller
         return View(model);
     }
 
+    
+    [Authorize]
+    [HttpGet]
     public async Task<IActionResult> AdminDashboard()
     {
         // Finner dagens dato ved midnatt
