@@ -73,7 +73,7 @@
     }
 
     <div id="descriptionForm">
-        <button type="button" class="close-btn" onclick="closeForm()">&times;</button>
+        <button type="submit" class="close-btn" onclick="closeForm()">&times;</button>
         <form asp-controller="Reports" asp-action="@(isEdit ? "EditMapReport" : "RegisterMapReport")"
               method="post"
               id="mapForm">
@@ -81,10 +81,10 @@
             {
             <input type="hidden" asp-for="ReportId" />
             }
-            
+
             <div>
-                <textarea id="meldingsBoks" class="description-textarea" asp-for="FirstMessage"
-                 required minlength="5" placeholder="Beskrivelse (minst 5 tegn)"></textarea>
+    <textarea id="meldingsBoks" class="description-textarea" asp-for="FirstMessage"
+              required minlength="5" placeholder="Beskrivelse (minst 5 tegn)" title="Beskrivelsen må være minst 5 tegn lang."></textarea>
             </div>
             
             <div>
@@ -212,8 +212,13 @@
 
         // Function to handle form submission
         function submitForm() {
-            const layers = drawnItems.getLayers();
+            const form = document.getElementById("mapForm");
+            if (!form.checkValidity()) {
+                form.reportValidity(); // Viser valideringsfeil til brukeren
+                return;
+            }
 
+            const layers = drawnItems.getLayers();
             if (layers.length === 0) {
                 alert("Vennligst tegn et område på kartet før du sender inn.");
                 return;
