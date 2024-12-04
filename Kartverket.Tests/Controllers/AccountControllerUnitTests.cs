@@ -12,7 +12,6 @@ namespace Kartverket.Tests.Controllers;
 public class AccountControllerUnitTests
 {
     private ILogger<AccountController> _logger;
-    private ApplicationDbContext _applicationDbContext;
     private IUserService _userService;
 
     private AccountController GetUnitUnderTest()

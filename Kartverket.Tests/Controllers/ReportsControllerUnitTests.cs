@@ -13,9 +13,7 @@ public class ReportsControllerUnitTests
 {
     private ILogger<ReportsController> _logger;
     private IMunicipalityService _municipalityService;
-    private GeoJsonService _geoJsonService;
     private IUserService _userService;
-    private ApplicationDbContext _applicationDbContext;
 
     private ReportsController GetUnitUnderTest()
     {
