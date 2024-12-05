@@ -15,9 +15,9 @@ const currentSortOrder = { column: -1, order: "asc" };
 const selectedFilters = new Set();
 const selectedSorts = new Map();
 
-const table = document.querySelector('#admin-table tbody');
+const originalTable = document.querySelector('#admin-table tbody') || document.querySelector('#user-table tbody');
 // Lagre originale utgave av tabellen
-const savedTable = table.innerHTML;
+const savedTable = originalTable.innerHTML;
 
 // Function to show/hide dropdown
 function showDropdown() {
@@ -26,7 +26,7 @@ function showDropdown() {
 }
 
 function sortTable(columnIndex, element) {
-    const table = document.querySelector('#admin-table tbody');
+    const table = document.querySelector('#admin-table tbody') || document.querySelector('#user-table tbody');
     if (!table) return;
     
     // Bestem riktig kolonne for dato avhengig av brukertype
@@ -134,10 +134,10 @@ function resetTableSorting() {
     currentSortOrder.order = "asc";
 
     // Tilbakestiller tabellen ved å hente elementet i dokumentet
-    let adminTableBody = document.querySelector('#admin-table tbody');
-    if (adminTableBody) {
+    let tableBody = document.querySelector('#admin-table tbody') || document.querySelector('#user-table tbody');
+    if (tableBody) {
         // Deretter skriver over HTML-en i tabellen med den originale versjonen
-        adminTableBody.innerHTML = savedTable;
+        tableBody.innerHTML = savedTable;
     }
 }
 
