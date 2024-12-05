@@ -361,16 +361,6 @@ public async Task<IActionResult> EditMapReport(ReportViewModel model)
     // Validate the model
     if (!ModelState.IsValid)
     {
-        _logger.LogInformation("ModelState is invalid for ReportId {ReportId}.", model.ReportId);
-        foreach (var key in ModelState.Keys)
-        {
-            var state = ModelState[key];
-            if (state == null) continue;
-            foreach (var error in state.Errors)
-            {
-                _logger.LogError("Field {Field} Error: {ErrorMessage}", key, error.ErrorMessage);
-            }
-        }
         return View("ReportView", model);
     }
 

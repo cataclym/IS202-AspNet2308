@@ -46,7 +46,7 @@ public class HomeController : Controller
     [HttpGet]
     public async Task<IActionResult> MyPage(int id = 0)
     {
-        // Hent bruker-ID basert på input-id (eller annen logikk i GetUserIdAsync)
+        // Hent bruker-ID basert på input-id
         id = _userService.GetUserId(id);
 
         if (id == 0)

@@ -89,7 +89,7 @@ public class AccountController : Controller
             // Returnerer view basert på om brukeren er Admin (Saksbehandler)
             return user.IsAdmin
                 ? RedirectToAction("AdminDashboard", "Home")
-                : RedirectToAction("MyPage", "Home", new { id = user.UserId });
+                : RedirectToAction("MyPage", "Home");
         }
 
         // Feilhåndtering hvis brukernavn eller passord er feil
